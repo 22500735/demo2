@@ -1,0 +1,182 @@
+.timetable {
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+.timetable-header {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  color: white;
+  padding: 20px 16px;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.timetable-header h1 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.header-subtitle {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.day-selector {
+  display: flex;
+  padding: 16px;
+  gap: 8px;
+  overflow-x: auto;
+  background: white;
+  border-bottom: 1px solid #e1e8ed;
+}
+
+.day-button {
+  flex-shrink: 0;
+  padding: 8px 16px;
+  border: 2px solid #e1e8ed;
+  background: white;
+  color: #657786;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.day-button:hover {
+  border-color: #4facfe;
+  color: #4facfe;
+}
+
+.day-button.active {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  border-color: #4facfe;
+  color: white;
+}
+
+.schedule-container {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.time-slot {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e1e8ed;
+}
+
+.time-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  color: #657786;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.time-text {
+  font-weight: 600;
+}
+
+.period-number {
+  background-color: #e3f2fd;
+  color: #1976d2;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  margin-left: auto;
+}
+
+.class-card {
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+}
+
+.class-info {
+  width: 100%;
+}
+
+.subject-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #14171a;
+  margin-bottom: 8px;
+}
+
+.class-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #657786;
+  font-size: 13px;
+}
+
+.empty-slot {
+  width: 100%;
+  text-align: center;
+  color: #657786;
+  font-style: italic;
+  padding: 20px 0;
+}
+
+.timetable-stats {
+  display: flex;
+  justify-content: space-around;
+  padding: 20px 16px;
+  background: white;
+  margin: 16px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-number {
+  display: block;
+  font-size: 24px;
+  font-weight: 700;
+  color: #4facfe;
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #657786;
+  font-weight: 500;
+}
+
+/* Responsive design */
+@media (max-width: 414px) {
+  .schedule-container {
+    padding: 12px;
+    gap: 10px;
+  }
+  
+  .time-slot {
+    padding: 12px;
+  }
+  
+  .timetable-header {
+    padding: 16px 12px;
+  }
+  
+  .day-selector {
+    padding: 12px;
+  }
+}

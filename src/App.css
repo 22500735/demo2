@@ -1,0 +1,30 @@
+.App {
+  text-align: center;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  max-width: 414px;
+  margin: 0 auto;
+  background-color: #ffffff;
+}
+
+.main-content {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 80px; /* Space for bottom navigation */
+}
+
+/* Scrollbar styling for webkit browsers */
+.main-content::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.main-content {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
