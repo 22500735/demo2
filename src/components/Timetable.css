@@ -22,115 +22,146 @@
   opacity: 0.9;
 }
 
-.day-selector {
-  display: flex;
-  padding: 16px;
-  gap: 8px;
-  overflow-x: auto;
+.timetable-grid {
+  margin: 16px;
   background: white;
-  border-bottom: 1px solid #e1e8ed;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e1e8ed;
+  width: calc(100% - 32px);
 }
 
-.day-button {
-  flex-shrink: 0;
-  padding: 8px 16px;
-  border: 2px solid #e1e8ed;
-  background: white;
-  color: #657786;
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-.day-button:hover {
-  border-color: #4facfe;
-  color: #4facfe;
-}
-
-.day-button.active {
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-  border-color: #4facfe;
+.grid-header {
+  display: grid;
+  grid-template-columns: 70px 1fr 1fr 1fr 1fr 1fr;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
 }
 
-.schedule-container {
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.time-slot {
-  background: white;
-  border-radius: 12px;
-  padding: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  border: 1px solid #e1e8ed;
-}
-
-.time-info {
+.time-header,
+.day-header {
+  padding: 10px 4px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 13px;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
-  color: #657786;
-  font-size: 13px;
-  font-weight: 500;
+  justify-content: center;
 }
 
-.time-text {
-  font-weight: 600;
+.day-header:last-child {
+  border-right: none;
+}
+
+.grid-row {
+  display: grid;
+  grid-template-columns: 70px 1fr 1fr 1fr 1fr 1fr;
+  border-bottom: 1px solid #e1e8ed;
+}
+
+.grid-row:last-child {
+  border-bottom: none;
+}
+
+.time-cell {
+  padding: 6px 2px;
+  background: #f8f9fa;
+  border-right: 1px solid #e1e8ed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 70px;
 }
 
 .period-number {
-  background-color: #e3f2fd;
-  color: #1976d2;
-  padding: 2px 8px;
-  border-radius: 12px;
-  font-size: 11px;
-  margin-left: auto;
+  font-weight: 700;
+  font-size: 14px;
+  color: #4facfe;
+  margin-bottom: 2px;
 }
 
-.class-card {
-  min-height: 60px;
+.time-range {
+  font-size: 9px;
+  color: #657786;
+  line-height: 1.1;
+  word-break: keep-all;
+}
+
+.class-cell {
+  min-height: 70px;
+  border-right: 1px solid #e1e8ed;
+  cursor: pointer;
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 4px;
+  overflow: hidden;
 }
 
-.class-info {
+.class-cell:last-child {
+  border-right: none;
+}
+
+.class-cell.has-class {
+  color: white;
+  font-weight: 500;
+}
+
+.class-cell.has-class:hover {
+  transform: scale(1.02);
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.3);
+  z-index: 1;
+}
+
+.class-cell.empty {
+  background: #fafafa;
+  color: #bbb;
+}
+
+.class-cell.empty:hover {
+  background: #f0f0f0;
+}
+
+.class-content {
+  padding: 2px;
+  text-align: center;
   width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .subject-name {
-  font-size: 16px;
+  font-size: 10px;
   font-weight: 600;
-  color: #14171a;
-  margin-bottom: 8px;
+  line-height: 1.1;
+  margin-bottom: 2px;
+  word-break: break-all;
+  overflow-wrap: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  max-width: 100%;
+  text-overflow: ellipsis;
 }
 
-.class-details {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+.class-room {
+  font-size: 8px;
+  opacity: 0.9;
+  line-height: 1;
 }
 
-.detail-item {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: #657786;
-  font-size: 13px;
-}
-
-.empty-slot {
-  width: 100%;
-  text-align: center;
-  color: #657786;
-  font-style: italic;
-  padding: 20px 0;
+.empty-content {
+  font-size: 18px;
+  color: #ddd;
 }
 
 .timetable-stats {
@@ -161,22 +192,173 @@
   font-weight: 500;
 }
 
+/* Modal styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 16px;
+  max-width: 400px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #e1e8ed;
+}
+
+.modal-header h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #14171a;
+  margin: 0;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: #657786;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.close-button:hover {
+  background: #f7f9fa;
+  color: #14171a;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.class-schedule-info {
+  margin-bottom: 20px;
+}
+
+.schedule-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  color: #14171a;
+  font-size: 14px;
+}
+
+.schedule-item svg {
+  color: #4facfe;
+  flex-shrink: 0;
+}
+
+.class-description h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #14171a;
+  margin-bottom: 12px;
+}
+
+.class-description p {
+  color: #657786;
+  line-height: 1.6;
+  font-size: 14px;
+}
+
 /* Responsive design */
 @media (max-width: 414px) {
-  .schedule-container {
-    padding: 12px;
-    gap: 10px;
+  .timetable-grid {
+    margin: 8px;
+    width: calc(100% - 16px);
   }
   
-  .time-slot {
-    padding: 12px;
+  .grid-header {
+    grid-template-columns: 50px 1fr 1fr 1fr 1fr 1fr;
+  }
+  
+  .grid-row {
+    grid-template-columns: 50px 1fr 1fr 1fr 1fr 1fr;
+  }
+  
+  .time-header,
+  .day-header { 
+    padding: 8px 2px;
+    font-size: 11px;
+  }
+  
+  .time-cell {
+    padding: 4px 1px;
+    min-height: 60px;
+  }
+  
+  .period-number {
+    font-size: 12px;
+  }
+  
+  .time-range {
+    font-size: 8px;
+  }
+  
+  .class-cell {
+    min-height: 60px;
+    padding: 2px;
+  }
+  
+  .subject-name {
+    font-size: 8px;
+    line-height: 1;
+    -webkit-line-clamp: 3;
+  }
+  
+  .class-room {
+    font-size: 6px;
   }
   
   .timetable-header {
     padding: 16px 12px;
   }
   
-  .day-selector {
-    padding: 12px;
+  .timetable-stats {
+    margin: 12px;
+    padding: 16px 12px;
+  }
+  
+  .modal-content {
+    margin: 10px;
+    max-height: 90vh;
+  }
+  
+  .modal-header,
+  .modal-body {
+    padding: 16px;
   }
 }
