@@ -1,0 +1,246 @@
+import React, { useState } from 'react';
+import { Search, Filter, Heart, MessageCircle, Eye, Plus, MapPin, Clock, Won } from 'lucide-react';
+import './Marketplace.css';
+
+const Marketplace = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [viewMode, setViewMode] = useState('grid'); // grid or list
+
+  const categories = [
+    { id: 'all', name: '전체', color: '#667eea' },
+    { id: 'electronics', name: '전자기기', color: '#4facfe' },
+    { id: 'books', name: '교재/도서', color: '#43e97b' },
+    { id: 'clothing', name: '의류', color: '#fa709a' },
+    { id: 'furniture', name: '가구/생활', color: '#fd79a8' },
+    { id: 'sports', name: '스포츠', color: '#fdcb6e' },
+    { id: 'beauty', name: '뷰티', color: '#e17055' },
+    { id: 'etc', name: '기타', color: '#a29bfe' }
+  ];
+
+  const products = [
+    {
+      id: 1,
+      title: 'iPhone 13 Pro 128GB',
+      price: 850000,
+      image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=300&h=300&fit=crop',
+      category: 'electronics',
+      location: '신촌',
+      timeAgo: '2시간 전',
+      likes: 15,
+      comments: 3,
+      views: 127,
+      condition: '상급',
+      seller: '김학생',
+      description: '작년에 구입한 아이폰입니다. 케이스 끼고 사용해서 상태 좋아요!'
+    },
+    {
+      id: 2,
+      title: '미적분학 교재 (새책)',
+      price: 25000,
+      image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=300&h=300&fit=crop',
+      category: 'books',
+      location: '대학로',
+      timeAgo: '5시간 전',
+      likes: 8,
+      comments: 1,
+      views: 89,
+      condition: '새상품',
+      seller: '수학과20',
+      description: '이번 학기 수업용으로 샀는데 온라인 수업으로 바뀌어서 판매합니다.'
+    },
+    {
+      id: 3,
+      title: '나이키 에어포스 270mm',
+      price: 120000,
+      image: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=300&h=300&fit=crop',
+      category: 'clothing',
+      location: '홍대',
+      timeAgo: '1일 전',
+      likes: 23,
+      comments: 7,
+      views: 234,
+      condition: '중급',
+      seller: '운동러버',
+      description: '몇 번 신지 않아서 상태 양호합니다. 정품 박스 포함!'
+    },
+    {
+      id: 4,
+      title: '스터디 테이블 + 의자 세트',
+      price: 180000,
+      image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=300&h=300&fit=crop',
+      category: 'furniture',
+      location: '신촌',
+      timeAgo: '3일 전',
+      likes: 12,
+      comments: 4,
+      views: 156,
+      condition: '상급',
+      seller: '졸업생',
+      description: '졸업하면서 판매합니다. 직거래만 가능해요.'
+    },
+    {
+      id: 5,
+      title: '맥북 프로 13인치 M1',
+      price: 1200000,
+      image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=300&h=300&fit=crop',
+      category: 'electronics',
+      location: '강남',
+      timeAgo: '6시간 전',
+      likes: 45,
+      comments: 12,
+      views: 567,
+      condition: '상급',
+      seller: '컴공과생',
+      description: '1년 사용했고 AppleCare+ 남아있어요. 충전기, 박스 모두 포함'
+    },
+    {
+      id: 6,
+      title: '화학 실험복 + 보안경',
+      price: 35000,
+      image: 'https://images.unsplash.com/photo-1582719471384-894fbb16e074?w=300&h=300&fit=crop',
+      category: 'clothing',
+      location: '대학로',
+      timeAgo: '12시간 전',
+      likes: 6,
+      comments: 2,
+      views: 78,
+      condition: '상급',
+      seller: '화학과22',
+      description: '실험 수업 끝나서 판매해요. 세탁해서 깨끗합니다.'
+    }
+  ];
+
+  const filteredProducts = products.filter(product => {
+    const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
+    const matchesSearch = product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         product.description.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
+
+  const formatPrice = (price) => {
+    return price.toLocaleString() + '원';
+  };
+
+  const getCategoryColor = (categoryId) => {
+    return categories.find(cat => cat.id === categoryId)?.color || '#667eea';
+  };
+
+  return (
+    <div className="marketplace">
+      <header className="marketplace-header">
+        <h1>중고거래</h1>
+        <div className="header-subtitle">학생들의 안전한 거래 공간</div>
+      </header>
+
+      <div className="search-section">
+        <div className="search-bar">
+          <Search size={20} />
+          <input
+            type="text"
+            placeholder="상품명, 설명 검색..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+        <button className="filter-button">
+          <Filter size={20} />
+        </button>
+      </div>
+
+      <div className="category-tabs">
+        {categories.map(category => (
+          <button
+            key={category.id}
+            className={`category-tab ${selectedCategory === category.id ? 'active' : ''}`}
+            onClick={() => setSelectedCategory(category.id)}
+            style={selectedCategory === category.id ? { 
+              backgroundColor: category.color,
+              color: 'white'
+            } : {}}
+          >
+            {category.name}
+          </button>
+        ))}
+      </div>
+
+      <div className="marketplace-content">
+        <div className="content-header">
+          <span className="result-count">{filteredProducts.length}개 상품</span>
+          <div className="view-controls">
+            <button 
+              className={`view-button ${viewMode === 'grid' ? 'active' : ''}`}
+              onClick={() => setViewMode('grid')}
+            >
+              격자
+            </button>
+            <button 
+              className={`view-button ${viewMode === 'list' ? 'active' : ''}`}
+              onClick={() => setViewMode('list')}
+            >
+              목록
+            </button>
+          </div>
+        </div>
+
+        <div className={`products-container ${viewMode}`}>
+          {filteredProducts.map(product => (
+            <div key={product.id} className="product-card">
+              <div className="product-image">
+                <img src={product.image} alt={product.title} />
+                <div className="product-badge" style={{ backgroundColor: getCategoryColor(product.category) }}>
+                  {categories.find(cat => cat.id === product.category)?.name}
+                </div>
+                <button className="like-button">
+                  <Heart size={16} />
+                </button>
+              </div>
+              
+              <div className="product-info">
+                <div className="product-title">{product.title}</div>
+                <div className="product-price">{formatPrice(product.price)}</div>
+                <div className="product-condition">{product.condition}</div>
+                
+                <div className="product-meta">
+                  <div className="meta-item">
+                    <MapPin size={12} />
+                    <span>{product.location}</span>
+                  </div>
+                  <div className="meta-item">
+                    <Clock size={12} />
+                    <span>{product.timeAgo}</span>
+                  </div>
+                </div>
+
+                <div className="product-stats">
+                  <div className="stat-item">
+                    <Heart size={14} />
+                    <span>{product.likes}</span>
+                  </div>
+                  <div className="stat-item">
+                    <MessageCircle size={14} />
+                    <span>{product.comments}</span>
+                  </div>
+                  <div className="stat-item">
+                    <Eye size={14} />
+                    <span>{product.views}</span>
+                  </div>
+                </div>
+
+                <div className="seller-info">
+                  <span className="seller-name">{product.seller}</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <button className="floating-add-button">
+        <Plus size={24} />
+      </button>
+    </div>
+  );
+};
+
+export default Marketplace;
