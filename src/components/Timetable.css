@@ -77,35 +77,23 @@
   min-height: 70px;
 }
 
-.period-number {
-  font-weight: 700;
-  font-size: 14px;
-  color: #4facfe;
-  margin-bottom: 2px;
-}
-
-.time-range {
-  font-size: 9px;
-  color: #657786;
-  line-height: 1.1;
-  word-break: keep-all;
-}
-
 .class-cell {
-  min-height: 70px;
-  border-right: 1px solid #e1e8ed;
+  background: white;
+  padding: 8px;
+  min-height: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
   transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   position: relative;
-  padding: 4px;
-  overflow: hidden;
+  border-left: 1px solid #e1e8ed;
 }
 
-.class-cell:last-child {
-  border-right: none;
+.class-cell:hover {
+  background: #f8f9fa;
+  box-shadow: inset 0 0 0 2px #4facfe;
 }
 
 .class-cell.has-class {
@@ -114,49 +102,45 @@
 }
 
 .class-cell.has-class:hover {
-  transform: scale(1.02);
-  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.3);
-  z-index: 1;
+  opacity: 0.9;
 }
 
-.class-cell.empty {
-  background: #fafafa;
-  color: #bbb;
+.class-cell.empty-cell {
+  background: white;
 }
 
-.class-cell.empty:hover {
-  background: #f0f0f0;
+.class-cell.empty-cell:hover {
+  background: #f8f9fa;
 }
 
 .class-content {
-  padding: 2px;
-  text-align: center;
-  width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
 }
 
 .subject-name {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
-  line-height: 1.1;
+  text-align: center;
   margin-bottom: 2px;
   word-break: break-all;
-  overflow-wrap: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-  overflow: hidden;
   max-width: 100%;
-  text-overflow: ellipsis;
 }
 
 .class-room {
-  font-size: 8px;
+  font-size: 9px;
   opacity: 0.9;
-  line-height: 1;
+  text-align: center;
 }
 
 .empty-content {
@@ -190,6 +174,333 @@
   font-size: 12px;
   color: #657786;
   font-weight: 500;
+}
+
+/* Calculator styles */
+.calculator-section {
+  margin: 16px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.calculator-toggle {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.calculator-toggle:hover {
+  background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+}
+
+.calculator-content {
+  padding: 20px;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.calculator-header {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.calculator-header h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #14171a;
+  margin-bottom: 8px;
+}
+
+.calculator-header p {
+  font-size: 14px;
+  color: #657786;
+}
+
+.subjects-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.subject-grade-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e1e8ed;
+}
+
+.subject-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.subject-name-calc {
+  font-size: 14px;
+  font-weight: 600;
+  color: #14171a;
+}
+
+.subject-credits {
+  font-size: 12px;
+  color: #657786;
+}
+
+.grade-select {
+  padding: 8px 12px;
+  border: 2px solid #e1e8ed;
+  border-radius: 8px;
+  background: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+  min-width: 120px;
+}
+
+.grade-select:focus {
+  outline: none;
+  border-color: #4facfe;
+}
+
+.gpa-summary {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  color: white;
+  padding: 16px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.gpa-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.gpa-item.main-gpa .gpa-value {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.gpa-label {
+  font-size: 12px;
+  opacity: 0.9;
+  margin-bottom: 4px;
+}
+
+.gpa-value {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* Time cell styles */
+.period-name {
+  font-weight: 600;
+  color: #14171a;
+  margin-bottom: 2px;
+  font-size: 11px;
+}
+
+.time-range {
+  color: #657786;
+  font-size: 9px;
+  line-height: 1.1;
+}
+
+/* Custom class and memo styles */
+.custom-class {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white;
+}
+
+.custom-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #667eea;
+  font-size: 8px;
+  padding: 1px 4px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.add-memo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: #657786;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.add-memo:hover {
+  color: #4facfe;
+  background: rgba(79, 172, 254, 0.1);
+}
+
+.memo-input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  font-size: 10px;
+  text-align: center;
+  outline: none;
+  padding: 4px;
+}
+
+/* Course evaluation styles */
+.course-evaluation {
+  margin: 20px 0;
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 1px solid #e1e8ed;
+}
+
+.course-evaluation h4 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #14171a;
+  margin-bottom: 12px;
+}
+
+.rating-section {
+  margin-bottom: 16px;
+}
+
+.rating-score {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.score {
+  font-size: 24px;
+  font-weight: 700;
+  color: #4facfe;
+}
+
+.stars {
+  display: flex;
+  gap: 2px;
+}
+
+.star {
+  color: #e1e8ed;
+  font-size: 16px;
+}
+
+.star.filled {
+  color: #ffd700;
+}
+
+.review-count {
+  font-size: 12px;
+  color: #657786;
+}
+
+.evaluation-details {
+  margin-bottom: 16px;
+}
+
+.eval-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.eval-label {
+  font-size: 12px;
+  color: #14171a;
+  min-width: 80px;
+}
+
+.eval-bar {
+  flex: 1;
+  height: 6px;
+  background: #e1e8ed;
+  border-radius: 3px;
+  margin-left: 12px;
+  overflow: hidden;
+}
+
+.eval-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+  transition: width 0.3s ease;
+}
+
+.recent-reviews h5 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #14171a;
+  margin-bottom: 12px;
+}
+
+.review-item {
+  background: white;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  border: 1px solid #e1e8ed;
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.reviewer {
+  font-size: 12px;
+  font-weight: 600;
+  color: #14171a;
+}
+
+.review-date {
+  font-size: 11px;
+  color: #657786;
+}
+
+.review-text {
+  font-size: 12px;
+  color: #14171a;
+  line-height: 1.4;
 }
 
 /* Modal styles */
@@ -344,12 +655,170 @@
   }
   
   .timetable-header {
-    padding: 16px 12px;
+    padding: 12px 16px;
+  }
+  
+  .timetable-title {
+    font-size: 18px;
   }
   
   .timetable-stats {
     margin: 12px;
     padding: 16px 12px;
+  }
+
+  .stat-number {
+    font-size: 20px;
+  }
+
+  .stat-label {
+    font-size: 11px;
+  }
+
+  .calculator-section {
+    margin: 12px;
+  }
+
+  .calculator-toggle {
+    padding: 14px;
+    font-size: 15px;
+  }
+
+  .calculator-content {
+    padding: 16px;
+  }
+
+  .calculator-header h3 {
+    font-size: 16px;
+  }
+
+  .calculator-header p {
+    font-size: 13px;
+  }
+
+  .subject-grade-item {
+    padding: 10px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .subject-info {
+    width: 100%;
+  }
+
+  .grade-select {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .gpa-summary {
+    padding: 14px;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .gpa-item {
+    width: 100%;
+  }
+
+  .gpa-item.main-gpa .gpa-value {
+    font-size: 24px;
+  }
+
+  .grid-header {
+    grid-template-columns: 70px repeat(5, 1fr);
+  }
+
+  .grid-row {
+    grid-template-columns: 70px repeat(5, 1fr);
+  }
+
+  .time-header {
+    padding: 10px 4px;
+    font-size: 12px;
+  }
+
+  .day-header {
+    padding: 10px 4px;
+    font-size: 12px;
+  }
+
+  .time-cell {
+    padding: 6px 2px;
+    font-size: 9px;
+    min-height: 50px;
+  }
+
+  .period-name {
+    font-size: 9px;
+  }
+
+  .time-range {
+    font-size: 8px;
+  }
+
+  .class-cell {
+    min-height: 50px;
+    padding: 6px 4px;
+  }
+
+  .custom-badge {
+    font-size: 7px;
+    padding: 1px 3px;
+  }
+
+  .add-memo {
+    font-size: 16px;
+  }
+
+  .memo-input {
+    font-size: 9px;
+  }
+
+  .course-evaluation {
+    padding: 12px;
+  }
+
+  .course-evaluation h4 {
+    font-size: 14px;
+  }
+
+  .score {
+    font-size: 20px;
+  }
+
+  .stars .star {
+    font-size: 14px;
+  }
+
+  .eval-label {
+    font-size: 11px;
+    min-width: 70px;
+  }
+
+  .eval-bar {
+    height: 5px;
+  }
+
+  .recent-reviews h5 {
+    font-size: 13px;
+  }
+
+  .review-item {
+    padding: 10px;
+  }
+
+  .reviewer {
+    font-size: 11px;
+  }
+
+  .review-date {
+    font-size: 10px;
+  }
+
+  .review-text {
+    font-size: 11px;
   }
   
   .modal-content {
