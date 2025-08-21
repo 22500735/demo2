@@ -138,7 +138,15 @@ const Board = () => {
 
       <div className="posts-list">
         {filteredPosts.map((post) => (
-          <div key={post.id} className="board-post">
+          <div 
+            key={post.id} 
+            className="board-post"
+            onClick={() => {
+              // 게시물 상세보기로 이동
+              alert(`"${post.title}" 게시물 상세보기 (구현 예정)`);
+            }}
+            style={{ cursor: 'pointer' }}
+          >
             <div className="post-header">
               <div className="category-badge">
                 {categories.find(cat => cat.id === post.category)?.name}

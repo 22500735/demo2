@@ -8,6 +8,7 @@ const Marketplace = () => {
   const [viewMode, setViewMode] = useState('grid'); // grid or list
   const [sortBy, setSortBy] = useState('latest'); // latest, price_low, price_high, popular
   const [showSortMenu, setShowSortMenu] = useState(false);
+  const [likedProducts, setLikedProducts] = useState(new Set());
 
   const categories = [
     { id: 'all', name: '전체', color: '#667eea' },
@@ -140,6 +141,18 @@ const Marketplace = () => {
     return categories.find(cat => cat.id === categoryId)?.color || '#667eea';
   };
 
+  const toggleLike = (productId) => {
+    setLikedProducts(prev => {
+      const newLiked = new Set(prev);
+      if (newLiked.has(productId)) {
+        newLiked.delete(productId);
+      } else {
+        newLiked.add(productId);
+      }
+      return newLiked;
+    });
+  };
+
   return (
     <div className="marketplace">
       <header className="marketplace-header">
@@ -238,8 +251,17 @@ const Marketplace = () => {
                 <div className="product-badge" style={{ backgroundColor: getCategoryColor(product.category) }}>
                   {categories.find(cat => cat.id === product.category)?.name}
                 </div>
-                <button className="like-button">
-                  <Heart size={16} />
+                <button 
+                  className={`like-button ${likedProducts.has(product.id) ? 'liked' : ''}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleLike(product.id);
+                  }}
+                >
+                  <Heart 
+                    size={16} 
+                    fill={likedProducts.has(product.id) ? '#ff6b6b' : 'none'}
+                  />
                 </button>
               </div>
               

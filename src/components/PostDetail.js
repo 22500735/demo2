@@ -75,13 +75,20 @@ const PostDetail = ({ post, onBack, onUpdatePost }) => {
   const handleCommentSubmit = (e) => {
     e.preventDefault();
     if (newComment.trim()) {
+      // 댓글 길이 제한 (500자)
+      if (newComment.length > 500) {
+        alert('댓글은 500자 이내로 작성해주세요.');
+        return;
+      }
+      
       const comment = {
         id: Date.now(),
         author: '나',
         content: newComment,
         time: '방금 전',
         likes: 0,
-        liked: false
+        liked: false,
+        isMyComment: true // 내 댓글 표시용
       };
       setComments([comment, ...comments]);
       setNewComment('');
@@ -90,6 +97,18 @@ const PostDetail = ({ post, onBack, onUpdatePost }) => {
       onUpdatePost(post.id, {
         ...post,
         comments: post.comments + 1
+      });
+    }
+  };
+
+  const handleDeleteComment = (commentId) => {
+    if (window.confirm('댓글을 삭제하시겠습니까?')) {
+      setComments(comments.filter(comment => comment.id !== commentId));
+      
+      // 게시물 댓글 수 감소
+      onUpdatePost(post.id, {
+        ...post,
+        comments: post.comments - 1
       });
     }
   };
@@ -191,14 +210,20 @@ const PostDetail = ({ post, onBack, onUpdatePost }) => {
           <h3>댓글 {comments.length}개</h3>
           
           <form className="comment-form" onSubmit={handleCommentSubmit}>
-            <input
-              type="text"
-              placeholder="댓글을 입력하세요..."
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
-              className="comment-input"
-            />
-            <button type="submit" className="comment-submit">
+            <div className="comment-input-container">
+              <input
+                type="text"
+                placeholder="댓글을 입력하세요..."
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                className="comment-input"
+                maxLength={500}
+              />
+              <div className="comment-char-count">
+                {newComment.length}/500
+              </div>
+            </div>
+            <button type="submit" className="comment-submit" disabled={!newComment.trim()}>
               <Send size={20} />
             </button>
           </form>
@@ -214,13 +239,24 @@ const PostDetail = ({ post, onBack, onUpdatePost }) => {
                     <span className="comment-author-name">{comment.author}</span>
                     <span className="comment-time">{comment.time}</span>
                   </div>
-                  <button 
-                    className={`comment-like ${comment.liked ? 'liked' : ''}`}
-                    onClick={() => handleCommentLike(comment.id)}
-                  >
-                    <Heart size={14} fill={comment.liked ? '#ff6b6b' : 'none'} />
-                    <span>{comment.likes}</span>
-                  </button>
+                  <div className="comment-actions">
+                    <button 
+                      className={`comment-like ${comment.liked ? 'liked' : ''}`}
+                      onClick={() => handleCommentLike(comment.id)}
+                    >
+                      <Heart size={14} fill={comment.liked ? '#ff6b6b' : 'none'} />
+                      <span>{comment.likes}</span>
+                    </button>
+                    {comment.isMyComment && (
+                      <button 
+                        className="comment-delete"
+                        onClick={() => handleDeleteComment(comment.id)}
+                        title="댓글 삭제"
+                      >
+                        <MoreHorizontal size={14} />
+                      </button>
+                    )}
+                  </div>
                 </div>
                 <div className="comment-content">
                   {comment.content}

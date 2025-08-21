@@ -169,7 +169,10 @@ const Timetable = () => {
 
   const handleEmptyCellClick = (day, period) => {
     const cellKey = `${day}-${period}`;
-    setEditingCell(cellKey);
+    // 수업 추가 모달을 표시하거나 편집 모드로 전환
+    if (window.confirm('이 시간에 수업을 추가하시겠습니까?')) {
+      setEditingCell(cellKey);
+    }
   };
 
   const handleMemoSave = (day, period, memo) => {

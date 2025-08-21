@@ -340,9 +340,17 @@ const MainFeed = () => {
       return false;
     }
     
-    // Category filter
-    if (selectedCategory !== '전체' && post.category !== selectedCategory) {
-      return false;
+    // Category filter - 학업 카테고리도 포함하도록 수정
+    if (selectedCategory !== '전체') {
+      // 학업 카테고리의 경우 여러 관련 카테고리를 포함
+      if (selectedCategory === '학업') {
+        const academicCategories = ['학업', '공부', '과제', '시험', '수업', '강의'];
+        if (!academicCategories.some(cat => post.category.includes(cat))) {
+          return false;
+        }
+      } else if (post.category !== selectedCategory) {
+        return false;
+      }
     }
     
     // Type filter
@@ -446,7 +454,14 @@ const MainFeed = () => {
             {slideContent[activeSlide].title === '트렌딩 해시태그' && (
               <div className="cards-scroll">
                 {slideContent[activeSlide].items.map((item, index) => (
-                  <div key={index} className="hashtag-card">
+                  <div 
+                    key={index} 
+                    className="hashtag-card"
+                    onClick={() => {
+                      setSearchQuery(item.text.replace('#', ''));
+                      setShowSearch(true);
+                    }}
+                  >
                     <div className="hashtag-main">
                       <span className="hashtag">{item.text}</span>
                     </div>

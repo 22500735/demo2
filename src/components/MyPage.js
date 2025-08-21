@@ -181,6 +181,49 @@ const MyPage = () => {
   };
 
   const handleSaveAccountSettings = () => {
+    // 입력 검증
+    if (!accountSettings.name.trim()) {
+      alert('이름을 입력해주세요.');
+      return;
+    }
+    
+    // 이메일 형식 검증
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(accountSettings.email)) {
+      alert('올바른 이메일 형식을 입력해주세요.');
+      return;
+    }
+    
+    // 전화번호 형식 검증 (숫자와 하이픈만 허용)
+    const phoneRegex = /^[0-9-]+$/;
+    if (!phoneRegex.test(accountSettings.phone)) {
+      alert('올바른 전화번호 형식을 입력해주세요. (숫자와 하이픈만 사용)');
+      return;
+    }
+    
+    // 이름 검증 (한글, 영문, 숫자만 허용)
+    const nameRegex = /^[가-힣a-zA-Z0-9\s]+$/;
+    if (!nameRegex.test(accountSettings.name)) {
+      alert('이름은 한글, 영문, 숫자만 입력 가능합니다.');
+      return;
+    }
+    
+    // 전공 검증
+    if (!nameRegex.test(accountSettings.major)) {
+      alert('전공은 한글, 영문, 숫자만 입력 가능합니다.');
+      return;
+    }
+    
+    // 프로필 정보 업데이트 (실제로는 서버에 저장)
+    // setUserProfile(prev => ({
+    //   ...prev,
+    //   name: accountSettings.name,
+    //   email: accountSettings.email,
+    //   phone: accountSettings.phone,
+    //   major: accountSettings.major,
+    //   year: accountSettings.year
+    // }));
+    
     alert('계정 설정이 저장되었습니다.');
     setCurrentView('main');
   };
