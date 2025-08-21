@@ -209,8 +209,8 @@ const MyPage = () => {
     }
     
     // 전공 검증
-    if (!nameRegex.test(accountSettings.major)) {
-      alert('전공은 한글, 영문, 숫자만 입력 가능합니다.');
+    if (!accountSettings.major) {
+      alert('전공을 선택해주세요.');
       return;
     }
     
@@ -288,12 +288,33 @@ const MyPage = () => {
               </div>
               <div className="form-group">
                 <label>전공</label>
-                <input 
-                  type="text" 
+                <select 
                   value={accountSettings.major}
                   onChange={(e) => handleAccountSettingsChange('major', e.target.value)}
-                  className="form-input"
-                />
+                  className="form-select"
+                >
+                  <option value="">전공을 선택하세요</option>
+                  <option value="컴퓨터공학과">컴퓨터공학과</option>
+                  <option value="전자공학과">전자공학과</option>
+                  <option value="기계공학과">기계공학과</option>
+                  <option value="화학공학과">화학공학과</option>
+                  <option value="건축학과">건축학과</option>
+                  <option value="경영학과">경영학과</option>
+                  <option value="경제학과">경제학과</option>
+                  <option value="심리학과">심리학과</option>
+                  <option value="영어영문학과">영어영문학과</option>
+                  <option value="국어국문학과">국어국문학과</option>
+                  <option value="수학과">수학과</option>
+                  <option value="물리학과">물리학과</option>
+                  <option value="화학과">화학과</option>
+                  <option value="생물학과">생물학과</option>
+                  <option value="의학과">의학과</option>
+                  <option value="간호학과">간호학과</option>
+                  <option value="약학과">약학과</option>
+                  <option value="법학과">법학과</option>
+                  <option value="교육학과">교육학과</option>
+                  <option value="기타">기타</option>
+                </select>
               </div>
               <div className="form-group">
                 <label>학년</label>

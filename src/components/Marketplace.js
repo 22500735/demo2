@@ -1,14 +1,62 @@
 import React, { useState } from 'react';
-import { Search, Filter, Heart, MessageCircle, Eye, Plus, MapPin, Clock, Won } from 'lucide-react';
+import { Search, Filter, Plus, Heart, MapPin, Eye, MessageCircle, Clock } from 'lucide-react';
+import CreateMarketplaceItem from './CreateMarketplaceItem';
 import './Marketplace.css';
 
 const Marketplace = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [viewMode, setViewMode] = useState('grid'); // grid or list
-  const [sortBy, setSortBy] = useState('latest'); // latest, price_low, price_high, popular
+  const [sortBy, setSortBy] = useState('latest');
   const [showSortMenu, setShowSortMenu] = useState(false);
-  const [likedProducts, setLikedProducts] = useState(new Set());
+  const [likedItems, setLikedItems] = useState(new Set());
+  const [currentView, setCurrentView] = useState('main');
+  const [items, setItems] = useState([
+    {
+      id: 1,
+      title: 'iPhone 13 Pro 128GB',
+      price: 850000,
+      image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=300&h=300&fit=crop',
+      category: 'electronics',
+      location: '신촌',
+      time: '2시간 전',
+      likes: 15,
+      views: 127,
+      condition: '상급',
+      seller: '김학생',
+      description: '작년에 구입한 아이폰입니다. 케이스 끼고 사용해서 상태 좋아요!',
+      status: 'available'
+    },
+    {
+      id: 2,
+      title: '맥북 프로 13인치 M1',
+      price: 1200000,
+      image: 'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=300&h=300&fit=crop',
+      category: 'electronics',
+      location: '홍대',
+      time: '5시간 전',
+      likes: 23,
+      views: 189,
+      condition: '최상',
+      seller: '박학생',
+      description: '거의 새것같은 맥북입니다. 학업용으로만 사용했어요.',
+      status: 'available'
+    },
+    {
+      id: 3,
+      title: '경영학원론 교재',
+      price: 15000,
+      image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=300&h=300&fit=crop',
+      category: 'books',
+      location: '이대',
+      time: '1일 전',
+      likes: 8,
+      views: 67,
+      condition: '상급',
+      seller: '이학생',
+      description: '이번 학기 사용한 교재입니다. 필기 조금 있어요.',
+      status: 'available'
+    }
+  ]);
 
   const categories = [
     { id: 'all', name: '전체', color: '#667eea' },
@@ -114,7 +162,7 @@ const Marketplace = () => {
     }
   ];
 
-  const filteredProducts = products.filter(product => {
+  const filteredProducts = items.filter(product => {
     const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
     const matchesSearch = product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          product.description.toLowerCase().includes(searchTerm.toLowerCase());
@@ -141,17 +189,38 @@ const Marketplace = () => {
     return categories.find(cat => cat.id === categoryId)?.color || '#667eea';
   };
 
-  const toggleLike = (productId) => {
-    setLikedProducts(prev => {
+  const handleCreateItem = (newItem) => {
+    setItems(prev => [newItem, ...prev]);
+  };
+
+  const handleBackToMain = () => {
+    setCurrentView('main');
+  };
+
+  const handleAddItem = () => {
+    setCurrentView('create');
+  };
+
+  const toggleLike = (itemId) => {
+    setLikedItems(prev => {
       const newLiked = new Set(prev);
-      if (newLiked.has(productId)) {
-        newLiked.delete(productId);
+      if (newLiked.has(itemId)) {
+        newLiked.delete(itemId);
       } else {
-        newLiked.add(productId);
+        newLiked.add(itemId);
       }
       return newLiked;
     });
   };
+
+  if (currentView === 'create') {
+    return (
+      <CreateMarketplaceItem 
+        onBack={handleBackToMain}
+        onCreateItem={handleCreateItem}
+      />
+    );
+  }
 
   return (
     <div className="marketplace">
@@ -227,23 +296,10 @@ const Marketplace = () => {
       <div className="marketplace-content">
         <div className="content-header">
           <span className="result-count">{filteredProducts.length}개 상품</span>
-          <div className="view-controls">
-            <button 
-              className={`view-button ${viewMode === 'grid' ? 'active' : ''}`}
-              onClick={() => setViewMode('grid')}
-            >
-              격자
-            </button>
-            <button 
-              className={`view-button ${viewMode === 'list' ? 'active' : ''}`}
-              onClick={() => setViewMode('list')}
-            >
-              목록
-            </button>
-          </div>
+
         </div>
 
-        <div className={`products-container ${viewMode}`}>
+        <div className="products-container grid">
           {filteredProducts.map(product => (
             <div key={product.id} className="product-card">
               <div className="product-image">
@@ -252,16 +308,10 @@ const Marketplace = () => {
                   {categories.find(cat => cat.id === product.category)?.name}
                 </div>
                 <button 
-                  className={`like-button ${likedProducts.has(product.id) ? 'liked' : ''}`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    toggleLike(product.id);
-                  }}
+                  className={`like-button ${likedItems.has(product.id) ? 'liked' : ''}`}
+                  onClick={() => toggleLike(product.id)}
                 >
-                  <Heart 
-                    size={16} 
-                    fill={likedProducts.has(product.id) ? '#ff6b6b' : 'none'}
-                  />
+                  <Heart size={16} fill={likedItems.has(product.id) ? '#ff6b6b' : 'none'} />
                 </button>
               </div>
               
@@ -277,7 +327,7 @@ const Marketplace = () => {
                   </div>
                   <div className="meta-item">
                     <Clock size={12} />
-                    <span>{product.timeAgo}</span>
+                    <span>{product.time}</span>
                   </div>
                 </div>
 
@@ -305,7 +355,10 @@ const Marketplace = () => {
         </div>
       </div>
 
-      <button className="floating-add-button">
+      <button 
+        className="floating-add-button"
+        onClick={handleAddItem}
+      >
         <Plus size={24} />
       </button>
     </div>

@@ -1,21 +1,15 @@
 import React, { useState } from 'react';
-import { Search, Filter, Plus, TrendingUp, ShoppingBag, BookOpen, Users } from 'lucide-react';
+import { Search, Filter, Plus, Heart, MessageCircle, Eye, ShoppingBag } from 'lucide-react';
+import CreateBoardPost from './CreateBoardPost';
 import './Board.css';
 
 const Board = () => {
-  const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
-  const [sortBy, setSortBy] = useState('latest'); // latest, popular, replies
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [sortBy, setSortBy] = useState('latest');
   const [showSortMenu, setShowSortMenu] = useState(false);
-
-  const categories = [
-    { id: 'all', name: 'すべて', icon: BookOpen },
-    { id: 'study', name: '学習', icon: BookOpen },
-    { id: 'club', name: 'サークル', icon: Users },
-    { id: 'trending', name: '人気', icon: TrendingUp }
-  ];
-
-  const boardPosts = [
+  const [currentView, setCurrentView] = useState('main');
+  const [posts, setPosts] = useState([
     {
       id: 2,
       category: 'study',
@@ -52,9 +46,27 @@ const Board = () => {
       price: null,
       images: 0
     }
+  ]);
+
+  const categories = [
+    { id: 'all', name: '전체' },
+    { id: 'general', name: '자유게시판' },
+    { id: 'academic', name: '학업' },
+    { id: 'club', name: '동아리' },
+    { id: 'dating', name: '소개팅' },
+    { id: 'question', name: '질문' },
+    { id: 'info', name: '정보' }
   ];
 
-  const filteredPosts = boardPosts.filter(post => {
+  const handleCreatePost = (newPost) => {
+    setPosts(prev => [newPost, ...prev]);
+  };
+
+  const handleBackToMain = () => {
+    setCurrentView('main');
+  };
+
+  const filteredPosts = posts.filter(post => {
     const matchesCategory = selectedCategory === 'all' || post.category === selectedCategory;
     const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          post.content.toLowerCase().includes(searchTerm.toLowerCase());
@@ -71,11 +83,20 @@ const Board = () => {
     }
   });
 
+  if (currentView === 'create') {
+    return (
+      <CreateBoardPost 
+        onBack={handleBackToMain}
+        onCreatePost={handleCreatePost}
+      />
+    );
+  }
+
   return (
     <div className="board">
       <header className="board-header">
-        <h1>掲示板・中古取引</h1>
-        <div className="header-subtitle">みんなの情報交換</div>
+        <h1>게시판</h1>
+        <div className="header-subtitle">자유로운 소통 공간</div>
       </header>
 
       <div className="search-section">
@@ -121,19 +142,15 @@ const Board = () => {
       </div>
 
       <div className="category-tabs">
-        {categories.map((category) => {
-          const Icon = category.icon;
-          return (
-            <button
-              key={category.id}
-              className={`category-tab ${selectedCategory === category.id ? 'active' : ''}`}
-              onClick={() => setSelectedCategory(category.id)}
-            >
-              <Icon size={16} />
-              <span>{category.name}</span>
-            </button>
-          );
-        })}
+        {categories.map((category) => (
+          <button
+            key={category.id}
+            className={`category-tab ${selectedCategory === category.id ? 'active' : ''}`}
+            onClick={() => setSelectedCategory(category.id)}
+          >
+            <span>{category.name}</span>
+          </button>
+        ))}
       </div>
 
       <div className="posts-list">
@@ -176,7 +193,10 @@ const Board = () => {
         ))}
       </div>
 
-      <button className="fab">
+      <button 
+        className="fab"
+        onClick={() => setCurrentView('create')}
+      >
         <Plus size={24} />
       </button>
     </div>
