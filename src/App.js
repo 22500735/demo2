@@ -6,6 +6,7 @@ import Board from './components/Board';
 import Marketplace from './components/Marketplace';
 import Map from './components/Map';
 import MyPage from './components/MyPage';
+
 import BottomNavigation from './components/BottomNavigation';
 import './App.css';
 

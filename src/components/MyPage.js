@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Heart, Bookmark, MessageSquare, MessageCircle, User, Settings, Bell, HelpCircle, LogOut, Trophy, Star, Calendar, BookOpen, Users, ShoppingBag, MapPin, Phone, Mail, Edit, Camera, Upload } from 'lucide-react';
+import { Heart, Bookmark, MessageSquare, MessageCircle, User, Settings, Bell, HelpCircle, LogOut, Trophy, Star, Calendar, BookOpen, Users, ShoppingBag, MapPin, Phone, Mail, Edit, Camera, Upload, ArrowLeft } from 'lucide-react';
+import PostDetail from './PostDetail';
 import './MyPage.css';
 
 const MyPage = () => {
@@ -7,6 +8,24 @@ const MyPage = () => {
   const [showSettings, setShowSettings] = useState(false);
   const [showProfileEdit, setShowProfileEdit] = useState(false);
   const [profileImage, setProfileImage] = useState('https://via.placeholder.com/80x80?text=김민수');
+  const [currentView, setCurrentView] = useState('main'); // main, postDetail, settings, accountSettings, notificationSettings, helpCenter
+  const [selectedPost, setSelectedPost] = useState(null);
+  const [notificationSettings, setNotificationSettings] = useState({
+    pushNotifications: true,
+    emailNotifications: false,
+    commentNotifications: true,
+    likeNotifications: true,
+    followNotifications: true,
+    marketplaceNotifications: false
+  });
+  const [accountSettings, setAccountSettings] = useState({
+    name: '김대학생',
+    email: 'student@university.ac.jp',
+    phone: '010-1234-5678',
+    major: '컴퓨터공학과',
+    year: '3학년',
+    privacy: 'public' // public, friends, private
+  });
 
   const userInfo = {
     name: '김대학생',
@@ -110,6 +129,396 @@ const MyPage = () => {
     reader.readAsDataURL(file);
   };
 
+  const handlePostClick = (post) => {
+    // 게시물 데이터를 PostDetail 형식으로 변환
+    const postDetailData = {
+      id: post.id,
+      content: post.title,
+      author: '김대학생',
+      time: post.timeAgo,
+      likes: post.likes || 0,
+      comments: post.comments || 0,
+      shares: 0,
+      category: post.category || '일반',
+      images: []
+    };
+    setSelectedPost(postDetailData);
+    setCurrentView('postDetail');
+  };
+
+  const handleBackToMain = () => {
+    setCurrentView('main');
+    setSelectedPost(null);
+  };
+
+  const handleSettingsClick = (settingType) => {
+    if (settingType === '로그아웃') {
+      if (window.confirm('정말 로그아웃하시겠습니까?')) {
+        alert('로그아웃되었습니다.');
+        // 실제로는 여기서 로그아웃 로직 실행
+      }
+    } else if (settingType === '계정 설정') {
+      setCurrentView('accountSettings');
+    } else if (settingType === '알림 설정') {
+      setCurrentView('notificationSettings');
+    } else if (settingType === '고객센터') {
+      setCurrentView('helpCenter');
+    }
+  };
+
+  const handleNotificationChange = (key, value) => {
+    setNotificationSettings(prev => ({
+      ...prev,
+      [key]: value
+    }));
+  };
+
+  const handleAccountSettingsChange = (key, value) => {
+    setAccountSettings(prev => ({
+      ...prev,
+      [key]: value
+    }));
+  };
+
+  const handleSaveAccountSettings = () => {
+    alert('계정 설정이 저장되었습니다.');
+    setCurrentView('main');
+  };
+
+  const handleUpdatePost = (postId, updatedPost) => {
+    setSelectedPost(updatedPost);
+  };
+
+  // 게시물 상세보기 뷰
+  if (currentView === 'postDetail' && selectedPost) {
+    return (
+      <PostDetail 
+        post={selectedPost}
+        onBack={handleBackToMain}
+        onUpdatePost={handleUpdatePost}
+      />
+    );
+  }
+
+  // 계정 설정 뷰
+  if (currentView === 'accountSettings') {
+    return (
+      <div className="mypage">
+        <div className="settings-header">
+          <button className="back-button" onClick={handleBackToMain}>
+            <ArrowLeft size={20} />
+            <span>뒤로가기</span>
+          </button>
+          <h1>계정 설정</h1>
+        </div>
+
+        <div className="settings-content">
+          <div className="settings-section">
+            <h3>기본 정보</h3>
+            <div className="settings-form">
+              <div className="form-group">
+                <label>이름</label>
+                <input 
+                  type="text" 
+                  value={accountSettings.name}
+                  onChange={(e) => handleAccountSettingsChange('name', e.target.value)}
+                  className="form-input"
+                />
+              </div>
+              <div className="form-group">
+                <label>이메일</label>
+                <input 
+                  type="email" 
+                  value={accountSettings.email}
+                  onChange={(e) => handleAccountSettingsChange('email', e.target.value)}
+                  className="form-input"
+                />
+              </div>
+              <div className="form-group">
+                <label>전화번호</label>
+                <input 
+                  type="tel" 
+                  value={accountSettings.phone}
+                  onChange={(e) => handleAccountSettingsChange('phone', e.target.value)}
+                  className="form-input"
+                />
+              </div>
+              <div className="form-group">
+                <label>전공</label>
+                <input 
+                  type="text" 
+                  value={accountSettings.major}
+                  onChange={(e) => handleAccountSettingsChange('major', e.target.value)}
+                  className="form-input"
+                />
+              </div>
+              <div className="form-group">
+                <label>학년</label>
+                <select 
+                  value={accountSettings.year}
+                  onChange={(e) => handleAccountSettingsChange('year', e.target.value)}
+                  className="form-select"
+                >
+                  <option value="1학년">1학년</option>
+                  <option value="2학년">2학년</option>
+                  <option value="3학년">3학년</option>
+                  <option value="4학년">4학년</option>
+                  <option value="대학원생">대학원생</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div className="settings-section">
+            <h3>프라이버시</h3>
+            <div className="privacy-options">
+              <label className="radio-option">
+                <input 
+                  type="radio" 
+                  name="privacy" 
+                  value="public"
+                  checked={accountSettings.privacy === 'public'}
+                  onChange={(e) => handleAccountSettingsChange('privacy', e.target.value)}
+                />
+                <span>전체 공개</span>
+                <small>모든 사용자가 내 프로필을 볼 수 있습니다</small>
+              </label>
+              <label className="radio-option">
+                <input 
+                  type="radio" 
+                  name="privacy" 
+                  value="friends"
+                  checked={accountSettings.privacy === 'friends'}
+                  onChange={(e) => handleAccountSettingsChange('privacy', e.target.value)}
+                />
+                <span>친구만</span>
+                <small>팔로우하는 사용자만 내 프로필을 볼 수 있습니다</small>
+              </label>
+              <label className="radio-option">
+                <input 
+                  type="radio" 
+                  name="privacy" 
+                  value="private"
+                  checked={accountSettings.privacy === 'private'}
+                  onChange={(e) => handleAccountSettingsChange('privacy', e.target.value)}
+                />
+                <span>비공개</span>
+                <small>나만 내 프로필을 볼 수 있습니다</small>
+              </label>
+            </div>
+          </div>
+
+          <div className="settings-actions">
+            <button className="save-button" onClick={handleSaveAccountSettings}>
+              저장하기
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // 알림 설정 뷰
+  if (currentView === 'notificationSettings') {
+    return (
+      <div className="mypage">
+        <div className="settings-header">
+          <button className="back-button" onClick={handleBackToMain}>
+            <ArrowLeft size={20} />
+            <span>뒤로가기</span>
+          </button>
+          <h1>알림 설정</h1>
+        </div>
+
+        <div className="settings-content">
+          <div className="settings-section">
+            <h3>푸시 알림</h3>
+            <div className="notification-options">
+              <div className="notification-item">
+                <div className="notification-info">
+                  <span>푸시 알림</span>
+                  <small>앱 알림을 받습니다</small>
+                </div>
+                <label className="toggle-switch">
+                  <input 
+                    type="checkbox"
+                    checked={notificationSettings.pushNotifications}
+                    onChange={(e) => handleNotificationChange('pushNotifications', e.target.checked)}
+                  />
+                  <span className="slider"></span>
+                </label>
+              </div>
+              <div className="notification-item">
+                <div className="notification-info">
+                  <span>이메일 알림</span>
+                  <small>이메일로 알림을 받습니다</small>
+                </div>
+                <label className="toggle-switch">
+                  <input 
+                    type="checkbox"
+                    checked={notificationSettings.emailNotifications}
+                    onChange={(e) => handleNotificationChange('emailNotifications', e.target.checked)}
+                  />
+                  <span className="slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div className="settings-section">
+            <h3>활동 알림</h3>
+            <div className="notification-options">
+              <div className="notification-item">
+                <div className="notification-info">
+                  <span>댓글 알림</span>
+                  <small>내 게시물에 댓글이 달릴 때</small>
+                </div>
+                <label className="toggle-switch">
+                  <input 
+                    type="checkbox"
+                    checked={notificationSettings.commentNotifications}
+                    onChange={(e) => handleNotificationChange('commentNotifications', e.target.checked)}
+                  />
+                  <span className="slider"></span>
+                </label>
+              </div>
+              <div className="notification-item">
+                <div className="notification-info">
+                  <span>좋아요 알림</span>
+                  <small>내 게시물에 좋아요가 눌릴 때</small>
+                </div>
+                <label className="toggle-switch">
+                  <input 
+                    type="checkbox"
+                    checked={notificationSettings.likeNotifications}
+                    onChange={(e) => handleNotificationChange('likeNotifications', e.target.checked)}
+                  />
+                  <span className="slider"></span>
+                </label>
+              </div>
+              <div className="notification-item">
+                <div className="notification-info">
+                  <span>팔로우 알림</span>
+                  <small>새로운 팔로워가 생길 때</small>
+                </div>
+                <label className="toggle-switch">
+                  <input 
+                    type="checkbox"
+                    checked={notificationSettings.followNotifications}
+                    onChange={(e) => handleNotificationChange('followNotifications', e.target.checked)}
+                  />
+                  <span className="slider"></span>
+                </label>
+              </div>
+              <div className="notification-item">
+                <div className="notification-info">
+                  <span>중고거래 알림</span>
+                  <small>관심 상품에 대한 알림</small>
+                </div>
+                <label className="toggle-switch">
+                  <input 
+                    type="checkbox"
+                    checked={notificationSettings.marketplaceNotifications}
+                    onChange={(e) => handleNotificationChange('marketplaceNotifications', e.target.checked)}
+                  />
+                  <span className="slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // 고객센터 뷰
+  if (currentView === 'helpCenter') {
+    return (
+      <div className="mypage">
+        <div className="settings-header">
+          <button className="back-button" onClick={handleBackToMain}>
+            <ArrowLeft size={20} />
+            <span>뒤로가기</span>
+          </button>
+          <h1>고객센터</h1>
+        </div>
+
+        <div className="settings-content">
+          <div className="help-section">
+            <h3>자주 묻는 질문</h3>
+            <div className="faq-list">
+              <div className="faq-item">
+                <div className="faq-question">
+                  <HelpCircle size={16} />
+                  <span>계정을 삭제하고 싶어요</span>
+                </div>
+                <div className="faq-answer">
+                  설정 &gt; 계정 설정에서 계정 삭제를 요청할 수 있습니다.
+                </div>
+              </div>
+              <div className="faq-item">
+                <div className="faq-question">
+                  <HelpCircle size={16} />
+                  <span>비밀번호를 잊어버렸어요</span>
+                </div>
+                <div className="faq-answer">
+                  로그인 화면에서 '비밀번호 찾기'를 클릭하세요.
+                </div>
+              </div>
+              <div className="faq-item">
+                <div className="faq-question">
+                  <HelpCircle size={16} />
+                  <span>부적절한 게시물을 신고하고 싶어요</span>
+                </div>
+                <div className="faq-answer">
+                  게시물 우측 상단의 메뉴에서 '신고하기'를 선택하세요.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="help-section">
+            <h3>문의하기</h3>
+            <div className="contact-options">
+              <div className="contact-item">
+                <Mail size={20} />
+                <div className="contact-info">
+                  <span>이메일 문의</span>
+                  <small>support@university-app.com</small>
+                </div>
+              </div>
+              <div className="contact-item">
+                <Phone size={20} />
+                <div className="contact-info">
+                  <span>전화 문의</span>
+                  <small>02-1234-5678 (평일 9시-18시)</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="help-section">
+            <h3>앱 정보</h3>
+            <div className="app-info">
+              <div className="info-item">
+                <span>버전</span>
+                <span>1.2.3</span>
+              </div>
+              <div className="info-item">
+                <span>최근 업데이트</span>
+                <span>2024년 3월 15일</span>
+              </div>
+              <div className="info-item">
+                <span>개발자</span>
+                <span>University App Team</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="mypage">
       <div className="profile-section">
@@ -195,7 +604,11 @@ const MyPage = () => {
           {activeTab === 'liked' && (
             <div className="liked-posts">
               {likedPosts.map(post => (
-                <div key={post.id} className="activity-item">
+                <div 
+                  key={post.id} 
+                  className="activity-item clickable"
+                  onClick={() => handlePostClick(post)}
+                >
                   <div className="item-content">
                     <div className="item-title">{post.title}</div>
                     <div className="item-meta">
@@ -210,7 +623,7 @@ const MyPage = () => {
                       <span>{post.likes}</span>
                     </div>
                     <div className="stat">
-                      <MessageCircle size={12} />
+                      <MessageSquare size={12} />
                       <span>{post.comments}</span>
                     </div>
                   </div>
@@ -222,7 +635,18 @@ const MyPage = () => {
           {activeTab === 'saved' && (
             <div className="saved-items">
               {savedItems.map(item => (
-                <div key={item.id} className="saved-item">
+                <div 
+                  key={item.id} 
+                  className="saved-item clickable"
+                  onClick={() => handlePostClick({
+                    id: item.id,
+                    title: item.title,
+                    category: '중고거래',
+                    timeAgo: item.timeAgo,
+                    likes: 0,
+                    comments: 0
+                  })}
+                >
                   <img src={item.image} alt={item.title} className="saved-item-image" />
                   <div className="saved-item-info">
                     <div className="saved-item-title">{item.title}</div>
@@ -237,7 +661,11 @@ const MyPage = () => {
           {activeTab === 'myposts' && (
             <div className="my-posts">
               {myPosts.map(post => (
-                <div key={post.id} className="activity-item">
+                <div 
+                  key={post.id} 
+                  className="activity-item clickable"
+                  onClick={() => handlePostClick(post)}
+                >
                   <div className="item-content">
                     <div className="item-title">{post.title}</div>
                     <div className="item-meta">
@@ -304,7 +732,11 @@ const MyPage = () => {
         <h3>설정</h3>
         <div className="menu-list">
           {menuItems.map((item, index) => (
-            <div key={index} className="menu-item">
+            <div 
+              key={index} 
+              className="menu-item clickable"
+              onClick={() => handleSettingsClick(item.title)}
+            >
               <div className="menu-icon">
                 <item.icon size={20} />
               </div>

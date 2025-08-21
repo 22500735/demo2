@@ -49,6 +49,10 @@
   font-size: 14px;
 }
 
+.filter-container {
+  position: relative;
+}
+
 .filter-button {
   background: #4facfe;
   color: white;
@@ -61,6 +65,42 @@
 
 .filter-button:hover {
   background: #3d8bfe;
+}
+
+.sort-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border: 1px solid #e1e8ed;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  min-width: 140px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.sort-option {
+  display: block;
+  width: 100%;
+  padding: 12px 16px;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font-size: 14px;
+  color: #14171a;
+  transition: background-color 0.2s ease;
+}
+
+.sort-option:hover {
+  background-color: #f7f9fa;
+}
+
+.sort-option.active {
+  background-color: #4facfe;
+  color: white;
 }
 
 .category-tabs {

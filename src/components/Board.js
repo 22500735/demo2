@@ -5,28 +5,17 @@ import './Board.css';
 const Board = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
+  const [sortBy, setSortBy] = useState('latest'); // latest, popular, replies
+  const [showSortMenu, setShowSortMenu] = useState(false);
 
   const categories = [
     { id: 'all', name: 'すべて', icon: BookOpen },
-    { id: 'marketplace', name: '中古取引', icon: ShoppingBag },
     { id: 'study', name: '学習', icon: BookOpen },
     { id: 'club', name: 'サークル', icon: Users },
     { id: 'trending', name: '人気', icon: TrendingUp }
   ];
 
   const boardPosts = [
-    {
-      id: 1,
-      category: 'marketplace',
-      title: '教科書売ります - 経済学入門',
-      content: '春学期で使った経済学の教科書を売ります。書き込みはほとんどありません。定価3,200円→2,000円',
-      author: '匿名',
-      time: '30分前',
-      replies: 3,
-      views: 45,
-      price: '¥2,000',
-      images: 1
-    },
     {
       id: 2,
       category: 'study',
@@ -52,18 +41,6 @@ const Board = () => {
       images: 3
     },
     {
-      id: 4,
-      category: 'marketplace',
-      title: 'MacBook Air 売ります',
-      content: '2022年モデル、M2チップ搭載。使用期間1年、傷なし美品です。箱・付属品完備。',
-      author: '匿名',
-      time: '3時間前',
-      replies: 15,
-      views: 156,
-      price: '¥95,000',
-      images: 4
-    },
-    {
       id: 5,
       category: 'study',
       title: 'TOEIC対策 一緒にやりませんか？',
@@ -82,6 +59,16 @@ const Board = () => {
     const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          post.content.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesCategory && matchesSearch;
+  }).sort((a, b) => {
+    switch (sortBy) {
+      case 'popular':
+        return b.views - a.views;
+      case 'replies':
+        return b.replies - a.replies;
+      case 'latest':
+      default:
+        return new Date(b.time) - new Date(a.time);
+    }
   });
 
   return (
@@ -101,9 +88,36 @@ const Board = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        <button className="filter-button">
-          <Filter size={20} />
-        </button>
+        <div className="filter-container">
+          <button 
+            className="filter-button"
+            onClick={() => setShowSortMenu(!showSortMenu)}
+          >
+            <Filter size={20} />
+          </button>
+          {showSortMenu && (
+            <div className="sort-menu">
+              <button 
+                className={`sort-option ${sortBy === 'latest' ? 'active' : ''}`}
+                onClick={() => {setSortBy('latest'); setShowSortMenu(false);}}
+              >
+                최신순
+              </button>
+              <button 
+                className={`sort-option ${sortBy === 'popular' ? 'active' : ''}`}
+                onClick={() => {setSortBy('popular'); setShowSortMenu(false);}}
+              >
+                인기순
+              </button>
+              <button 
+                className={`sort-option ${sortBy === 'replies' ? 'active' : ''}`}
+                onClick={() => {setSortBy('replies'); setShowSortMenu(false);}}
+              >
+                댓글순
+              </button>
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="category-tabs">

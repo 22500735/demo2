@@ -19,11 +19,21 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: 8px 12px;
+  padding: 6px 4px;
   border-radius: 8px;
   transition: all 0.2s ease;
   color: #657786;
-  min-width: 60px;
+  min-width: 45px;
+}
+
+.nav-item span {
+  font-size: 10px;
+  font-weight: 500;
+  margin-top: 2px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 50px;
 }
 
 .nav-item:hover {

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Clock, MapPin, User, X, BookOpen, Phone, Calculator, Plus, Minus } from 'lucide-react';
+import { X, ArrowLeft, Star, MessageCircle, ThumbsUp, Clock, MapPin, Users, Calculator, Minus, Plus, User, BookOpen } from 'lucide-react';
+import GradeCalculator from './GradeCalculator';
 import './Timetable.css';
 
 const Timetable = () => {
@@ -9,6 +10,7 @@ const Timetable = () => {
   const [grades, setGrades] = useState({});
   const [customClasses, setCustomClasses] = useState({});
   const [editingCell, setEditingCell] = useState(null);
+  const [showGradeCalculator, setShowGradeCalculator] = useState(false);
   
   const days = ['月', '火', '水', '木', '金'];
   const timeSlots = [
@@ -264,6 +266,24 @@ const Timetable = () => {
     }));
   };
 
+  // 학점 계산기 뷰 렌더링
+  if (showGradeCalculator) {
+    return (
+      <div className="grade-calculator-container">
+        <div className="grade-calculator-header">
+          <button 
+            className="back-button"
+            onClick={() => setShowGradeCalculator(false)}
+          >
+            <ArrowLeft size={20} />
+            <span>뒤로가기</span>
+          </button>
+        </div>
+        <GradeCalculator />
+      </div>
+    );
+  }
+
   return (
     <div className="timetable">
       <header className="timetable-header">
@@ -404,6 +424,17 @@ const Timetable = () => {
             </div>
           </div>
         )}
+      </div>
+
+      {/* 학점 계산기 버튼 */}
+      <div className="grade-calculator-button-container">
+        <button 
+          className="grade-calculator-button"
+          onClick={() => setShowGradeCalculator(true)}
+        >
+          <Calculator size={20} />
+          <span>학점 계산기</span>
+        </button>
       </div>
 
       {showModal && selectedClass && (

@@ -6,6 +6,8 @@ const Marketplace = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [viewMode, setViewMode] = useState('grid'); // grid or list
+  const [sortBy, setSortBy] = useState('latest'); // latest, price_low, price_high, popular
+  const [showSortMenu, setShowSortMenu] = useState(false);
 
   const categories = [
     { id: 'all', name: '전체', color: '#667eea' },
@@ -116,6 +118,18 @@ const Marketplace = () => {
     const matchesSearch = product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          product.description.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesCategory && matchesSearch;
+  }).sort((a, b) => {
+    switch (sortBy) {
+      case 'price_low':
+        return a.price - b.price;
+      case 'price_high':
+        return b.price - a.price;
+      case 'popular':
+        return b.likes - a.likes;
+      case 'latest':
+      default:
+        return new Date(b.timeAgo) - new Date(a.timeAgo);
+    }
   });
 
   const formatPrice = (price) => {
@@ -143,9 +157,42 @@ const Marketplace = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        <button className="filter-button">
-          <Filter size={20} />
-        </button>
+        <div className="filter-container">
+          <button 
+            className="filter-button"
+            onClick={() => setShowSortMenu(!showSortMenu)}
+          >
+            <Filter size={20} />
+          </button>
+          {showSortMenu && (
+            <div className="sort-menu">
+              <button 
+                className={`sort-option ${sortBy === 'latest' ? 'active' : ''}`}
+                onClick={() => {setSortBy('latest'); setShowSortMenu(false);}}
+              >
+                최신순
+              </button>
+              <button 
+                className={`sort-option ${sortBy === 'price_low' ? 'active' : ''}`}
+                onClick={() => {setSortBy('price_low'); setShowSortMenu(false);}}
+              >
+                낮은 가격순
+              </button>
+              <button 
+                className={`sort-option ${sortBy === 'price_high' ? 'active' : ''}`}
+                onClick={() => {setSortBy('price_high'); setShowSortMenu(false);}}
+              >
+                높은 가격순
+              </button>
+              <button 
+                className={`sort-option ${sortBy === 'popular' ? 'active' : ''}`}
+                onClick={() => {setSortBy('popular'); setShowSortMenu(false);}}
+              >
+                인기순
+              </button>
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="category-tabs">

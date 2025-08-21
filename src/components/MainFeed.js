@@ -1,30 +1,39 @@
 import React, { useState } from 'react';
-import { Heart, MessageCircle, Share, Bookmark, EyeOff, Filter, X, Plus, Search, UserPlus, UserCheck, Camera } from 'lucide-react';
+import { Heart, MessageCircle, Share, Bookmark, EyeOff, Filter, X, Plus, Search, UserPlus, UserCheck, Camera, ChevronLeft, ChevronRight } from 'lucide-react';
+import PostDetail from './PostDetail';
+import CreatePost from './CreatePost';
 import './MainFeed.css';
 
 const MainFeed = () => {
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedCategory, setSelectedCategory] = useState('전체');
   const [showFilterMenu, setShowFilterMenu] = useState(false);
   const [filterType, setFilterType] = useState('all'); // all, liked, saved, following
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeSlide, setActiveSlide] = useState(0);
+  const [activeCardIndex, setActiveCardIndex] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [currentX, setCurrentX] = useState(0);
+  const [cardOffset, setCardOffset] = useState(0);
   const [followedUsers, setFollowedUsers] = useState(['김민수']);
+  const [currentView, setCurrentView] = useState('main'); // main, postDetail, createPost
+  const [selectedPost, setSelectedPost] = useState(null);
   const [posts, setPosts] = useState([
     {
-      id: 1,
-      author: '익명',
-      isAnonymous: true,
-      time: '2시간 전',
-      content: '오늘 중간고사 어땠어요? 저는 완전 망한 것 같아요 ㅠㅠ\n특히 미적분학이 너무 어려웠어요...',
-      likes: 23,
-      comments: 8,
-      shares: 2,
-      liked: false,
+      id: 4,
+      author: '이서준',
+      isAnonymous: false,
+      time: '6시간 전',
+      content: '취업 준비하시는 분들! 이력서 첨삭 도와드려요 📝\n대기업 합격 경험 있어서 노하우 공유하고 싶어요\n댓글로 연락주세요~',
+      likes: 89,
+      comments: 34,
+      shares: 21,
+      liked: true,
       saved: false,
-      category: '학업',
-      board: '학업게시판',
-      images: [],
+      category: '취업',
+      board: '취업게시판',
+      images: ['https://via.placeholder.com/400x250?text=이력서+템플릿', 'https://via.placeholder.com/400x300?text=면접+팁'],
       circles: []
     },
     {
@@ -56,7 +65,7 @@ const MainFeed = () => {
       saved: true,
       category: '동아리',
       board: '동아리게시판',
-      images: ['https://via.placeholder.com/300x200?text=CODE동아리'],
+      images: ['https://via.placeholder.com/400x300?text=해커톤+포스터', 'https://via.placeholder.com/400x200?text=상금+안내'],
       circles: ['프로그래밍동아리CODE']
     },
     {
@@ -216,12 +225,112 @@ const MainFeed = () => {
     ));
   };
 
-  const handleSave = (postId) => {
+  const handleShare = async (postId) => {
     setPosts(posts.map(post => 
       post.id === postId 
-        ? { ...post, saved: !post.saved }
+        ? { ...post, shares: post.shares + 1 }
         : post
     ));
+    
+    // 실제 공유 기능
+    if (navigator.share) {
+      try {
+        const post = posts.find(p => p.id === postId);
+        await navigator.share({
+          title: '게시물 공유',
+          text: post.content,
+          url: window.location.href
+        });
+      } catch (error) {
+        if (error.name !== 'AbortError') {
+          // 공유가 취소된 경우가 아닌 다른 오류일 때만 클립보드로 대체
+          navigator.clipboard.writeText(window.location.href);
+          alert('링크가 클립보드에 복사되었습니다!');
+        }
+      }
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      alert('링크가 클립보드에 복사되었습니다!');
+    }
+  };
+
+  const handlePostClick = (postId) => {
+    const post = posts.find(p => p.id === postId);
+    setSelectedPost(post);
+    setCurrentView('postDetail');
+  };
+
+  const handleAddPost = () => {
+    setCurrentView('createPost');
+  };
+
+  const handleBackToMain = () => {
+    setCurrentView('main');
+    setSelectedPost(null);
+  };
+
+  const handleCreatePost = (newPost) => {
+    setPosts([newPost, ...posts]);
+  };
+
+  const handleUpdatePost = (postId, updatedPost) => {
+    setPosts(posts.map(post => 
+      post.id === postId ? updatedPost : post
+    ));
+    setSelectedPost(updatedPost);
+  };
+
+  const toggleLikePost = (postId) => {
+    setPosts(posts.map(post => 
+      post.id === postId ? { ...post, liked: !post.liked, likes: post.liked ? post.likes - 1 : post.likes + 1 } : post
+    ));
+  };
+
+  const toggleSavePost = (postId) => {
+    setPosts(posts.map(post => 
+      post.id === postId ? { ...post, saved: !post.saved } : post
+    ));
+  };
+
+  // 드래그/터치 이벤트 핸들러
+  const handleStart = (e) => {
+    setIsDragging(true);
+    const clientX = e.type === 'mousedown' ? e.clientX : e.touches[0].clientX;
+    setStartX(clientX);
+    setCurrentX(clientX);
+  };
+
+  const handleMove = (e) => {
+    if (!isDragging) return;
+    
+    const clientX = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
+    setCurrentX(clientX);
+    const diff = clientX - startX;
+    setCardOffset(diff);
+  };
+
+  const handleEnd = () => {
+    if (!isDragging) return;
+    
+    setIsDragging(false);
+    const diff = currentX - startX;
+    const threshold = 50; // 최소 드래그 거리
+    
+    if (Math.abs(diff) > threshold) {
+      const maxIndex = slideContent[activeSlide].items.length - 1;
+      
+      if (diff > 0) {
+        // 오른쪽으로 드래그 - 이전 카드
+        setActiveCardIndex(activeCardIndex > 0 ? activeCardIndex - 1 : maxIndex);
+      } else {
+        // 왼쪽으로 드래그 - 다음 카드
+        setActiveCardIndex(activeCardIndex < maxIndex ? activeCardIndex + 1 : 0);
+      }
+    }
+    
+    setCardOffset(0);
+    setStartX(0);
+    setCurrentX(0);
   };
 
   const filteredPosts = posts.filter(post => {
@@ -231,12 +340,37 @@ const MainFeed = () => {
       return false;
     }
     
+    // Category filter
+    if (selectedCategory !== '전체' && post.category !== selectedCategory) {
+      return false;
+    }
+    
     // Type filter
     if (filterType === 'liked') return post.liked;
     if (filterType === 'saved') return post.saved;
     if (filterType === 'following') return followedUsers.includes(post.author);
     return true; // 'all'
   });
+
+  // 현재 뷰에 따라 다른 컴포넌트 렌더링
+  if (currentView === 'postDetail' && selectedPost) {
+    return (
+      <PostDetail 
+        post={selectedPost}
+        onBack={handleBackToMain}
+        onUpdatePost={handleUpdatePost}
+      />
+    );
+  }
+
+  if (currentView === 'createPost') {
+    return (
+      <CreatePost 
+        onBack={handleBackToMain}
+        onCreatePost={handleCreatePost}
+      />
+    );
+  }
 
   return (
     <div className="main-feed">
@@ -285,59 +419,69 @@ const MainFeed = () => {
             <button
               key={slide.id}
               className={`slide-tab ${activeSlide === index ? 'active' : ''}`}
-              onClick={() => setActiveSlide(index)}
+              onClick={() => {
+                setActiveSlide(index);
+                setActiveCardIndex(0);
+              }}
             >
               {slide.title}
             </button>
           ))}
         </div>
         <div className="slide-content">
-          {slideContent[activeSlide].title === '인기 댓글' && (
-            <div className="popular-comments">
-              {slideContent[activeSlide].items.map((comment, index) => (
-                <div key={index} className="comment-item">
-                  <div className="comment-text">{comment.text}</div>
-                  <div className="comment-meta">
-                    <span className="comment-author">{comment.author}</span>
-                    <span className="comment-likes">❤️ {comment.likes}</span>
+          <div className="cards-scroll-container">
+            {slideContent[activeSlide].title === '인기 댓글' && (
+              <div className="cards-scroll">
+                {slideContent[activeSlide].items.map((item, index) => (
+                  <div key={index} className="comment-card">
+                    <div className="comment-text">{item.text}</div>
+                    <div className="comment-meta">
+                      <span className="comment-author">{item.author}</span>
+                      <span className="comment-likes">❤️ {item.likes}</span>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          )}
-          {slideContent[activeSlide].title === '트렌딩 해시태그' && (
-            <div className="trending-hashtags">
-              {slideContent[activeSlide].items.map((tag, index) => (
-                <div key={index} className="hashtag-item">
-                  <span className="hashtag">{tag.text}</span>
-                  <span className="hashtag-count">{tag.count}개 게시물</span>
-                </div>
-              ))}
-            </div>
-          )}
-          {slideContent[activeSlide].title === '활발한 서클' && (
-            <div className="active-circles">
-              {slideContent[activeSlide].items.map((circle, index) => (
-                <div key={index} className="circle-item">
-                  <div className="circle-name">{circle.name}</div>
-                  <div className="circle-info">
-                    <span className="circle-members">{circle.members}명</span>
-                    <span className="circle-activity">{circle.activity}</span>
+                ))}
+              </div>
+            )}
+            {slideContent[activeSlide].title === '트렌딩 해시태그' && (
+              <div className="cards-scroll">
+                {slideContent[activeSlide].items.map((item, index) => (
+                  <div key={index} className="hashtag-card">
+                    <div className="hashtag-main">
+                      <span className="hashtag">{item.text}</span>
+                    </div>
+                    <div className="hashtag-info">
+                      <span className="hashtag-count">{item.count}개 게시물</span>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          )}
+                ))}
+              </div>
+            )}
+            {slideContent[activeSlide].title === '활발한 서클' && (
+              <div className="cards-scroll">
+                {slideContent[activeSlide].items.map((item, index) => (
+                  <div key={index} className="circle-card">
+                    <div className="circle-name">{item.name}</div>
+                    <div className="circle-info">
+                      <span className="circle-members">{item.members}명</span>
+                      <span className="circle-activity">{item.activity}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
       <div className="categories">
         {categories.map((category) => {
-          const isActive = category === '전체';
+          const isActive = category === selectedCategory;
           return (
             <button
               key={category}
               className={`category-button ${isActive ? 'active' : ''}`}
+              onClick={() => setSelectedCategory(category)}
             >
               {category}
             </button>
@@ -347,7 +491,7 @@ const MainFeed = () => {
       
       <div className="posts-container">
         {filteredPosts.map((post) => (
-          <div key={post.id} className="post-card">
+          <div key={post.id} className="post-card" onClick={() => handlePostClick(post.id)}>
             <div className="post-header">
               <div className="author-info">
                 <div className="avatar">
@@ -404,25 +548,43 @@ const MainFeed = () => {
             <div className="post-actions">
               <button 
                 className={`action-button ${post.liked ? 'liked' : ''}`}
-                onClick={() => handleLike(post.id)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleLikePost(post.id);
+                }}
               >
                 <Heart size={18} fill={post.liked ? '#ff6b6b' : 'none'} />
                 <span>{post.likes}</span>
               </button>
               
-              <button className="action-button">
+              <button 
+                className="action-button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handlePostClick(post.id);
+                }}
+              >
                 <MessageCircle size={18} />
                 <span>{post.comments}</span>
               </button>
               
               <button 
                 className={`action-button ${post.saved ? 'saved' : ''}`}
-                onClick={() => handleSave(post.id)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleSavePost(post.id);
+                }}
               >
                 <Bookmark size={18} fill={post.saved ? '#4facfe' : 'none'} />
               </button>
               
-              <button className="action-button">
+              <button 
+                className="action-button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleShare(post.id);
+                }}
+              >
                 <Share size={18} />
                 <span>{post.shares}</span>
               </button>
@@ -501,7 +663,7 @@ const MainFeed = () => {
         </div>
       )}
 
-      <button className="floating-add-button">
+      <button className="floating-add-button" onClick={handleAddPost}>
         <Plus size={24} />
       </button>
     </div>

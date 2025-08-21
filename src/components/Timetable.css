@@ -1,6 +1,7 @@
 .timetable {
   background-color: #f8f9fa;
   min-height: 100vh;
+  padding-bottom: 120px; /* 네비게이션 바와 버튼을 위한 여유 공간 */
 }
 
 .timetable-header {
@@ -829,5 +830,91 @@
   .modal-header,
   .modal-body {
     padding: 16px;
+  }
+}
+
+/* 학점 계산기 버튼 스타일 */
+.grade-calculator-button-container {
+  position: fixed;
+  bottom: 80px; /* 네비게이션 바 위에 위치 */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+}
+
+.grade-calculator-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.grade-calculator-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(79, 172, 254, 0.4);
+}
+
+.grade-calculator-button:active {
+  transform: translateY(0);
+}
+
+/* 학점 계산기 컨테이너 스타일 */
+.grade-calculator-container {
+  min-height: 100vh;
+  background: #f8f9fa;
+}
+
+.grade-calculator-header {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  padding: 20px 16px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.back-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.back-button:active {
+  transform: scale(0.98);
+}
+
+/* 모바일 반응형 */
+@media (max-width: 414px) {
+  .grade-calculator-button-container {
+    bottom: 70px;
+  }
+  
+  .grade-calculator-button {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+  
+  .back-button {
+    padding: 8px 12px;
+    font-size: 13px;
   }
 }
