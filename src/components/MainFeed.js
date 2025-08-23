@@ -33,7 +33,7 @@ const MainFeed = () => {
       saved: false,
       category: '취업',
       board: '취업게시판',
-      images: ['https://via.placeholder.com/400x250?text=이력서+템플릿', 'https://via.placeholder.com/400x300?text=면접+팁'],
+      images: ['https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=400&h=250&fit=crop&crop=center', 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop&crop=center'],
       circles: []
     },
     {
@@ -49,7 +49,7 @@ const MainFeed = () => {
       saved: false,
       category: '일상',
       board: '자유게시판',
-      images: ['https://via.placeholder.com/300x200?text=학식메뉴'],
+      images: ['https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=300&h=200&fit=crop&crop=center'],
       circles: ['맛집탐방동아리']
     },
     {
@@ -65,7 +65,7 @@ const MainFeed = () => {
       saved: true,
       category: '동아리',
       board: '동아리게시판',
-      images: ['https://via.placeholder.com/400x300?text=해커톤+포스터', 'https://via.placeholder.com/400x200?text=상금+안내'],
+      images: ['https://images.unsplash.com/photo-1531482615713-2afd69097998?w=400&h=300&fit=crop&crop=center', 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400&h=200&fit=crop&crop=center'],
       circles: ['프로그래밍동아리CODE']
     },
     {
@@ -97,7 +97,7 @@ const MainFeed = () => {
       saved: false,
       category: '연애',
       board: '연애게시판',
-      images: ['https://via.placeholder.com/300x200?text=데이트장소'],
+      images: ['https://images.unsplash.com/photo-1511593358241-7eea1f3c84e5?w=300&h=200&fit=crop&crop=center'],
       circles: []
     },
     {

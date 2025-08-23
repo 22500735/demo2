@@ -587,32 +587,35 @@ const MyPage = () => {
     <div className="mypage">
       <div className="profile-section">
         <div className="profile-header">
-          <div className="avatar-container">
-            <img src={profileImage} alt="프로필" className="profile-avatar" />
-            <button 
-              className="change-avatar-btn"
-              onClick={() => document.getElementById('profile-image-input').click()}
-            >
-              <Camera size={16} />
-            </button>
-            <input
-              id="profile-image-input"
-              type="file"
-              accept="image/*"
-              onChange={handleProfileImageChange}
-              style={{ display: 'none' }}
-            />
-          </div>
-          <div className="profile-info">
-            <h2 className="profile-name">{userInfo.name}</h2>
-            <p className="profile-details">{userInfo.major} • {userInfo.year}</p>
-            <p className="profile-stats">GPA: {userInfo.gpa} • 이수학점: {userInfo.credits}</p>
+          <div className="profile-left">
+            <div className="avatar-container">
+              <img src={profileImage} alt="프로필" className="profile-avatar" />
+              <button 
+                className="change-avatar-btn"
+                onClick={() => document.getElementById('profile-image-input').click()}
+              >
+                <Camera size={16} />
+              </button>
+              <input
+                id="profile-image-input"
+                type="file"
+                accept="image/*"
+                onChange={handleProfileImageChange}
+                style={{ display: 'none' }}
+              />
+            </div>
+            <div className="profile-info">
+              <h2 className="profile-name">{userInfo.name}</h2>
+              <p className="profile-details">{userInfo.major} • {userInfo.year}</p>
+              <p className="profile-stats">GPA: {userInfo.gpa} • 이수학점: {userInfo.credits}</p>
+            </div>
           </div>
           <button 
             className="edit-profile-btn"
             onClick={() => setShowProfileEdit(true)}
           >
             <Edit size={16} />
+            <span>수정</span>
           </button>
         </div>
       </div>

@@ -12,17 +12,29 @@
 }
 
 .profile-section {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 20px 16px;
+  margin: 0;
+}
+
+.profile-header {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   gap: 16px;
-  position: relative;
-  padding: 4px 0;
-  text-align: center;
+}
+
+.profile-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
 }
 
 .avatar-container {
   position: relative;
+  flex-shrink: 0;
 }
 
 .profile-avatar {
@@ -33,7 +45,7 @@
   border: 3px solid rgba(255, 255, 255, 0.3);
 }
 
-.avatar-edit-button {
+.change-avatar-btn {
   position: absolute;
   bottom: 0;
   right: 0;
@@ -48,33 +60,56 @@
   justify-content: center;
   cursor: pointer;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+}
+
+.change-avatar-btn:hover {
+  background: #357abd;
+  transform: scale(1.1);
 }
 
 .profile-info {
   flex: 1;
+  text-align: left;
 }
 
 .profile-name {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
   line-height: 1.2;
 }
 
 .profile-details {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 13px;
+  font-size: 14px;
   opacity: 0.9;
-  margin-bottom: 8px;
-  flex-wrap: wrap;
+  margin-bottom: 6px;
 }
 
 .profile-stats {
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+.edit-profile-btn {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  padding: 8px 16px;
   display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.edit-profile-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
 }
 
 .stat-item {
