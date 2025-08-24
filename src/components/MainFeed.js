@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Heart, MessageCircle, Share, Bookmark, EyeOff, Filter, X, Plus, Search, UserPlus, UserCheck, Camera, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Heart, MessageCircle, Share, Bookmark, EyeOff, Filter, X, Plus, Search, UserPlus, UserCheck, ChevronLeft, ChevronRight } from 'lucide-react';
 import PostDetail from './PostDetail';
 import CreatePost from './CreatePost';
 import './MainFeed.css';
@@ -7,21 +7,19 @@ import './MainFeed.css';
 const MainFeed = () => {
   const [selectedCategory, setSelectedCategory] = useState('전체');
   const [showFilterMenu, setShowFilterMenu] = useState(false);
-  const [filterType, setFilterType] = useState('all'); // all, liked, saved, following
+  const [filterType, setFilterType] = useState('all');
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeSlide, setActiveSlide] = useState(0);
-  const [activeCardIndex, setActiveCardIndex] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [currentX, setCurrentX] = useState(0);
-  const [cardOffset, setCardOffset] = useState(0);
   const [followedUsers, setFollowedUsers] = useState(['김민수']);
-  const [currentView, setCurrentView] = useState('main'); // main, postDetail, createPost
+  const [currentView, setCurrentView] = useState('main');
   const [selectedPost, setSelectedPost] = useState(null);
+  const [imageIndices, setImageIndices] = useState({});
+
+  // 모든 게시물을 합친 데이터
   const [posts, setPosts] = useState([
     {
-      id: 4,
+      id: 1,
       author: '이서준',
       isAnonymous: false,
       time: '6시간 전',
@@ -33,7 +31,7 @@ const MainFeed = () => {
       saved: false,
       category: '취업',
       board: '취업게시판',
-      images: ['https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=400&h=250&fit=crop&crop=center', 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop&crop=center'],
+      images: ['https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=400&h=400&fit=crop&crop=center', 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=center'],
       circles: []
     },
     {
@@ -49,7 +47,7 @@ const MainFeed = () => {
       saved: false,
       category: '일상',
       board: '자유게시판',
-      images: ['https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=300&h=200&fit=crop&crop=center'],
+      images: ['https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400&h=400&fit=crop&crop=center'],
       circles: ['맛집탐방동아리']
     },
     {
@@ -65,7 +63,7 @@ const MainFeed = () => {
       saved: true,
       category: '동아리',
       board: '동아리게시판',
-      images: ['https://images.unsplash.com/photo-1531482615713-2afd69097998?w=400&h=300&fit=crop&crop=center', 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400&h=200&fit=crop&crop=center'],
+      images: ['https://images.unsplash.com/photo-1531482615713-2afd69097998?w=400&h=400&fit=crop&crop=center', 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400&h=400&fit=crop&crop=center'],
       circles: ['프로그래밍동아리CODE']
     },
     {
@@ -97,79 +95,57 @@ const MainFeed = () => {
       saved: false,
       category: '연애',
       board: '연애게시판',
-      images: ['https://images.unsplash.com/photo-1511593358241-7eea1f3c84e5?w=300&h=200&fit=crop&crop=center'],
+      images: ['https://images.unsplash.com/photo-1511593358241-7eea1f3c84e5?w=400&h=400&fit=crop&crop=center'],
       circles: []
     },
     {
       id: 6,
-      author: '匿名',
+      author: '익명',
       isAnonymous: true,
-      time: '1時間前',
-      content: 'iPhone 13 Pro売ります！\n使用期間8ヶ月、傷なし美品です。\n定価12万→8万円で譲ります📱',
+      time: '2시간 전',
+      content: 'iPhone 13 Pro 팝니다!\n사용기간 8개월, 긁힘 없이 깨끗합니다.\n정가 120만원→80만원으로 내려갑니다📱',
       likes: 34,
       comments: 18,
       shares: 4,
       liked: false,
-      category: 'marketplace',
-      board: '中古取引',
-      price: '¥80,000'
+      category: '마켓플레이스',
+      board: '중고거래',
+      images: ['https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=400&fit=crop&crop=center'],
+      price: '80만원'
     },
     {
       id: 7,
-      author: '山田一郎',
+      author: '김철수',
       isAnonymous: false,
-      time: '3時間前',
-      content: '新宿のおすすめカフェ見つけた！☕️\n勉強スペースも広くてWiFi完備\n"Blue Bottle Coffee"めっちゃいい感じ✨',
+      time: '4시간 전',
+      content: '강남역 근처 맛집 발견했어요! ☕️\n공부공간도 넓고 WiFi 완비\n"Blue Bottle Coffee" 정말 좋아요✨',
       likes: 78,
       comments: 22,
       shares: 15,
       liked: true,
-      category: 'location',
-      board: '場所・お店'
+      category: '장소추천',
+      board: '장소·맛집',
+      images: ['https://images.unsplash.com/photo-1501339847302-ac426a4a7cce?w=400&h=400&fit=crop&crop=center']
     },
     {
       id: 8,
-      author: '匿名',
+      author: '익명',
       isAnonymous: true,
-      time: '5時間前',
-      content: 'テニスサークル新入部員募集中🎾\n初心者大歓迎！毎週土日に活動してます\n興味ある方はDMください〜',
+      time: '1시간 전',
+      content: '테니스 동아리 신입부원 모집중🎾\n초보자 대환영! 매주 토요일에 활동해요\n관심 있으시면 DM 주세요~',
       likes: 92,
       comments: 31,
       shares: 8,
       liked: false,
-      category: 'club',
-      board: 'サークル・部活'
-    },
-    {
-      id: 9,
-      author: '鈴木美咲',
-      isAnonymous: false,
-      time: '7時間前',
-      content: 'TOEIC900点取れた！🎉\n3ヶ月間毎日2時間勉強した甲斐があった\n勉強法知りたい人いたら教えます📚',
-      likes: 234,
-      comments: 67,
-      shares: 45,
-      liked: true,
-      category: 'study',
-      board: '授業・学習'
-    },
-    {
-      id: 10,
-      author: '匿名',
-      isAnonymous: true,
-      time: '9時間前',
-      content: '渋谷駅近くでバイト募集してる店知りませんか？\n週3〜4日、夕方から働ける所探してます💼\n情報お待ちしてます！',
-      likes: 45,
-      comments: 23,
-      shares: 6,
-      liked: false,
-      category: 'job',
-      board: 'バイト・就活'
+      category: '동아리',
+      board: '동아리게시판',
+      images: ['https://images.unsplash.com/photo-1554068865-24cecd4e34b8?w=400&h=400&fit=crop&crop=center']
     }
   ]);
 
-  const categories = ['전체', '학업', '일상', '동아리', '취업', '연애', '기타'];
+  const categories = ['전체', '학업', '일상', '동아리', '취업', '연애', '마켓플레이스', '장소추천'];
 
+  // 슬라이드 컨텐츠 (게시물 중간에 배치)
   const slideContent = [
     {
       id: 1,
@@ -232,7 +208,6 @@ const MainFeed = () => {
         : post
     ));
     
-    // 실제 공유 기능
     if (navigator.share) {
       try {
         const post = posts.find(p => p.id === postId);
@@ -243,7 +218,6 @@ const MainFeed = () => {
         });
       } catch (error) {
         if (error.name !== 'AbortError') {
-          // 공유가 취소된 경우가 아닌 다른 오류일 때만 클립보드로 대체
           navigator.clipboard.writeText(window.location.href);
           alert('링크가 클립보드에 복사되었습니다!');
         }
@@ -280,69 +254,37 @@ const MainFeed = () => {
     setSelectedPost(updatedPost);
   };
 
-  const toggleLikePost = (postId) => {
-    setPosts(posts.map(post => 
-      post.id === postId ? { ...post, liked: !post.liked, likes: post.liked ? post.likes - 1 : post.likes + 1 } : post
-    ));
-  };
-
-  const toggleSavePost = (postId) => {
-    setPosts(posts.map(post => 
-      post.id === postId ? { ...post, saved: !post.saved } : post
-    ));
-  };
-
-  // 드래그/터치 이벤트 핸들러
-  const handleStart = (e) => {
-    setIsDragging(true);
-    const clientX = e.type === 'mousedown' ? e.clientX : e.touches[0].clientX;
-    setStartX(clientX);
-    setCurrentX(clientX);
-  };
-
-  const handleMove = (e) => {
-    if (!isDragging) return;
-    
-    const clientX = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
-    setCurrentX(clientX);
-    const diff = clientX - startX;
-    setCardOffset(diff);
-  };
-
-  const handleEnd = () => {
-    if (!isDragging) return;
-    
-    setIsDragging(false);
-    const diff = currentX - startX;
-    const threshold = 50; // 최소 드래그 거리
-    
-    if (Math.abs(diff) > threshold) {
-      const maxIndex = slideContent[activeSlide].items.length - 1;
-      
-      if (diff > 0) {
-        // 오른쪽으로 드래그 - 이전 카드
-        setActiveCardIndex(activeCardIndex > 0 ? activeCardIndex - 1 : maxIndex);
-      } else {
-        // 왼쪽으로 드래그 - 다음 카드
-        setActiveCardIndex(activeCardIndex < maxIndex ? activeCardIndex + 1 : 0);
-      }
+  // 인스타그램 스타일 이미지 스크롤 함수
+  const scrollToImage = (postId, imageIndex) => {
+    const container = document.getElementById(`images-${postId}`);
+    if (container) {
+      const scrollPosition = imageIndex * container.clientWidth;
+      container.scrollTo({
+        left: scrollPosition,
+        behavior: 'smooth'
+      });
+      setImageIndices(prev => ({ ...prev, [postId]: imageIndex }));
     }
-    
-    setCardOffset(0);
-    setStartX(0);
-    setCurrentX(0);
+  };
+
+  // 스크롤 이벤트로 현재 이미지 인덱스 업데이트
+  const handleImageScroll = (postId) => {
+    const container = document.getElementById(`images-${postId}`);
+    if (container) {
+      const scrollLeft = container.scrollLeft;
+      const imageWidth = container.clientWidth;
+      const currentIndex = Math.round(scrollLeft / imageWidth);
+      setImageIndices(prev => ({ ...prev, [postId]: currentIndex }));
+    }
   };
 
   const filteredPosts = posts.filter(post => {
-    // Search filter
     if (searchQuery && !post.content.toLowerCase().includes(searchQuery.toLowerCase()) && 
         !post.author.toLowerCase().includes(searchQuery.toLowerCase())) {
       return false;
     }
     
-    // Category filter - 학업 카테고리도 포함하도록 수정
     if (selectedCategory !== '전체') {
-      // 학업 카테고리의 경우 여러 관련 카테고리를 포함
       if (selectedCategory === '학업') {
         const academicCategories = ['학업', '공부', '과제', '시험', '수업', '강의'];
         if (!academicCategories.some(cat => post.category.includes(cat))) {
@@ -353,14 +295,12 @@ const MainFeed = () => {
       }
     }
     
-    // Type filter
     if (filterType === 'liked') return post.liked;
     if (filterType === 'saved') return post.saved;
     if (filterType === 'following') return followedUsers.includes(post.author);
-    return true; // 'all'
+    return true;
   });
 
-  // 현재 뷰에 따라 다른 컴포넌트 렌더링
   if (currentView === 'postDetail' && selectedPost) {
     return (
       <PostDetail 
@@ -382,232 +322,273 @@ const MainFeed = () => {
 
   return (
     <div className="main-feed">
-      <div className="header">
-        <button 
-          className="filter-menu-button"
-          onClick={() => setShowFilterMenu(true)}
-        >
-          <Filter size={20} />
-        </button>
-        <div className="header-content">
-          <h1>홈</h1>
+      {/* 고정된 헤더 */}
+      <div className="fixed-header">
+        <div className="header">
+          <button 
+            className="filter-menu-button"
+            onClick={() => setShowFilterMenu(true)}
+          >
+            <Filter size={20} />
+          </button>
+          <div className="header-content">
+            <h1>홈</h1>
+          </div>
+          <button 
+            className="search-button"
+            onClick={() => setShowSearch(!showSearch)}
+          >
+            <Search size={20} />
+          </button>
         </div>
-        <button 
-          className="search-button"
-          onClick={() => setShowSearch(!showSearch)}
-        >
-          <Search size={20} />
-        </button>
+
+        {showSearch && (
+          <div className="search-bar">
+            <input
+              type="text"
+              placeholder="게시물, 사용자 검색..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="search-input"
+            />
+            {searchQuery && (
+              <button 
+                className="clear-search"
+                onClick={() => setSearchQuery('')}
+              >
+                <X size={16} />
+              </button>
+            )}
+          </div>
+        )}
+
+        <div className="categories">
+          {categories.map((category) => {
+            const isActive = category === selectedCategory;
+            return (
+              <button
+                key={category}
+                className={`category-button ${isActive ? 'active' : ''}`}
+                onClick={() => setSelectedCategory(category)}
+              >
+                {category}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
-      {showSearch && (
-        <div className="search-bar">
-          <input
-            type="text"
-            placeholder="게시물, 사용자 검색..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="search-input"
-          />
-          {searchQuery && (
-            <button 
-              className="clear-search"
-              onClick={() => setSearchQuery('')}
-            >
-              <X size={16} />
-            </button>
-          )}
-        </div>
-      )}
-
-      {/* 가로 슬라이드 컨텐츠 */}
-      <div className="slide-container">
-        <div className="slide-header">
-          {slideContent.map((slide, index) => (
-            <button
-              key={slide.id}
-              className={`slide-tab ${activeSlide === index ? 'active' : ''}`}
-              onClick={() => {
-                setActiveSlide(index);
-                setActiveCardIndex(0);
-              }}
-            >
-              {slide.title}
-            </button>
-          ))}
-        </div>
-        <div className="slide-content">
-          <div className="cards-scroll-container">
-            {slideContent[activeSlide].title === '인기 댓글' && (
-              <div className="cards-scroll">
-                {slideContent[activeSlide].items.map((item, index) => (
-                  <div key={index} className="comment-card">
-                    <div className="comment-text">{item.text}</div>
-                    <div className="comment-meta">
-                      <span className="comment-author">{item.author}</span>
-                      <span className="comment-likes">❤️ {item.likes}</span>
+      {/* 스크롤 가능한 컨텐츠 영역 */}
+      <div className="scrollable-content">
+        {/* 게시물 목록 */}
+        <div className="posts-container">
+          {filteredPosts.map((post, index) => (
+            <React.Fragment key={post.id}>
+              <div className="post-card" onClick={() => handlePostClick(post.id)}>
+                <div className="post-header">
+                  <div className="author-info">
+                    <div className="avatar">
+                      {post.isAnonymous ? (
+                        <EyeOff size={16} />
+                      ) : (
+                        <div className="avatar-text">
+                          {post.author.charAt(0)}
+                        </div>
+                      )}
+                    </div>
+                    <div className="author-details">
+                      <div className="author-name">
+                        {post.isAnonymous ? '익명' : post.author}
+                        {post.isAnonymous && <span className="anonymous-badge">익명</span>}
+                      </div>
+                      <div className="post-meta">
+                        <span className="board-tag">{post.board}</span>
+                        <span className="post-time">{post.time}</span>
+                      </div>
                     </div>
                   </div>
-                ))}
-              </div>
-            )}
-            {slideContent[activeSlide].title === '트렌딩 해시태그' && (
-              <div className="cards-scroll">
-                {slideContent[activeSlide].items.map((item, index) => (
-                  <div 
-                    key={index} 
-                    className="hashtag-card"
-                    onClick={() => {
-                      setSearchQuery(item.text.replace('#', ''));
-                      setShowSearch(true);
+                  <div className="post-header-right">
+                    {post.price && <span className="price-tag">{post.price}</span>}
+                    <div className="post-header-actions">
+                      {!post.isAnonymous && (
+                        <button 
+                          className={`follow-button ${followedUsers.includes(post.author) ? 'following' : ''}`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleFollow(post.author);
+                          }}
+                        >
+                          {followedUsers.includes(post.author) ? (
+                            <UserCheck size={16} />
+                          ) : (
+                            <UserPlus size={16} />
+                          )}
+                        </button>
+                      )}
+
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="post-content">
+                  {formatContent(post.content)}
+                </div>
+
+                {post.images && post.images.length > 0 && (
+                  <div className="post-images-slider">
+                    <div 
+                      className="images-container" 
+                      id={`images-${post.id}`}
+                      onScroll={() => handleImageScroll(post.id)}
+                    >
+                      {post.images.map((image, imgIndex) => (
+                        <img 
+                          key={imgIndex} 
+                          src={image} 
+                          alt="게시물 이미지" 
+                          className="post-image"
+                        />
+                      ))}
+                    </div>
+                    {post.images.length > 1 && (
+                      <div className="image-indicators">
+                        {post.images.map((_, imgIndex) => {
+                          const currentIndex = imageIndices[post.id] || 0;
+                          return (
+                            <div 
+                              key={imgIndex} 
+                              className={`image-indicator ${imgIndex === currentIndex ? 'active' : ''}`}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                scrollToImage(post.id, imgIndex);
+                              }}
+                            />
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                )}
+                
+                <div className="post-actions">
+                  <button 
+                    className={`action-button ${post.liked ? 'liked' : ''}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleLike(post.id);
                     }}
                   >
-                    <div className="hashtag-main">
-                      <span className="hashtag">{item.text}</span>
-                    </div>
-                    <div className="hashtag-info">
-                      <span className="hashtag-count">{item.count}개 게시물</span>
+                    <Heart size={18} fill={post.liked ? '#ff6b6b' : 'none'} />
+                    <span>{post.likes}</span>
+                  </button>
+                  
+                  <button 
+                    className="action-button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handlePostClick(post.id);
+                    }}
+                  >
+                    <MessageCircle size={18} />
+                    <span>{post.comments}</span>
+                  </button>
+                  
+                  <button 
+                    className={`action-button ${post.saved ? 'saved' : ''}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      // 저장 기능 구현
+                    }}
+                  >
+                    <Bookmark size={18} fill={post.saved ? '#4facfe' : 'none'} />
+                  </button>
+                  
+                  <button 
+                    className="action-button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleShare(post.id);
+                    }}
+                  >
+                    <Share size={18} />
+                    <span>{post.shares}</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* 3번째와 6번째 게시물 후에 슬라이드 컨텐츠 삽입 */}
+              {(index === 2 || index === 5) && (
+                <div className="slide-container">
+                  <div className="slide-header">
+                    {slideContent.map((slide, slideIndex) => (
+                      <button
+                        key={slide.id}
+                        className={`slide-tab ${activeSlide === slideIndex ? 'active' : ''}`}
+                        onClick={() => setActiveSlide(slideIndex)}
+                      >
+                        {slide.title}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="slide-content">
+                    <div className="cards-scroll-container">
+                      {slideContent[activeSlide].title === '인기 댓글' && (
+                        <div className="cards-scroll">
+                          {slideContent[activeSlide].items.map((item, cardIndex) => (
+                            <div key={cardIndex} className="comment-card">
+                              <div className="comment-text">{item.text}</div>
+                              <div className="comment-meta">
+                                <span className="comment-author">{item.author}</span>
+                                <span className="comment-likes">❤️ {item.likes}</span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      {slideContent[activeSlide].title === '트렌딩 해시태그' && (
+                        <div className="cards-scroll">
+                          {slideContent[activeSlide].items.map((item, cardIndex) => (
+                            <div 
+                              key={cardIndex} 
+                              className="hashtag-card"
+                              onClick={() => {
+                                setSearchQuery(item.text.replace('#', ''));
+                                setShowSearch(true);
+                              }}
+                            >
+                              <div className="hashtag-main">
+                                <span className="hashtag">{item.text}</span>
+                              </div>
+                              <div className="hashtag-info">
+                                <span className="hashtag-count">{item.count}개 게시물</span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      {slideContent[activeSlide].title === '활발한 서클' && (
+                        <div className="cards-scroll">
+                          {slideContent[activeSlide].items.map((item, cardIndex) => (
+                            <div key={cardIndex} className="circle-card">
+                              <div className="circle-name">{item.name}</div>
+                              <div className="circle-info">
+                                <span className="circle-members">{item.members}명</span>
+                                <span className="circle-activity">{item.activity}</span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
-                ))}
-              </div>
-            )}
-            {slideContent[activeSlide].title === '활발한 서클' && (
-              <div className="cards-scroll">
-                {slideContent[activeSlide].items.map((item, index) => (
-                  <div key={index} className="circle-card">
-                    <div className="circle-name">{item.name}</div>
-                    <div className="circle-info">
-                      <span className="circle-members">{item.members}명</span>
-                      <span className="circle-activity">{item.activity}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+                </div>
+              )}
+            </React.Fragment>
+          ))}
         </div>
       </div>
 
-      <div className="categories">
-        {categories.map((category) => {
-          const isActive = category === selectedCategory;
-          return (
-            <button
-              key={category}
-              className={`category-button ${isActive ? 'active' : ''}`}
-              onClick={() => setSelectedCategory(category)}
-            >
-              {category}
-            </button>
-          );
-        })}
-      </div>
-      
-      <div className="posts-container">
-        {filteredPosts.map((post) => (
-          <div key={post.id} className="post-card" onClick={() => handlePostClick(post.id)}>
-            <div className="post-header">
-              <div className="author-info">
-                <div className="avatar">
-                  {post.isAnonymous ? (
-                    <EyeOff size={16} />
-                  ) : (
-                    <div className="avatar-text">
-                      {post.author.charAt(0)}
-                    </div>
-                  )}
-                </div>
-                <div className="author-details">
-                  <div className="author-name">
-                    {post.isAnonymous ? '익명' : post.author}
-                  </div>
-                  <div className="post-meta">
-                    <span className="post-time">{post.time}</span>
-                    <span className="post-board">{post.board}</span>
-                    {post.circles && post.circles.length > 0 && (
-                      <span className="post-circles">🔵 {post.circles[0]}</span>
-                    )}
-                  </div>
-                </div>
-              </div>
-              <div className="post-header-actions">
-                {!post.isAnonymous && (
-                  <button 
-                    className={`follow-button ${followedUsers.includes(post.author) ? 'following' : ''}`}
-                    onClick={() => handleFollow(post.author)}
-                  >
-                    {followedUsers.includes(post.author) ? (
-                      <UserCheck size={16} />
-                    ) : (
-                      <UserPlus size={16} />
-                    )}
-                  </button>
-                )}
-                <div className="post-category">{post.category}</div>
-              </div>
-            </div>
-            
-            <div className="post-content">
-              {formatContent(post.content)}
-            </div>
-
-            {post.images && post.images.length > 0 && (
-              <div className="post-images">
-                {post.images.map((image, index) => (
-                  <img key={index} src={image} alt="게시물 이미지" className="post-image" />
-                ))}
-              </div>
-            )}
-            
-            <div className="post-actions">
-              <button 
-                className={`action-button ${post.liked ? 'liked' : ''}`}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleLikePost(post.id);
-                }}
-              >
-                <Heart size={18} fill={post.liked ? '#ff6b6b' : 'none'} />
-                <span>{post.likes}</span>
-              </button>
-              
-              <button 
-                className="action-button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handlePostClick(post.id);
-                }}
-              >
-                <MessageCircle size={18} />
-                <span>{post.comments}</span>
-              </button>
-              
-              <button 
-                className={`action-button ${post.saved ? 'saved' : ''}`}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleSavePost(post.id);
-                }}
-              >
-                <Bookmark size={18} fill={post.saved ? '#4facfe' : 'none'} />
-              </button>
-              
-              <button 
-                className="action-button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleShare(post.id);
-                }}
-              >
-                <Share size={18} />
-                <span>{post.shares}</span>
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
-
+      {/* 필터 메뉴 */}
       {showFilterMenu && (
         <div className="filter-menu-overlay" onClick={() => setShowFilterMenu(false)}>
           <div className="filter-menu" onClick={(e) => e.stopPropagation()}>
@@ -678,6 +659,7 @@ const MainFeed = () => {
         </div>
       )}
 
+      {/* 플로팅 추가 버튼 */}
       <button className="floating-add-button" onClick={handleAddPost}>
         <Plus size={24} />
       </button>

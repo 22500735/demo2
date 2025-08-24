@@ -173,7 +173,16 @@ const PostDetail = ({ post, onBack, onUpdatePost }) => {
           {post.images && post.images.length > 0 && (
             <div className="post-images">
               {post.images.map((image, index) => (
-                <img key={index} src={image} alt="게시물 이미지" className="post-image" />
+                <img 
+                  key={index} 
+                  src={image} 
+                  alt={`게시물 이미지 ${index + 1}`} 
+                  className="post-image"
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                    console.log('이미지 로드 실패:', image);
+                  }}
+                />
               ))}
             </div>
           )}

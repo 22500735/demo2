@@ -6,7 +6,7 @@ const BottomNavigation = ({ activeTab, onTabChange }) => {
   const tabs = [
     { id: 'main', icon: Home, label: '홈' },
     { id: 'timetable', icon: Calendar, label: '시간표' },
-    { id: 'board', icon: MessageSquare, label: '게시판' },
+    { id: 'recommended', icon: MessageSquare, label: '추천' },
     { id: 'marketplace', icon: ShoppingBag, label: '마켓' },
     { id: 'map', icon: MapPin, label: '지도' },
     { id: 'mypage', icon: User, label: '마이페이지' },

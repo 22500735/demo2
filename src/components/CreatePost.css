@@ -1,11 +1,11 @@
 .create-post {
-  background-color: #f8f9fa;
+  background-color: #e8f5e8;
   min-height: 100vh;
   padding-bottom: 80px;
 }
 
 .create-post-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
   color: white;
   padding: 16px;
   display: flex;
@@ -38,7 +38,7 @@
 }
 
 .submit-button {
-  background: #4facfe;
+  background: #4CAF50;
   color: white;
   border: none;
   border-radius: 20px;
@@ -50,7 +50,7 @@
 }
 
 .submit-button:hover:not(:disabled) {
-  background: #357abd;
+  background: #45a049;
   transform: translateY(-1px);
 }
 
@@ -96,13 +96,13 @@
 }
 
 .category-chip:hover {
-  border-color: #4facfe;
+  border-color: #4CAF50;
 }
 
 .category-chip.active {
-  background: #4facfe;
+  background: #4CAF50;
   color: white;
-  border-color: #4facfe;
+  border-color: #4CAF50;
 }
 
 .board-select {

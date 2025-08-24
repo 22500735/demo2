@@ -1,11 +1,11 @@
 .post-detail {
-  background-color: #f8f9fa;
+  background-color: #e8f5e8;
   min-height: 100vh;
   padding-bottom: 80px;
 }
 
 .post-detail-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
   color: white;
   padding: 16px;
   display: flex;
@@ -67,7 +67,7 @@
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -123,17 +123,42 @@
 }
 
 .post-images {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
   margin-bottom: 16px;
+  border-radius: 12px;
+  overflow: hidden;
 }
 
 .post-image {
   width: 100%;
-  border-radius: 12px;
-  object-fit: cover;
+  max-width: 100%;
+  height: auto;
   max-height: 300px;
+  border-radius: 8px;
+  object-fit: contain;
+  background: #f0f0f0;
+  display: block;
+}
+
+/* 여러 이미지가 있을 경우 그리드 형태로 배치 */
+.post-images .post-image:nth-child(n+2) {
+  width: calc(50% - 4px);
+  height: 200px;
+  object-fit: cover;
+}
+
+.post-images .post-image:nth-child(n+3) {
+  width: calc(33.333% - 6px);
+  height: 150px;
+  object-fit: cover;
+}
+
+.post-images .post-image:nth-child(n+4) {
+  width: calc(50% - 4px);
+  height: 150px;
+  object-fit: cover;
 }
 
 .post-actions {
