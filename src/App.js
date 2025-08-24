@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import MainFeed from './components/MainFeed';
-import RecommendedFeed from './components/RecommendedFeed';
+import Board from './components/Board';
 import Timetable from './components/Timetable';
 import Marketplace from './components/Marketplace';
 import Map from './components/Map';
@@ -19,8 +19,8 @@ function App() {
         return <MainFeed />;
       case 'timetable':
         return <Timetable />;
-      case 'recommended':
-        return <RecommendedFeed />;
+      case 'board':
+        return <Board />;
       case 'marketplace':
         return <Marketplace />;
       case 'map':
