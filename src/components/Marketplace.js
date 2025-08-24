@@ -20,9 +20,11 @@ const Marketplace = () => {
       location: '신촌',
       time: '2시간 전',
       likes: 15,
+      comments: 3,
       views: 127,
       condition: '상급',
       seller: '김학생',
+      department: '컴퓨터공학과',
       description: '작년에 구입한 아이폰입니다. 케이스 끼고 사용해서 상태 좋아요!',
       status: 'available'
     },
@@ -35,9 +37,11 @@ const Marketplace = () => {
       location: '홍대',
       time: '5시간 전',
       likes: 23,
+      comments: 5,
       views: 189,
       condition: '최상',
       seller: '박학생',
+      department: '경영학과',
       description: '거의 새것같은 맥북입니다. 학업용으로만 사용했어요.',
       status: 'available'
     },
@@ -50,9 +54,11 @@ const Marketplace = () => {
       location: '이대',
       time: '1일 전',
       likes: 8,
+      comments: 2,
       views: 67,
       condition: '상급',
       seller: '이학생',
+      department: '경영학과',
       description: '이번 학기 사용한 교재입니다. 필기 조금 있어요.',
       status: 'available'
     }
@@ -302,17 +308,23 @@ const Marketplace = () => {
         <div className="products-container grid">
           {filteredProducts.map(product => (
             <div key={product.id} className="product-card">
-              <div className="product-image">
-                <img src={product.image} alt={product.title} />
+              <div className="product-header">
                 <div className="product-badge" style={{ backgroundColor: getCategoryColor(product.category) }}>
                   {categories.find(cat => cat.id === product.category)?.name}
                 </div>
-                <button 
-                  className={`like-button ${likedItems.has(product.id) ? 'liked' : ''}`}
-                  onClick={() => toggleLike(product.id)}
-                >
-                  <Heart size={16} fill={likedItems.has(product.id) ? '#ff6b6b' : 'none'} />
-                </button>
+                <div className="seller-department">{product.department}</div>
+              </div>
+
+              <div className="product-image-container">
+                <div className="product-image">
+                  <img src={product.image} alt={product.title} />
+                  <button 
+                    className={`like-button ${likedItems.has(product.id) ? 'liked' : ''}`}
+                    onClick={() => toggleLike(product.id)}
+                  >
+                    <Heart size={16} fill={likedItems.has(product.id) ? '#ff6b6b' : 'none'} />
+                  </button>
+                </div>
               </div>
               
               <div className="product-info">
@@ -320,29 +332,31 @@ const Marketplace = () => {
                 <div className="product-price">{formatPrice(product.price)}</div>
                 <div className="product-condition">{product.condition}</div>
                 
-                <div className="product-meta">
-                  <div className="meta-item">
-                    <MapPin size={12} />
-                    <span>{product.location}</span>
+                <div className="product-bottom">
+                  <div className="product-meta">
+                    <div className="meta-item">
+                      <MapPin size={12} />
+                      <span>{product.location}</span>
+                    </div>
+                    <div className="meta-item">
+                      <Clock size={12} />
+                      <span>{product.time}</span>
+                    </div>
                   </div>
-                  <div className="meta-item">
-                    <Clock size={12} />
-                    <span>{product.time}</span>
-                  </div>
-                </div>
 
-                <div className="product-stats">
-                  <div className="stat-item">
-                    <Heart size={14} />
-                    <span>{product.likes}</span>
-                  </div>
-                  <div className="stat-item">
-                    <MessageCircle size={14} />
-                    <span>{product.comments}</span>
-                  </div>
-                  <div className="stat-item">
-                    <Eye size={14} />
-                    <span>{product.views}</span>
+                  <div className="product-stats">
+                    <div className="stat-item">
+                      <Heart size={14} />
+                      <span>{product.likes}</span>
+                    </div>
+                    <div className="stat-item">
+                      <MessageCircle size={14} />
+                      <span>{product.comments}</span>
+                    </div>
+                    <div className="stat-item">
+                      <Eye size={14} />
+                      <span>{product.views}</span>
+                    </div>
                   </div>
                 </div>
 
