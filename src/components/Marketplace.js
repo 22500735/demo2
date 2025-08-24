@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Search, Filter, Plus, Heart, MapPin, Eye, MessageCircle, Clock, X, User } from 'lucide-react';
 import CreateMarketplaceItem from './CreateMarketplaceItem';
+import SellerProfile from './SellerProfile';
 import './Marketplace.css';
 
 const Marketplace = () => {
@@ -9,8 +10,9 @@ const Marketplace = () => {
   const [sortBy, setSortBy] = useState('latest');
   const [showSortMenu, setShowSortMenu] = useState(false);
   const [likedItems, setLikedItems] = useState(new Set());
-  const [currentView, setCurrentView] = useState('main');
+  const [currentView, setCurrentView] = useState('main'); // 'main', 'wishlist', 'create', 'sellerProfile'
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedSeller, setSelectedSeller] = useState(null);
   const [showProductDetail, setShowProductDetail] = useState(false);
   const [items, setItems] = useState([
     {
@@ -231,6 +233,14 @@ const Marketplace = () => {
     setSelectedProduct(null);
   };
 
+  const handleSellerClick = (seller) => {
+    setSelectedSeller({
+      name: seller,
+      department: items.find(item => item.seller === seller)?.department || '정보 없음'
+    });
+    setCurrentView('sellerProfile');
+  };
+
   if (currentView === 'create') {
     return (
       <CreateMarketplaceItem 
@@ -240,11 +250,37 @@ const Marketplace = () => {
     );
   }
 
+  if (currentView === 'sellerProfile') {
+    return (
+      <SellerProfile 
+        seller={selectedSeller}
+        onBack={handleBackToMain}
+      />
+    );
+  }
+
   return (
     <div className="marketplace">
       <header className="marketplace-header">
         <h1>중고거래</h1>
         <div className="header-subtitle">학생들의 안전한 거래 공간</div>
+        
+        {/* 네비게이션 탭 */}
+        <div className="marketplace-tabs">
+          <button 
+            className={`tab-button ${currentView === 'main' ? 'active' : ''}`}
+            onClick={() => setCurrentView('main')}
+          >
+            전체상품
+          </button>
+          <button 
+            className={`tab-button ${currentView === 'wishlist' ? 'active' : ''}`}
+            onClick={() => setCurrentView('wishlist')}
+          >
+            <Heart size={16} />
+            관심목록 ({likedItems.size})
+          </button>
+        </div>
       </header>
 
       <div className="search-section">
@@ -312,13 +348,14 @@ const Marketplace = () => {
       </div>
 
       <div className="marketplace-content">
-        <div className="content-header">
-          <span className="result-count">{filteredProducts.length}개 상품</span>
+        {currentView === 'main' ? (
+          <>
+            <div className="content-header">
+              <span className="result-count">{filteredProducts.length}개 상품</span>
+            </div>
 
-        </div>
-
-        <div className="products-container grid">
-          {filteredProducts.map(product => (
+            <div className="products-container grid">
+              {filteredProducts.map(product => (
             <div key={product.id} className="product-card" onClick={() => handleProductClick(product)}>
               <div className="product-header">
                 <div className="product-badge" style={{ backgroundColor: getCategoryColor(product.category) }}>
@@ -351,7 +388,15 @@ const Marketplace = () => {
                 <div className="product-detail-row">
                   <div className="product-condition">{product.condition}</div>
                   <div className="product-spacing"></div>
-                  <div className="seller-name">{product.seller}</div>
+                  <div 
+                    className="seller-name clickable"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleSellerClick(product.seller);
+                    }}
+                  >
+                    {product.seller}
+                  </div>
                 </div>
                 
                 <div className="product-meta">
@@ -383,8 +428,107 @@ const Marketplace = () => {
                 </div>
               </div>
             </div>
-          ))}
-        </div>
+              ))}
+            </div>
+          </>
+        ) : currentView === 'wishlist' ? (
+          <div className="wishlist-content">
+            <div className="content-header">
+              <span className="result-count">관심상품 {likedItems.size}개</span>
+            </div>
+            
+            {likedItems.size === 0 ? (
+              <div className="empty-wishlist">
+                <Heart size={48} color="#e1e8ed" />
+                <h3>관심상품이 없습니다</h3>
+                <p>마음에 드는 상품을 하트로 저장해보세요!</p>
+                <button 
+                  className="browse-button"
+                  onClick={() => setCurrentView('main')}
+                >
+                  상품 둘러보기
+                </button>
+              </div>
+            ) : (
+              <div className="products-container grid">
+                {items.filter(product => likedItems.has(product.id)).map(product => (
+                  <div key={product.id} className="product-card" onClick={() => handleProductClick(product)}>
+                    <div className="product-header">
+                      <div className="product-badge" style={{ backgroundColor: getCategoryColor(product.category) }}>
+                        {categories.find(cat => cat.id === product.category)?.name}
+                      </div>
+                      <div className="seller-department">{product.department}</div>
+                    </div>
+
+                    <div className="product-image-container">
+                      <div className="product-image">
+                        <img src={product.image} alt={product.title} />
+                        <div className="price-overlay">
+                          {formatPrice(product.price)}
+                        </div>
+                        <button 
+                          className={`like-button ${likedItems.has(product.id) ? 'liked' : ''}`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleLike(product.id);
+                          }}
+                        >
+                          <Heart size={16} fill={likedItems.has(product.id) ? '#ff6b6b' : 'none'} />
+                        </button>
+                      </div>
+                    </div>
+                    
+                    <div className="product-info">
+                      <div className="product-title">{product.title}</div>
+                      
+                      <div className="product-detail-row">
+                        <div className="product-condition">{product.condition}</div>
+                        <div className="product-spacing"></div>
+                        <div 
+                    className="seller-name clickable"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleSellerClick(product.seller);
+                    }}
+                  >
+                    {product.seller}
+                  </div>
+                      </div>
+                      
+                      <div className="product-meta">
+                        <div className="product-location-time">
+                          <div className="meta-item">
+                            <MapPin size={12} />
+                            <span>{product.location}</span>
+                          </div>
+                          <div className="meta-item">
+                            <Clock size={12} />
+                            <span>{product.time}</span>
+                          </div>
+                        </div>
+
+                        <div className="product-stats">
+                          <div className="stat-item">
+                            <Heart size={12} />
+                            <span>{product.likes}</span>
+                          </div>
+                          <div className="stat-item">
+                            <MessageCircle size={12} />
+                            <span>{product.comments}</span>
+                          </div>
+                          <div className="stat-item">
+                            <Eye size={12} />
+                            <span>{product.views}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        ) : null}
       </div>
 
       <button 

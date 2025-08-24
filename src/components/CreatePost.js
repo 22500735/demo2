@@ -43,6 +43,12 @@ const CreatePost = ({ onBack, onCreatePost }) => {
   };
 
   const handleImageAdd = () => {
+    // 이미지 개수 제한 (최대 5개)
+    if (images.length >= 5) {
+      alert('이미지는 최대 5개까지만 추가할 수 있습니다.');
+      return;
+    }
+    
     // 실제 구현에서는 파일 선택 다이얼로그를 열어야 함
     const imageUrl = `https://via.placeholder.com/400x300?text=새+이미지+${images.length + 1}`;
     setImages([...images, imageUrl]);
@@ -142,11 +148,12 @@ const CreatePost = ({ onBack, onCreatePost }) => {
             <div className="image-section">
               <button
                 type="button"
-                className="add-image-button"
+                className={`add-image-button ${images.length >= 5 ? 'disabled' : ''}`}
                 onClick={handleImageAdd}
+                disabled={images.length >= 5}
               >
                 <Camera size={20} />
-                이미지 추가
+                이미지 추가 ({images.length}/5)
               </button>
               
               {images.length > 0 && (

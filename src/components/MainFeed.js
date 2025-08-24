@@ -16,6 +16,7 @@ const MainFeed = () => {
   const [imageIndices, setImageIndices] = useState({});
   const [activeTab, setActiveTab] = useState('recommended'); // 'recommended' or 'following'
   const [showSidebar, setShowSidebar] = useState(false);
+  const [sharingPosts, setSharingPosts] = useState(new Set());
 
   // 모든 게시물을 합친 데이터
   const [posts, setPosts] = useState([
@@ -272,29 +273,47 @@ const MainFeed = () => {
   };
 
   const handleShare = async (postId) => {
+    // 이미 공유 중인 게시물인지 확인
+    if (sharingPosts.has(postId)) {
+      return;
+    }
+    
+    // 공유 중 상태로 설정
+    setSharingPosts(prev => new Set([...prev, postId]));
+    
+    // 공유 카운트 증가
     setPosts(posts.map(post => 
       post.id === postId 
         ? { ...post, shares: post.shares + 1 }
         : post
     ));
     
-    if (navigator.share) {
-      try {
+    try {
+      if (navigator.share) {
         const post = posts.find(p => p.id === postId);
         await navigator.share({
           title: '게시물 공유',
           text: post.content,
           url: window.location.href
         });
-      } catch (error) {
-        if (error.name !== 'AbortError') {
-          navigator.clipboard.writeText(window.location.href);
-          alert('링크가 클립보드에 복사되었습니다!');
-        }
+      } else {
+        await navigator.clipboard.writeText(window.location.href);
+        alert('링크가 클립보드에 복사되었습니다!');
       }
-    } else {
-      navigator.clipboard.writeText(window.location.href);
-      alert('링크가 클립보드에 복사되었습니다!');
+    } catch (error) {
+      if (error.name !== 'AbortError') {
+        await navigator.clipboard.writeText(window.location.href);
+        alert('링크가 클립보드에 복사되었습니다!');
+      }
+    } finally {
+      // 공유 완료 후 0.5초 뒤에 상태 해제 (중복 클릭 방지)
+      setTimeout(() => {
+        setSharingPosts(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(postId);
+          return newSet;
+        });
+      }, 500);
     }
   };
 

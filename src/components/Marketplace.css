@@ -21,6 +21,42 @@
 .header-subtitle {
   font-size: 14px;
   opacity: 0.9;
+  margin-bottom: 16px;
+}
+
+/* 네비게이션 탭 */
+.marketplace-tabs {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.tab-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  padding: 8px 16px;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(10px);
+}
+
+.tab-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.tab-button.active {
+  background: white;
+  color: #8b5cf6;
+  border-color: white;
+  font-weight: 600;
 }
 
 .search-section {
@@ -332,6 +368,17 @@
   font-weight: 500;
 }
 
+.seller-name.clickable {
+  color: #8b5cf6;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.seller-name.clickable:hover {
+  color: #6d28d9;
+  text-decoration: underline;
+}
+
 .product-meta {
   display: flex;
   justify-content: space-between;
@@ -640,4 +687,50 @@
   .products-container.list .product-info {
     padding: 10px;
   }
+}
+
+/* 관심목록 스타일 */
+.wishlist-content {
+  min-height: 400px;
+}
+
+.empty-wishlist {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  min-height: 400px;
+}
+
+.empty-wishlist h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #14171a;
+  margin: 16px 0 8px 0;
+}
+
+.empty-wishlist p {
+  font-size: 14px;
+  color: #657786;
+  margin: 0 0 24px 0;
+  line-height: 1.5;
+}
+
+.browse-button {
+  background: linear-gradient(135deg, #6adca4 0%, #8b5cf6 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.browse-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
 }

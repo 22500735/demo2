@@ -815,6 +815,109 @@ const MyPage = () => {
           ))}
         </div>
       </div>
+
+      {/* 프로필 수정 모달 */}
+      {showProfileEdit && (
+        <div className="modal-overlay" onClick={() => setShowProfileEdit(false)}>
+          <div className="profile-edit-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>프로필 수정</h3>
+              <button 
+                className="close-button" 
+                onClick={() => setShowProfileEdit(false)}
+              >
+                ×
+              </button>
+            </div>
+            
+            <div className="modal-content">
+              <div className="profile-image-section">
+                <div className="profile-image-container">
+                  <img src={profileImage} alt="프로필 이미지" className="profile-image-large" />
+                  <button className="change-image-btn">
+                    <Camera size={16} />
+                    <span>사진 변경</span>
+                  </button>
+                </div>
+              </div>
+              
+              <div className="form-section">
+                <label>이름</label>
+                <input 
+                  type="text" 
+                  value={accountSettings.name}
+                  onChange={(e) => setAccountSettings(prev => ({...prev, name: e.target.value}))}
+                  className="profile-input"
+                />
+              </div>
+              
+              <div className="form-section">
+                <label>전공</label>
+                <input 
+                  type="text" 
+                  value={accountSettings.major}
+                  onChange={(e) => setAccountSettings(prev => ({...prev, major: e.target.value}))}
+                  className="profile-input"
+                />
+              </div>
+              
+              <div className="form-section">
+                <label>학년</label>
+                <select 
+                  value={accountSettings.year}
+                  onChange={(e) => setAccountSettings(prev => ({...prev, year: e.target.value}))}
+                  className="profile-select"
+                >
+                  <option value="1학년">1학년</option>
+                  <option value="2학년">2학년</option>
+                  <option value="3학년">3학년</option>
+                  <option value="4학년">4학년</option>
+                  <option value="석사">석사</option>
+                  <option value="박사">박사</option>
+                </select>
+              </div>
+              
+              <div className="form-section">
+                <label>이메일</label>
+                <input 
+                  type="email" 
+                  value={accountSettings.email}
+                  onChange={(e) => setAccountSettings(prev => ({...prev, email: e.target.value}))}
+                  className="profile-input"
+                />
+              </div>
+              
+              <div className="form-section">
+                <label>전화번호</label>
+                <input 
+                  type="tel" 
+                  value={accountSettings.phone}
+                  onChange={(e) => setAccountSettings(prev => ({...prev, phone: e.target.value}))}
+                  className="profile-input"
+                />
+              </div>
+              
+              <div className="modal-actions">
+                <button 
+                  className="cancel-btn"
+                  onClick={() => setShowProfileEdit(false)}
+                >
+                  취소
+                </button>
+                <button 
+                  className="save-btn"
+                  onClick={() => {
+                    alert('프로필이 수정되었습니다!');
+                    setShowProfileEdit(false);
+                  }}
+                >
+                  저장
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

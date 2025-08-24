@@ -1228,6 +1228,30 @@
   justify-content: space-between;
   font-size: 12px;
   color: #657786;
+  margin-bottom: 12px;
+}
+
+.course-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.add-course-btn {
+  background: linear-gradient(135deg, #6adca4 0%, #8b5cf6 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.add-course-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
 }
 
 .search-input-section {

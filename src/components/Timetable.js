@@ -632,16 +632,7 @@ const Timetable = () => {
         )}
       </div>
 
-      {/* 학점 계산기 버튼 */}
-      <div className="grade-calculator-button-container">
-        <button 
-          className="grade-calculator-button"
-          onClick={() => setShowGradeCalculator(true)}
-        >
-          <Calculator size={20} />
-          <span>학점 계산기</span>
-        </button>
-      </div>
+
 
       {showModal && selectedClass && (
         <div className="modal-overlay" onClick={closeModal}>

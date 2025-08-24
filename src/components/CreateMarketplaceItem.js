@@ -63,6 +63,12 @@ const CreateMarketplaceItem = ({ onBack, onCreateItem }) => {
       return;
     }
 
+    const priceValue = parseInt(price.replace(/,/g, ''));
+    if (priceValue <= 0) {
+      alert('가격은 0원보다 커야 합니다.');
+      return;
+    }
+
     if (!location.trim()) {
       alert('거래 지역을 입력해주세요.');
       return;

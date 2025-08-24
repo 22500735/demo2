@@ -1,0 +1,727 @@
+.club-detail {
+  min-height: 100vh;
+  background: #f8f9fa;
+}
+
+/* 헤더 */
+.club-detail-header {
+  background: white;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e1e8ed;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  color: #657786;
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.back-button:hover {
+  color: #14171a;
+}
+
+/* 동아리 정보 섹션 */
+.club-info-section {
+  background: white;
+  margin-bottom: 16px;
+}
+
+.club-banner {
+  height: 200px;
+  overflow: hidden;
+  position: relative;
+}
+
+.club-banner-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.club-main-info {
+  padding: 20px;
+  position: relative;
+}
+
+.club-avatar {
+  position: absolute;
+  top: -40px;
+  left: 20px;
+}
+
+.club-avatar-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 4px solid white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.club-details {
+  margin-left: 100px;
+  margin-bottom: 20px;
+}
+
+.club-name {
+  font-size: 24px;
+  font-weight: 700;
+  color: #14171a;
+  margin: 0 0 8px 0;
+}
+
+.club-description {
+  font-size: 14px;
+  color: #657786;
+  margin: 0 0 16px 0;
+  line-height: 1.5;
+}
+
+.club-stats {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  color: #657786;
+}
+
+.club-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  background: #f0f3ff;
+  color: #8b5cf6;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+.club-actions {
+  display: flex;
+  gap: 12px;
+  margin-left: 100px;
+}
+
+.subscribe-btn {
+  background: linear-gradient(135deg, #6adca4 0%, #8b5cf6 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.subscribe-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+}
+
+.subscribe-btn.subscribed {
+  background: #f8f9fa;
+  color: #657786;
+  border: 1px solid #e1e8ed;
+}
+
+.subscribe-btn.subscribed:hover {
+  background: #e1e8ed;
+  transform: none;
+  box-shadow: none;
+}
+
+.notification-btn {
+  background: #f8f9fa;
+  border: 1px solid #e1e8ed;
+  border-radius: 8px;
+  padding: 12px;
+  cursor: pointer;
+  color: #657786;
+  transition: all 0.2s ease;
+}
+
+.notification-btn:hover {
+  background: #e1e8ed;
+  color: #14171a;
+}
+
+.notification-btn.active {
+  background: #fff3cd;
+  border-color: #ffc107;
+  color: #856404;
+}
+
+.notification-btn.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 탭 네비게이션 */
+.club-tabs {
+  background: white;
+  display: flex;
+  border-bottom: 1px solid #e1e8ed;
+  margin-bottom: 16px;
+}
+
+.tab-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  padding: 16px 20px;
+  font-size: 14px;
+  color: #657786;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+  flex: 1;
+  justify-content: center;
+}
+
+.tab-button:hover {
+  color: #14171a;
+  background: #f8f9fa;
+}
+
+.tab-button.active {
+  color: #8b5cf6;
+  border-bottom-color: #8b5cf6;
+  font-weight: 600;
+}
+
+/* 콘텐츠 영역 */
+.club-content {
+  background: white;
+  border-radius: 12px;
+  margin: 0 16px 16px 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* 게시물 섹션 */
+.posts-section {
+  padding: 20px;
+}
+
+.posts-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.posts-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #14171a;
+}
+
+.posts-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.filter-btn, .search-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #f8f9fa;
+  border: 1px solid #e1e8ed;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 12px;
+  color: #657786;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-btn:hover, .search-btn:hover {
+  background: #e1e8ed;
+  color: #14171a;
+}
+
+.posts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.post-card {
+  border: 1px solid #e1e8ed;
+  border-radius: 12px;
+  padding: 16px;
+  transition: all 0.2s ease;
+}
+
+.post-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.post-header {
+  margin-bottom: 12px;
+}
+
+.post-author {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.author-avatar {
+  width: 32px;
+  height: 32px;
+  background: #e1e8ed;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #657786;
+}
+
+.author-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.author-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #14171a;
+}
+
+.official-badge {
+  background: #8b5cf6;
+  color: white;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 8px;
+  font-weight: 500;
+  margin-left: 6px;
+}
+
+.post-time {
+  font-size: 12px;
+  color: #657786;
+}
+
+.post-content {
+  margin-bottom: 12px;
+}
+
+.post-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #14171a;
+  margin: 0 0 8px 0;
+}
+
+.post-text {
+  font-size: 14px;
+  color: #14171a;
+  line-height: 1.5;
+  margin: 0 0 12px 0;
+}
+
+.post-images {
+  margin-top: 8px;
+}
+
+.image-placeholder {
+  background: #f8f9fa;
+  border: 1px dashed #e1e8ed;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  color: #657786;
+  font-size: 14px;
+}
+
+.post-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  color: #657786;
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.action-btn:hover {
+  color: #14171a;
+}
+
+.like-btn:hover {
+  color: #ff6b6b;
+}
+
+.post-views {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #657786;
+  font-size: 12px;
+  margin-left: auto;
+}
+
+/* 멤버 섹션 */
+.members-section {
+  padding: 20px;
+}
+
+.members-header {
+  margin-bottom: 20px;
+}
+
+.members-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #14171a;
+}
+
+.members-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.member-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid #e1e8ed;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.member-card:hover {
+  background: #f8f9fa;
+}
+
+.member-avatar {
+  position: relative;
+}
+
+.member-avatar img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.online-indicator {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 12px;
+  height: 12px;
+  background: #10b981;
+  border: 2px solid white;
+  border-radius: 50%;
+}
+
+.member-info {
+  flex: 1;
+}
+
+.member-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #14171a;
+  margin-bottom: 2px;
+}
+
+.member-role {
+  font-size: 12px;
+  color: #8b5cf6;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.member-details {
+  font-size: 12px;
+  color: #657786;
+  display: flex;
+  gap: 4px;
+  margin-bottom: 2px;
+}
+
+.member-join-date {
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+.member-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.message-btn {
+  background: #f8f9fa;
+  border: 1px solid #e1e8ed;
+  border-radius: 6px;
+  padding: 6px;
+  color: #657786;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.message-btn:hover {
+  background: #e1e8ed;
+  color: #14171a;
+}
+
+/* 일정 섹션 */
+.events-section {
+  padding: 20px;
+}
+
+.events-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.events-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #14171a;
+}
+
+.add-event-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #6adca4 0%, #8b5cf6 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.add-event-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+}
+
+.events-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.event-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid #e1e8ed;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.event-card:hover {
+  background: #f8f9fa;
+}
+
+.event-type-indicator {
+  margin-top: 2px;
+}
+
+.type-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.type-dot.official {
+  background: #8b5cf6;
+}
+
+.type-dot.activity {
+  background: #10b981;
+}
+
+.type-dot.meeting {
+  background: #f59e0b;
+}
+
+.event-info {
+  flex: 1;
+}
+
+.event-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #14171a;
+  margin: 0 0 8px 0;
+}
+
+.event-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.event-datetime, .event-location {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #657786;
+}
+
+.event-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.interested-btn {
+  background: #f8f9fa;
+  border: 1px solid #e1e8ed;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 12px;
+  color: #657786;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.interested-btn:hover {
+  background: #8b5cf6;
+  border-color: #8b5cf6;
+  color: white;
+}
+
+.error-message {
+  padding: 40px 20px;
+  text-align: center;
+  color: #657786;
+}
+
+/* 모바일 반응형 */
+@media (max-width: 768px) {
+  .club-detail-header {
+    padding: 12px 16px;
+  }
+  
+  .club-main-info {
+    padding: 16px;
+  }
+  
+  .club-details {
+    margin-left: 0;
+    margin-top: 50px;
+  }
+  
+  .club-actions {
+    margin-left: 0;
+    margin-top: 16px;
+  }
+  
+  .club-name {
+    font-size: 20px;
+  }
+  
+  .club-stats {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  
+  .tab-button {
+    padding: 12px 8px;
+    font-size: 12px;
+  }
+  
+  .club-content {
+    margin: 0 0 16px 0;
+    border-radius: 0;
+  }
+  
+  .posts-section, .members-section, .events-section {
+    padding: 16px;
+  }
+  
+  .posts-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .post-card {
+    padding: 12px;
+  }
+  
+  .member-card {
+    padding: 10px;
+  }
+  
+  .event-card {
+    padding: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .club-avatar {
+    left: 16px;
+  }
+  
+  .club-avatar-image {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .club-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .subscribe-btn {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .club-stats {
+    justify-content: center;
+  }
+  
+  .posts-controls {
+    justify-content: center;
+  }
+}

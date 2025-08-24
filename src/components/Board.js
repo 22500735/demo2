@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Search, Plus, Bookmark, ThumbsUp, MessageCircle, Eye, MoreHorizontal, X, List, Edit3, Users, TrendingUp } from 'lucide-react';
 import CreateBoardPost from './CreateBoardPost';
+import ClubDetail from './ClubDetail';
 import './Board.css';
 
 const Board = () => {
-  const [currentView, setCurrentView] = useState('main'); // 'main', 'createPost', 'club'
+  const [currentView, setCurrentView] = useState('main'); // 'main', 'createPost', 'club', 'clubDetail'
   const [selectedBoard, setSelectedBoard] = useState(null);
   const [selectedClub, setSelectedClub] = useState(null);
   const [showWriteModal, setShowWriteModal] = useState(false);
@@ -263,6 +264,16 @@ const Board = () => {
 
   // 동아리 상세 뷰
   if (currentView === 'clubDetail' && selectedClub) {
+    return (
+      <ClubDetail 
+        club={selectedClub}
+        onBack={() => setCurrentView('club')}
+      />
+    );
+  }
+
+  // Temporary backup of old clubDetail view
+  if (currentView === 'oldClubDetail' && selectedClub) {
     return (
       <div className="board-container">
         <div className="board-header">
