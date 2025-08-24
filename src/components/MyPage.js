@@ -7,9 +7,10 @@ import './MyPage.css';
 const MyPage = () => {
   const [activeTab, setActiveTab] = useState('liked');
   const [showSettings, setShowSettings] = useState(false);
-  const [showProfileEdit, setShowProfileEdit] = useState(false);
+
   const [profileImage, setProfileImage] = useState('https://via.placeholder.com/80x80?text=김민수');
   const [currentView, setCurrentView] = useState('main'); // main, postDetail, settings, accountSettings, notificationSettings, helpCenter, clubDetail
+  const [selectedCircle, setSelectedCircle] = useState(null);
   const [selectedPost, setSelectedPost] = useState(null);
   const [selectedClub, setSelectedClub] = useState(null);
   const [notificationSettings, setNotificationSettings] = useState({
@@ -251,6 +252,8 @@ const MyPage = () => {
   const handleUpdatePost = (postId, updatedPost) => {
     setSelectedPost(updatedPost);
   };
+
+
 
   // 게시물 상세보기 뷰
   if (currentView === 'postDetail' && selectedPost) {
@@ -642,10 +645,10 @@ const MyPage = () => {
           </div>
           <button 
             className="edit-profile-btn"
-            onClick={() => setShowProfileEdit(true)}
+            onClick={() => setCurrentView('accountSettings')}
           >
             <Edit size={16} />
-            <span>수정</span>
+            <span>계정 설정</span>
           </button>
         </div>
       </div>
@@ -851,124 +854,7 @@ const MyPage = () => {
         </div>
       </div>
 
-      {/* 프로필 수정 모달 */}
-      {showProfileEdit && (
-        <div className="modal-overlay" onClick={() => setShowProfileEdit(false)}>
-          <div className="profile-edit-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <h3>프로필 수정</h3>
-              <button 
-                className="close-button" 
-                onClick={() => setShowProfileEdit(false)}
-              >
-                ×
-              </button>
-            </div>
-            
-            <div className="modal-content">
-              <div className="profile-image-section">
-                <div className="profile-image-container">
-                  <img src={profileImage} alt="프로필 이미지" className="profile-image-large" />
-                  <button className="change-image-btn">
-                    <Camera size={16} />
-                    <span>사진 변경</span>
-                  </button>
-                </div>
-              </div>
-              
-              <div className="form-section">
-                <label>이름</label>
-                <input 
-                  type="text" 
-                  value={accountSettings.name}
-                  onChange={(e) => setAccountSettings(prev => ({...prev, name: e.target.value}))}
-                  className="profile-input"
-                />
-              </div>
-              
-              <div className="form-section">
-                <label>전공</label>
-                <select 
-                  value={accountSettings.major}
-                  onChange={(e) => setAccountSettings(prev => ({...prev, major: e.target.value}))}
-                  className="profile-select"
-                >
-                  <option value="컴퓨터공학과">컴퓨터공학과</option>
-                  <option value="소프트웨어학과">소프트웨어학과</option>
-                  <option value="정보통신학과">정보통신학과</option>
-                  <option value="전자공학과">전자공학과</option>
-                  <option value="기계공학과">기계공학과</option>
-                  <option value="건축학과">건축학과</option>
-                  <option value="경영학과">경영학과</option>
-                  <option value="경제학과">경제학과</option>
-                  <option value="심리학과">심리학과</option>
-                  <option value="영어영문학과">영어영문학과</option>
-                  <option value="국어국문학과">국어국문학과</option>
-                  <option value="수학과">수학과</option>
-                  <option value="물리학과">물리학과</option>
-                  <option value="화학과">화학과</option>
-                  <option value="생물학과">생물학과</option>
-                  <option value="기타">기타</option>
-                </select>
-              </div>
-              
-              <div className="form-section">
-                <label>학년</label>
-                <select 
-                  value={accountSettings.year}
-                  onChange={(e) => setAccountSettings(prev => ({...prev, year: e.target.value}))}
-                  className="profile-select"
-                >
-                  <option value="1학년">1학년</option>
-                  <option value="2학년">2학년</option>
-                  <option value="3학년">3학년</option>
-                  <option value="4학년">4학년</option>
-                  <option value="석사">석사</option>
-                  <option value="박사">박사</option>
-                </select>
-              </div>
-              
-              <div className="form-section">
-                <label>이메일</label>
-                <input 
-                  type="email" 
-                  value={accountSettings.email}
-                  onChange={(e) => setAccountSettings(prev => ({...prev, email: e.target.value}))}
-                  className="profile-input"
-                />
-              </div>
-              
-              <div className="form-section">
-                <label>전화번호</label>
-                <input 
-                  type="tel" 
-                  value={accountSettings.phone}
-                  onChange={(e) => setAccountSettings(prev => ({...prev, phone: e.target.value}))}
-                  className="profile-input"
-                />
-              </div>
-              
-              <div className="modal-actions">
-                <button 
-                  className="cancel-btn"
-                  onClick={() => setShowProfileEdit(false)}
-                >
-                  취소
-                </button>
-                <button 
-                  className="save-btn"
-                  onClick={() => {
-                    alert('프로필이 수정되었습니다!');
-                    setShowProfileEdit(false);
-                  }}
-                >
-                  저장
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+
     </div>
   );
 };

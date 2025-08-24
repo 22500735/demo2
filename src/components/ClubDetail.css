@@ -14,19 +14,87 @@
 }
 
 .back-button {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
   background: none;
   border: none;
   color: #657786;
   font-size: 14px;
   cursor: pointer;
   transition: color 0.2s ease;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  white-space: nowrap !important;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  min-width: fit-content;
+  width: auto;
+  height: auto;
 }
 
 .back-button:hover {
   color: #14171a;
+  background: #f8f9fa;
+}
+
+.back-button span {
+  display: inline !important;
+  white-space: nowrap !important;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.back-button svg {
+  flex-shrink: 0;
+  position: relative;
+}
+
+/* Mobile-specific back button styles */
+@media (max-width: 768px) {
+  .back-button {
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    white-space: nowrap !important;
+    gap: 6px !important;
+    padding: 6px 10px;
+    display: flex !important;
+    align-items: center !important;
+  }
+  
+  .back-button span {
+    display: inline !important;
+    white-space: nowrap !important;
+    position: relative;
+  }
+  
+  .back-button svg {
+    position: relative;
+  }
+}
+
+@media (max-width: 480px) {
+  .back-button {
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    white-space: nowrap !important;
+    gap: 4px !important;
+    font-size: 13px;
+    padding: 6px 8px;
+    display: flex !important;
+    align-items: center !important;
+  }
+  
+  .back-button span {
+    display: inline !important;
+    white-space: nowrap !important;
+    position: relative;
+  }
+  
+  .back-button svg {
+    position: relative;
+  }
 }
 
 /* 동아리 정보 섹션 */
@@ -74,13 +142,13 @@
 .club-name {
   font-size: 24px;
   font-weight: 700;
-  color: #14171a;
+  color: #14171a !important;
   margin: 0 0 8px 0;
 }
 
 .club-description {
   font-size: 14px;
-  color: #657786;
+  color: #657786 !important;
   margin: 0 0 16px 0;
   line-height: 1.5;
 }
@@ -96,7 +164,7 @@
   align-items: center;
   gap: 4px;
   font-size: 14px;
-  color: #657786;
+  color: #657786 !important;
 }
 
 .club-tags {
@@ -107,7 +175,7 @@
 
 .tag {
   background: #f0f3ff;
-  color: #8b5cf6;
+  color: #8b5cf6 !important;
   font-size: 12px;
   padding: 4px 8px;
   border-radius: 12px;
@@ -117,19 +185,22 @@
 .club-actions {
   display: flex;
   gap: 12px;
-  margin-left: 100px;
+  margin-bottom: 24px;
 }
 
-.subscribe-btn {
+.subscribe-button {
   background: linear-gradient(135deg, #6adca4 0%, #8b5cf6 100%);
-  color: white;
+  color: white !important;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   padding: 12px 24px;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .subscribe-btn:hover {
@@ -208,6 +279,27 @@
   color: #8b5cf6;
   border-bottom-color: #8b5cf6;
   font-weight: 600;
+}
+
+.club-tab {
+  background: none;
+  border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #657786 !important;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-bottom: 3px solid transparent;
+}
+
+.club-tab.active {
+  color: #1da1f2 !important;
+  border-bottom-color: #1da1f2;
+}
+
+.club-tab:hover {
+  color: #1da1f2 !important;
 }
 
 /* 콘텐츠 영역 */

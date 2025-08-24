@@ -14,6 +14,10 @@
   background: white;
   z-index: 1000;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .header {
@@ -25,21 +29,41 @@
   align-items: center;
   box-shadow: 0 2px 10px rgba(139, 92, 246, 0.3);
   position: relative;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .header-content {
   position: absolute;
   left: 50%;
-  transform: translateX(-50%);
+  top: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
   justify-content: center;
   align-items: center;
+  width: auto;
+  max-width: 200px;
+  overflow: hidden;
+  text-align: center;
+  box-sizing: border-box;
 }
 
 .header-content h1 {
   font-size: 20px;
   font-weight: 700;
   margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
 }
 
 .filter-menu-button, .search-button {
@@ -65,13 +89,14 @@
 }
 
 .search-bar {
-  background: linear-gradient(135deg, rgba(106, 220, 164, 0.1), rgba(139, 92, 246, 0.1));
-  backdrop-filter: blur(10px);
+  background: white;
+  border-bottom: 1px solid #e1e8ed;
   padding: 12px 16px;
-  border-bottom: 1px solid rgba(139, 92, 246, 0.2);
   display: flex;
   align-items: center;
   gap: 8px;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .search-input {
@@ -82,6 +107,20 @@
   padding: 8px 12px;
   background: #f8f9fa;
   border-radius: 20px;
+  color: #14171a !important;
+  border: 1px solid #e1e8ed;
+  transition: all 0.2s ease;
+}
+
+.search-input::placeholder {
+  color: #657786 !important;
+}
+
+.search-input:focus {
+  background: white;
+  border-color: #1da1f2;
+  box-shadow: 0 0 0 2px rgba(29, 161, 242, 0.2);
+  color: #14171a !important;
 }
 
 .clear-search {
@@ -94,6 +133,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background-color 0.2s ease;
 }
 
 .clear-search:hover {
@@ -104,10 +144,10 @@
 
 /* 스크롤 가능한 컨텐츠 영역 */
 .scrollable-content {
-  margin-top: 250px; /* 탭바 높이 추가 */
-  padding-top: 4px; /* 첫 게시물과 네비게이션 바 사이 여백 더 줄임 */
+  margin-top: 140px; /* 탭바 높이 추가 - 간격 대폭 줄임 */
+  padding-top: 8px; /* 첫 게시물과 네비게이션 바 사이 여백 최소화 */
   padding-bottom: 300px;
-  min-height: calc(100vh - 250px);
+  min-height: calc(100vh - 140px);
   position: relative;
 }
 
@@ -776,18 +816,38 @@
 }
 
 /* 모바일 반응형 */
-@media (max-width: 768px) {
-  .scrollable-content {
-    margin-top: 180px;
-    padding-bottom: 280px;
+@media (max-width: 1024px) {
+  .fixed-header {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
   }
   
   .header {
-    padding: 12px 16px;
+    padding: 14px 16px;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+  
+  .header-content {
+    max-width: 180px;
+    overflow: hidden;
+    text-align: center;
+    box-sizing: border-box;
   }
   
   .header-content h1 {
     font-size: 18px;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
   }
   
   .filter-menu-button, .search-button {
@@ -798,11 +858,46 @@
   
   .search-bar {
     padding: 10px 16px;
+    background: white !important;
+    border-bottom: 1px solid #e1e8ed;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
   
   .search-input {
     font-size: 13px;
     padding: 6px 10px;
+    background: #f8f9fa !important;
+    color: #14171a !important;
+    border: 1px solid #e1e8ed;
+    -webkit-text-fill-color: #14171a !important;
+  }
+  
+  .search-input:focus {
+    background: white !important;
+    border-color: #1da1f2;
+    box-shadow: 0 0 0 2px rgba(29, 161, 242, 0.2);
+    color: #14171a !important;
+    -webkit-text-fill-color: #14171a !important;
+  }
+  
+  .search-input::placeholder {
+    color: #657786 !important;
+    -webkit-text-fill-color: #657786 !important;
+  }
+  
+  .tab-button {
+    color: #657786 !important;
+    -webkit-text-fill-color: #657786 !important;
+  }
+  
+  .tab-button:hover {
+    color: #14171a !important;
+    -webkit-text-fill-color: #14171a !important;
+  }
+  
+  .tab-button.active {
+    color: #1da1f2 !important;
+    -webkit-text-fill-color: #1da1f2 !important;
   }
   
   .slide-container {
@@ -844,10 +939,116 @@
   }
 }
 
+@media (max-width: 768px) {
+  .fixed-header {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+  
+  .header {
+    padding: 12px 16px;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+  
+  .header-content {
+    max-width: 150px;
+    overflow: hidden;
+    text-align: center;
+    box-sizing: border-box;
+  }
+  
+  .header-content h1 {
+    font-size: 18px;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+  
+  .tab-bar {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+  
+  .tab-button {
+    padding: 14px 12px;
+    font-size: 15px;
+    min-width: 60px;
+    max-width: 50%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+  
+  .tab-indicator {
+    height: 3px;
+    border-radius: 1.5px 1.5px 0 0;
+    overflow: visible;
+    box-sizing: border-box;
+  }
+}
+
 @media (max-width: 480px) {
   .scrollable-content {
-    margin-top: 160px;
+    margin-top: 130px;
     padding-bottom: 320px;
+  }
+  
+  .search-bar {
+    padding: 8px 12px;
+    background: white !important;
+    border-bottom: 1px solid #e1e8ed;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .search-input {
+    font-size: 12px;
+    padding: 6px 10px;
+    background: #f8f9fa !important;
+    color: #14171a !important;
+    border: 1px solid #e1e8ed;
+    -webkit-text-fill-color: #14171a !important;
+  }
+  
+  .search-input:focus {
+    background: white !important;
+    border-color: #1da1f2;
+    box-shadow: 0 0 0 2px rgba(29, 161, 242, 0.2);
+    color: #14171a !important;
+    -webkit-text-fill-color: #14171a !important;
+  }
+  
+  .search-input::placeholder {
+    color: #657786 !important;
+    -webkit-text-fill-color: #657786 !important;
+  }
+  
+  .tab-button {
+    color: #657786 !important;
+    -webkit-text-fill-color: #657786 !important;
+  }
+  
+  .tab-button:hover {
+    color: #14171a !important;
+    -webkit-text-fill-color: #14171a !important;
+  }
+  
+  .tab-button.active {
+    color: #1da1f2 !important;
+    -webkit-text-fill-color: #1da1f2 !important;
   }
   
   .slide-tab {
@@ -887,7 +1088,6 @@
     border: none;
     border-radius: 6px;
     transition: background-color 0.2s ease;
-    min-width: 0;
   }
   
   .action-button:hover {
@@ -1041,32 +1241,49 @@
   display: flex;
   position: relative;
   border-bottom: 1px solid #e1e8ed;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .tab-button {
   flex: 1;
+  overflow: visible;
   background: none;
   border: none;
   padding: 16px;
   font-size: 16px;
   font-weight: 600;
-  color: #657786;
+  color: #657786 !important;
   cursor: pointer;
   transition: all 0.2s ease;
   position: relative;
-  min-width: 0;
+  min-width: 80px;
   white-space: nowrap;
   text-align: center;
   z-index: 10;
+  overflow: visible;
+  text-shadow: none;
+  -webkit-text-fill-color: #657786 !important;
+  flex-shrink: 0;
+  max-width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
 }
 
 .tab-button:hover {
   background-color: #f7f9fa;
-  color: #14171a;
+  color: #14171a !important;
+  -webkit-text-fill-color: #14171a !important;
 }
 
 .tab-button.active {
-  color: #1da1f2;
+  color: #1da1f2 !important;
+  -webkit-text-fill-color: #1da1f2 !important;
+  border-bottom-color: transparent;
 }
 
 .tab-indicator {
@@ -1077,6 +1294,11 @@
   height: 3px;
   background: linear-gradient(135deg, #6adca4 0%, #8b5cf6 100%);
   transition: transform 0.3s ease;
+  z-index: 5;
+  border-radius: 1.5px 1.5px 0 0;
+  box-shadow: 0 2px 4px rgba(139, 92, 246, 0.3);
+  overflow: visible;
+  box-sizing: border-box;
 }
 
 /* 사이드바 */
@@ -1214,97 +1436,57 @@
 /* 프로필 정보 2줄 레이아웃 */
 
 /* 모바일에서 탭바와 사이드바 조정 */
-@media (max-width: 768px) {
-  .scrollable-content {
-    margin-top: 210px; /* 탭바 높이 조정 */
-    padding-top: 4px; /* 첫 게시물과 네비게이션 바 사이 여백 더 줄임 */
-  }
-  
-.sidebar {
-    width: 300px;
-    left: -300px;
-    height: 100vh;
-    height: 100dvh;
-  }
-  
-  .sidebar-content {
-    flex: 1;
-    padding: 20px;
-    padding-bottom: 100px;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    max-height: calc(100dvh - 50px);
-  }
-  
-  .sidebar-header {
-    height: 50px;
-    padding: 15px 20px;
-  }
-  
-  .tab-button {
-    padding: 14px;
-    font-size: 15px;
-  }
-  
-  .profile-button {
-    width: 36px;
-    height: 36px;
-    padding: 6px;
-  }
-}
-
 @media (max-width: 480px) {
-  .scrollable-content {
-    margin-top: 200px; /* 탭바 높이 조정 */
-    padding-top: 2px; /* 첫 게시물과 네비게이션 바 사이 여백 더 줄임 */
+  .fixed-header {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
   }
   
-  .sidebar {
-    width: 280px;
-    left: -280px;
-    height: 100vh;
-    height: 100dvh;
+  .header {
+    padding: 10px 12px;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
   }
   
-  .sidebar-content {
-    flex: 1;
-    padding: 16px;
-    padding-bottom: 100px;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    max-height: calc(100dvh - 45px);
+  .header-content {
+    max-width: 120px;
+    overflow: hidden;
+    text-align: center;
   }
   
-  .sidebar-header {
-    height: 45px;
-    padding: 12px 16px;
+  .header-content h1 {
+    font-size: 16px;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   
-  .sidebar-header h3 {
-    font-size: 18px;
+  .tab-bar {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
   }
   
   .tab-button {
-    padding: 12px;
+    padding: 12px 8px;
     font-size: 14px;
+    min-width: 50px;
+    max-width: 50%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   
-  .sidebar-header {
-    padding: 16px;
-  }
-  
-  .sidebar-content {
-    padding: 16px;
-  }
-  
-  .sidebar-item {
-    padding: 10px 12px;
-    font-size: 15px;
-  }
-  
-  .profile-button {
-    width: 36px;
-    height: 36px;
-    padding: 6px;
+  .tab-indicator {
+    height: 2px;
+    border-radius: 1px 1px 0 0;
+    overflow: visible;
   }
 }

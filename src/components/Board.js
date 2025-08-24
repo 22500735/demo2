@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Search, Plus, Bookmark, ThumbsUp, MessageCircle, Eye, MoreHorizontal, X, List, Edit3, Users, TrendingUp } from 'lucide-react';
-import CreateBoardPost from './CreateBoardPost';
+import CreatePost from './CreatePost';
 import ClubDetail from './ClubDetail';
 import './Board.css';
 
@@ -160,6 +160,23 @@ const Board = () => {
     ));
   };
 
+  const handleCreatePost = (newPost) => {
+    const post = {
+      ...newPost,
+      id: Date.now(),
+      author: '사용자',
+      createdAt: new Date().toISOString(),
+      likes: 0,
+      comments: 0,
+      views: 0,
+      isLiked: false,
+      isBookmarked: false,
+      board: selectedBoard?.name || selectedClub?.name || '자유게시판'
+    };
+    setPosts(prevPosts => [post, ...prevPosts]);
+    setCurrentView('main');
+  };
+
   const filteredPosts = posts.filter(post => {
     if (selectedBoard && post.board !== selectedBoard.name) return false;
     if (selectedClub && post.club !== selectedClub.name) return false;
@@ -183,10 +200,11 @@ const Board = () => {
 
   if (currentView === 'createPost') {
     return (
-      <CreateBoardPost 
+      <CreatePost 
         onBack={() => setCurrentView('main')}
         board={selectedBoard}
         club={selectedClub}
+        onCreatePost={handleCreatePost}
       />
     );
   }
@@ -197,11 +215,11 @@ const Board = () => {
       <div className="board-container">
         <div className="board-header">
           <div className="header-content">
-            <button className="back-button" onClick={() => setCurrentView('main')}>
-              <ArrowLeft size={20} />
-            </button>
-            <h1>동아리</h1>
-            <div className="header-actions">
+            <div className="header-top-row">
+              <button className="back-button" onClick={() => setCurrentView('main')}>
+                <ArrowLeft size={20} />
+              </button>
+              <h1>동아리</h1>
               <button className="search-toggle" onClick={() => setSearchQuery('')}>
                 <Search size={20} />
               </button>
@@ -233,7 +251,7 @@ const Board = () => {
                   <div className="club-header">
                     <h3 className="club-name">{club.name}</h3>
                     <button 
-                      className={`follow-button ${club.isFollowed ? 'followed' : ''}`}
+                      className={`follow-button ${followedClubs.includes(club.name) ? 'following' : ''}`}
                       onClick={(e) => {
                         e.stopPropagation();
                         handleFollow(club.id);
@@ -303,7 +321,7 @@ const Board = () => {
               </div>
             </div>
             <button 
-              className={`follow-button large ${followedClubs.includes(selectedClub.name) ? 'followed' : ''}`}
+              className={`follow-button large ${followedClubs.includes(selectedClub.name) ? 'following' : ''}`}
               onClick={() => handleFollow(selectedClub.id)}
             >
               {followedClubs.includes(selectedClub.name) ? '팔로잉' : '팔로우'}

@@ -7,21 +7,32 @@
 
 .board-header {
   background: linear-gradient(135deg, #6adca4 0%, #8b5cf6 100%);
-  padding: 20px 16px;
   color: white;
-  position: sticky;
-  top: 0;
+  padding: 20px;
+  margin-bottom: 24px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
+  position: relative;
   z-index: 100;
-  box-shadow: 0 2px 20px rgba(139, 92, 246, 0.3);
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .header-content {
   display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 12px;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
   margin-bottom: 16px;
-  min-height: 40px;
+  min-height: 44px;
+  position: relative;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 /* 데스크톱에서는 원래대로 한 줄 레이아웃 */
@@ -58,6 +69,15 @@
   white-space: nowrap;
   flex: 1;
   min-width: 0;
+  order: 2;
+  position: relative;
+  max-width: 200px;
+  flex-shrink: 1;
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
 }
 
 .back-button {
@@ -75,6 +95,10 @@
   width: 44px;
   height: 44px;
   flex-shrink: 0;
+  order: 1;
+  position: relative;
+  min-width: 44px;
+  box-sizing: border-box;
 }
 
 .back-button:hover {
@@ -95,38 +119,74 @@
   width: 100%;
   min-height: 44px;
   flex-shrink: 0;
+  gap: 8px;
+  position: relative;
+  max-width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .header-spacer {
   width: 44px; /* back-button과 같은 크기 */
 }
 
-.search-toggle,
+.search-toggle {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  padding: 10px;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  order: 3;
+  position: relative;
+  min-width: 44px;
+  box-sizing: border-box;
+}
+
+.search-toggle:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
 .write-button {
   background: rgba(255, 255, 255, 0.2);
   border: none;
   border-radius: 12px;
   color: white;
-  padding: 10px 16px;
+  padding: 8px 12px;
   cursor: pointer;
   backdrop-filter: blur(10px);
   font-weight: 600;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   transition: all 0.3s ease;
-  font-size: 14px;
+  font-size: 13px;
   white-space: nowrap;
   flex-shrink: 0;
+  order: 3;
+  position: relative;
+  min-width: 70px;
+  height: 44px;
+  justify-content: center;
+  max-width: 100px;
+  box-sizing: border-box;
 }
 
-.search-toggle:hover,
 .write-button:hover {
   background: rgba(255, 255, 255, 0.3);
 }
 
 .search-container {
   position: relative;
+  z-index: 99;
 }
 
 .search-input {
@@ -135,18 +195,21 @@
   border: none;
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.2);
-  color: white;
+  color: white !important;
   font-size: 16px;
   backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .search-input::placeholder {
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.7) !important;
 }
 
 .search-input:focus {
   outline: none;
   background: rgba(255, 255, 255, 0.3);
+  color: white !important;
+  border-color: rgba(255, 255, 255, 0.5);
 }
 
 .content {
@@ -186,12 +249,12 @@
 .board-info h3 {
   font-size: 18px;
   font-weight: 600;
-  color: #14171a;
+  color: #14171a !important;
   margin: 0 0 8px 0;
 }
 
 .board-description {
-  color: #657786;
+  color: #657786 !important;
   font-size: 14px;
   margin: 0 0 12px 0;
   line-height: 1.4;
@@ -200,8 +263,14 @@
 .board-stats {
   display: flex;
   gap: 16px;
+  color: #657786 !important;
   font-size: 12px;
-  color: #8899a6;
+}
+
+.board-stats span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .board-badge {
@@ -266,11 +335,13 @@
 .club-name {
   font-size: 18px;
   font-weight: 600;
-  color: #14171a;
+  color: #14171a !important;
   margin: 0;
+  flex: 1;
+  margin-right: 12px;
 }
 
-.follow-button {
+.board-container .follow-button {
   background: #1da1f2;
   color: white;
   border: none;
@@ -282,48 +353,47 @@
   transition: all 0.2s ease;
 }
 
-.follow-button.followed {
+.board-container .follow-button.following {
   background: #657786;
 }
 
-.follow-button.large {
+.board-container .follow-button.large {
   padding: 12px 24px;
   font-size: 14px;
 }
 
-.follow-button:hover {
+.board-container .follow-button:hover {
   opacity: 0.8;
 }
 
 .club-description {
-  color: #657786;
+  color: #657786 !important;
   font-size: 14px;
+  line-height: 1.5;
   margin: 0 0 12px 0;
-  line-height: 1.4;
 }
 
 .club-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
 
 .tag {
   background: #f7f9fa;
-  color: #1da1f2;
+  color: #657786 !important;
   padding: 4px 8px;
   border-radius: 12px;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
 }
 
 .club-stats {
   display: flex;
   gap: 16px;
-  align-items: center;
+  color: #657786 !important;
   font-size: 12px;
-  color: #657786;
 }
 
 .club-stats span {
@@ -448,19 +518,19 @@
 
 .author-name {
   font-weight: 600;
-  color: #14171a;
+  color: #14171a !important;
   font-size: 14px;
 }
 
 .post-time {
-  color: #657786;
+  color: #657786 !important;
   font-size: 12px;
 }
 
 .more-button {
   background: none;
   border: none;
-  color: #657786;
+  color: #657786 !important;
   cursor: pointer;
   padding: 4px;
   border-radius: 50%;
@@ -478,13 +548,13 @@
 .post-title {
   font-size: 16px;
   font-weight: 600;
-  color: #14171a;
+  color: #14171a !important;
   margin: 0 0 8px 0;
   line-height: 1.4;
 }
 
 .post-text {
-  color: #14171a;
+  color: #14171a !important;
   font-size: 14px;
   line-height: 1.5;
   margin: 0 0 12px 0;
@@ -508,12 +578,12 @@
   gap: 6px;
   background: none;
   border: none;
-  color: #657786;
+  color: #657786 !important;
   cursor: pointer;
-  padding: 8px 12px;
-  border-radius: 20px;
-  font-size: 14px;
+  padding: 8px;
+  border-radius: 8px;
   transition: all 0.2s ease;
+  font-size: 14px;
 }
 
 .action-button:hover {
@@ -575,7 +645,130 @@
 }
 
 /* 반응형 */
+@media (max-width: 1024px) {
+  .board-header {
+    padding: 18px;
+    margin-bottom: 20px;
+    border-radius: 14px;
+  }
+  
+  .header-content {
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+  
+  .header-content h1 {
+    font-size: 18px;
+    max-width: 180px;
+    padding: 0 6px;
+  }
+  
+  .back-button, .search-toggle {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    padding: 8px;
+  }
+  
+  .write-button {
+    padding: 6px 10px;
+    font-size: 12px;
+    min-width: 65px;
+    max-width: 90px;
+    height: 40px;
+  }
+}
+
 @media (max-width: 768px) {
+  .board-header {
+    padding: 16px;
+    position: relative;
+    z-index: 100;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    margin-bottom: 16px;
+    border-radius: 12px;
+    box-sizing: border-box;
+  }
+  
+  .header-content {
+    flex-direction: row;
+    gap: 6px;
+    align-items: center;
+    min-height: 44px;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+  
+  .header-content h1 {
+    font-size: 18px;
+    text-align: center;
+    margin: 0;
+    padding: 0 4px;
+    flex: 1;
+    max-width: 150px;
+    flex-shrink: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+  
+  .header-top-row {
+    gap: 6px;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    min-height: 44px;
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+  
+  .write-button {
+    padding: 6px 10px;
+    font-size: 12px;
+    min-width: 60px;
+    max-width: 80px;
+    flex-shrink: 0;
+    box-sizing: border-box;
+  }
+  
+  .back-button {
+    min-width: 44px;
+    flex-shrink: 0;
+    box-sizing: border-box;
+  }
+  
+  .search-toggle {
+    min-width: 44px;
+    flex-shrink: 0;
+    box-sizing: border-box;
+  }
+  
+  .search-container {
+    z-index: 99;
+  }
+  
+  .search-input {
+    font-size: 14px;
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  }
+  
+  .search-input::placeholder {
+    color: rgba(255, 255, 255, 0.7) !important;
+  }
+  
   .boards-grid {
     grid-template-columns: 1fr;
   }
@@ -594,15 +787,6 @@
     flex-direction: column;
     text-align: center;
   }
-  
-  .header-content {
-    flex-direction: column;
-    gap: 8px;
-  }
-  
-  .header-content h1 {
-    font-size: 20px;
-  }
 }
 
 @media (max-width: 480px) {
@@ -612,69 +796,228 @@
   
   .board-header {
     padding: 12px;
+    position: relative;
+    z-index: 100;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    margin-bottom: 12px;
+    border-radius: 8px;
   }
   
   .header-content {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
+    flex-direction: row;
+    align-items: center;
+    gap: 4px;
     margin-bottom: 8px;
+    min-height: 40px;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
   }
   
   .header-top-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    min-height: 40px;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+    min-height: 40px !important;
+    gap: 4px !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    max-width: 100%;
+    overflow: hidden;
   }
   
   .header-content h1 {
-    font-size: 16px;
-    flex: 1;
-    min-width: 0;
-    text-align: center;
-    padding: 0 8px;
+    font-size: 14px !important;
+    flex: 1 !important;
+    min-width: 0 !important;
+    text-align: center !important;
+    padding: 0 4px !important;
+    margin: 0 !important;
+    order: 2 !important;
+    max-width: 120px !important;
+    flex-shrink: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   
   .back-button {
-    padding: 8px;
-    width: 40px;
-    height: 40px;
-    flex-shrink: 0;
+    padding: 6px !important;
+    width: 36px !important;
+    height: 36px !important;
+    flex-shrink: 0 !important;
+    order: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 36px;
   }
   
-  .header-spacer {
-    width: 40px;
-    flex-shrink: 0;
-  }
-  
-  .header-actions {
-    gap: 8px;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  
-  .search-toggle,
   .write-button {
-    padding: 8px 12px;
-    font-size: 12px;
-    flex: 1;
-    min-width: 100px;
-    max-width: 200px;
-    justify-content: center;
+    padding: 4px 8px !important;
+    width: auto !important;
+    height: 36px !important;
+    font-size: 11px !important;
+    flex-shrink: 0 !important;
+    min-width: 50px !important;
+    max-width: 60px !important;
+    order: 3 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
   
-  .post-card {
-    padding: 16px;
+  .search-toggle {
+    padding: 6px !important;
+    width: 36px !important;
+    height: 36px !important;
+    flex-shrink: 0 !important;
+    order: 3 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 36px;
   }
-  
-  .post-actions {
-    gap: 12px;
-  }
-  
-  .action-button {
-    padding: 6px 8px;
-    font-size: 12px;
-  }
+}
+
+/* 동아리 상세 페이지 */
+.club-detail {
+  background: white;
+  min-height: 100vh;
+}
+
+.club-detail-header {
+  background: linear-gradient(135deg, #6adca4 0%, #8b5cf6 100%);
+  padding: 20px 16px;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.club-detail-header .back-button {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 10px;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+.club-detail-header .back-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.club-detail-header h1 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.club-info-section {
+  padding: 20px 16px;
+}
+
+.club-banner {
+  width: 100%;
+  height: 200px;
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.club-banner-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.club-main-info {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  margin-bottom: 32px;
+}
+
+.club-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.club-avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.club-details {
+  flex: 1;
+}
+
+.club-name {
+  font-size: 24px;
+  font-weight: 700;
+  color: #14171a;
+  margin: 0 0 8px 0;
+}
+
+.club-description {
+  color: #657786;
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 0 0 16px 0;
+}
+
+.club-stats {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #657786;
+  font-size: 14px;
+}
+
+.club-tabs {
+  display: flex;
+  border-bottom: 1px solid #e1e8ed;
+  margin-bottom: 24px;
+}
+
+.club-tab {
+  background: none;
+  border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #657786;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-bottom: 3px solid transparent;
+}
+
+.club-tab.active {
+  color: #1da1f2;
+  border-bottom-color: #1da1f2;
+}
+
+.club-tab:hover {
+  color: #1da1f2;
 }
