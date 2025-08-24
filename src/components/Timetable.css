@@ -1363,6 +1363,31 @@
   margin: 0;
 }
 
+.add-course-section {
+  padding: 20px;
+  border-top: 1px solid #e1e8ed;
+  text-align: center;
+}
+
+.add-course-button {
+  background: #4facfe;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 150px;
+}
+
+.add-course-button:hover {
+  background: #3d8bfe;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(79, 172, 254, 0.3);
+}
+
 /* 모바일 반응형 */
 @media (max-width: 414px) {
   .grade-calculator-button-container {

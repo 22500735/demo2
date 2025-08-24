@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Filter, Plus, Heart, MapPin, Eye, MessageCircle, Clock } from 'lucide-react';
+import { Search, Filter, Plus, Heart, MapPin, Eye, MessageCircle, Clock, X, User } from 'lucide-react';
 import CreateMarketplaceItem from './CreateMarketplaceItem';
 import './Marketplace.css';
 
@@ -10,6 +10,8 @@ const Marketplace = () => {
   const [showSortMenu, setShowSortMenu] = useState(false);
   const [likedItems, setLikedItems] = useState(new Set());
   const [currentView, setCurrentView] = useState('main');
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [showProductDetail, setShowProductDetail] = useState(false);
   const [items, setItems] = useState([
     {
       id: 1,
@@ -219,6 +221,16 @@ const Marketplace = () => {
     });
   };
 
+  const handleProductClick = (product) => {
+    setSelectedProduct(product);
+    setShowProductDetail(true);
+  };
+
+  const closeProductDetail = () => {
+    setShowProductDetail(false);
+    setSelectedProduct(null);
+  };
+
   if (currentView === 'create') {
     return (
       <CreateMarketplaceItem 
@@ -307,7 +319,7 @@ const Marketplace = () => {
 
         <div className="products-container grid">
           {filteredProducts.map(product => (
-            <div key={product.id} className="product-card">
+            <div key={product.id} className="product-card" onClick={() => handleProductClick(product)}>
               <div className="product-header">
                 <div className="product-badge" style={{ backgroundColor: getCategoryColor(product.category) }}>
                   {categories.find(cat => cat.id === product.category)?.name}
@@ -318,9 +330,15 @@ const Marketplace = () => {
               <div className="product-image-container">
                 <div className="product-image">
                   <img src={product.image} alt={product.title} />
+                  <div className="price-overlay">
+                    {formatPrice(product.price)}
+                  </div>
                   <button 
                     className={`like-button ${likedItems.has(product.id) ? 'liked' : ''}`}
-                    onClick={() => toggleLike(product.id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleLike(product.id);
+                    }}
                   >
                     <Heart size={16} fill={likedItems.has(product.id) ? '#ff6b6b' : 'none'} />
                   </button>
@@ -329,11 +347,15 @@ const Marketplace = () => {
               
               <div className="product-info">
                 <div className="product-title">{product.title}</div>
-                <div className="product-price">{formatPrice(product.price)}</div>
-                <div className="product-condition">{product.condition}</div>
                 
-                <div className="product-bottom">
-                  <div className="product-meta">
+                <div className="product-detail-row">
+                  <div className="product-condition">{product.condition}</div>
+                  <div className="product-spacing"></div>
+                  <div className="seller-name">{product.seller}</div>
+                </div>
+                
+                <div className="product-meta">
+                  <div className="product-location-time">
                     <div className="meta-item">
                       <MapPin size={12} />
                       <span>{product.location}</span>
@@ -346,22 +368,18 @@ const Marketplace = () => {
 
                   <div className="product-stats">
                     <div className="stat-item">
-                      <Heart size={14} />
+                      <Heart size={12} />
                       <span>{product.likes}</span>
                     </div>
                     <div className="stat-item">
-                      <MessageCircle size={14} />
+                      <MessageCircle size={12} />
                       <span>{product.comments}</span>
                     </div>
                     <div className="stat-item">
-                      <Eye size={14} />
+                      <Eye size={12} />
                       <span>{product.views}</span>
                     </div>
                   </div>
-                </div>
-
-                <div className="seller-info">
-                  <span className="seller-name">{product.seller}</span>
                 </div>
               </div>
             </div>
@@ -375,6 +393,80 @@ const Marketplace = () => {
       >
         <Plus size={24} />
       </button>
+
+      {/* 상품 상세 모달 */}
+      {showProductDetail && selectedProduct && (
+        <div className="modal-overlay" onClick={closeProductDetail}>
+          <div className="product-detail-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>{selectedProduct.title}</h3>
+              <button className="close-button" onClick={closeProductDetail}>
+                <X size={24} />
+              </button>
+            </div>
+            
+            <div className="modal-body">
+              <div className="product-detail-image">
+                <img src={selectedProduct.image} alt={selectedProduct.title} />
+                <div className="price-overlay-large">
+                  {formatPrice(selectedProduct.price)}
+                </div>
+              </div>
+              
+              <div className="product-detail-info">
+                <div className="detail-row">
+                  <div className="detail-label">상품 상태:</div>
+                  <div className="detail-value">{selectedProduct.condition}</div>
+                </div>
+                
+                <div className="detail-row">
+                  <div className="detail-label">판매자:</div>
+                  <div className="detail-value">
+                    <User size={16} />
+                    {selectedProduct.seller} ({selectedProduct.department})
+                  </div>
+                </div>
+                
+                <div className="detail-row">
+                  <div className="detail-label">위치:</div>
+                  <div className="detail-value">
+                    <MapPin size={16} />
+                    {selectedProduct.location}
+                  </div>
+                </div>
+                
+                <div className="detail-row">
+                  <div className="detail-label">등록 시간:</div>
+                  <div className="detail-value">
+                    <Clock size={16} />
+                    {selectedProduct.time}
+                  </div>
+                </div>
+                
+                <div className="product-description">
+                  <h4>상품 설명</h4>
+                  <p>{selectedProduct.description}</p>
+                </div>
+                
+                <div className="product-stats-detail">
+                  <div className="stat-item-detail">
+                    <Heart size={16} />
+                    <span>좋아요 {selectedProduct.likes}개</span>
+                  </div>
+                  <div className="stat-item-detail">
+                    <MessageCircle size={16} />
+                    <span>댓글 {selectedProduct.comments}개</span>
+                  </div>
+                  <div className="stat-item-detail">
+                    <Eye size={16} />
+                    <span>조회 {selectedProduct.views}회</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

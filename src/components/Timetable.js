@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, ArrowLeft, Star, MessageCircle, ThumbsUp, Clock, MapPin, Users, Calculator, Minus, Plus, User, BookOpen, Search, Edit3, Send } from 'lucide-react';
 import GradeCalculator from './GradeCalculator';
 import './Timetable.css';
@@ -21,40 +21,37 @@ const Timetable = () => {
   const [boardPosts, setBoardPosts] = useState({});
   const [newPost, setNewPost] = useState('');
   const [selectedWeek, setSelectedWeek] = useState(1);
+  const [schedule, setSchedule] = useState({});
   
   const days = ['月', '火', '水', '木', '金'];
   const timeSlots = [
     '9:00-10:30',     // 1st period
-    '10:30-11:00',    // Worship
     '11:00-12:30',    // 2nd period
     '12:30-13:20',    // Lunch Hour
     '13:20-14:50',    // 3rd period
     '15:05-16:35',    // 4th period
     '16:50-18:20',    // 5th period
-    '18:30-20:00',    // 6th period
-    '20:10-21:40'     // 7th period
+    '18:30-20:00'     // 6th period
   ];
 
   const periodNames = [
     '1교시',
-    '예배',
     '2교시', 
     '점심시간',
     '3교시',
     '4교시',
     '5교시',
-    '6교시',
-    '7교시'
+    '6교시'
   ];
 
-  const schedule = {
+  const initialSchedule = {
     '月': [
       { 
         subject: '数学解析I', 
         room: 'A101', 
         professor: '田中教授',
         credits: 2,
-        description: '微分積分学の基礎理論を学習します。極限、連続性、微分可能性について詳しく扱います。',
+        description: '微分積分学の基礎理論を学습します。極限、連続性、微分可能性について詳しく扱います。',
         color: '#4facfe'
       },
       { 
@@ -71,15 +68,15 @@ const Timetable = () => {
         room: '実験室1', 
         professor: '佐藤教授',
         credits: 1,
-        description: '基礎物理学の実験を通して理論の理解を深めます。レポート作成も重要な評価要素です。',
+        description: '基礎物理学の実験을 통해 이론의 이해를 深めます。レポート作成도 중요한 평가 요소입니다.',
         color: '#2ecc71'
       },
       { 
-        subject: '物理学実験', 
-        room: '実験室1', 
+        subject: '물리학실험', 
+        room: '실험실1', 
         professor: '佐藤教授',
         credits: 1,
-        description: '基礎物理学の実験を通して理論の理解を深めます。レポート作成も重要な評価要素です。',
+        description: '基礎물리학の実験을 통해 이론 이해를 深めます。レポート작성도 중요한 평가 요소입니다.',
         color: '#2ecc71'
       },
       null
@@ -231,6 +228,11 @@ const Timetable = () => {
     }
   ];
 
+  // 초기 시간표 설정
+  useEffect(() => {
+    setSchedule(initialSchedule);
+  }, []);
+
   const handleClassClick = (classInfo, day, period) => {
     if (classInfo) {
       setSelectedClass({ ...classInfo, day, period: period + 1, time: timeSlots[period] });
@@ -241,8 +243,8 @@ const Timetable = () => {
   };
 
   const handleEmptyCellPlusClick = () => {
-    setShowPopularCourses(true);
-    setShowSearch(false);
+    setShowSearch(true);
+    setShowPopularCourses(false);
   };
 
   const handleSearchClick = () => {
@@ -305,6 +307,63 @@ const Timetable = () => {
     course.department.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const addCourseToSchedule = (course) => {
+    // 강의 시간 파싱 (예: "월,수 15:05-16:35")
+    const timeInfo = course.time;
+    const [daysStr, timeRange] = timeInfo.split(' ');
+    const courseDays = daysStr.split(',');
+    
+    // 시간대 찾기
+    let targetPeriod = -1;
+    timeSlots.forEach((slot, index) => {
+      if (timeRange.includes(slot.split('-')[0])) {
+        targetPeriod = index;
+      }
+    });
+    
+    if (targetPeriod === -1) {
+      alert('해당 시간대를 찾을 수 없습니다.');
+      return;
+    }
+    
+    // 시간표에 추가
+    const newSchedule = { ...schedule };
+    courseDays.forEach(day => {
+      // 한국어 요일을 일본어로 변환
+      let targetDay = day;
+      if (day === '월') targetDay = '月';
+      else if (day === '화') targetDay = '火';
+      else if (day === '수') targetDay = '水';
+      else if (day === '목') targetDay = '木';
+      else if (day === '금') targetDay = '金';
+      
+      if (!newSchedule[targetDay]) {
+        newSchedule[targetDay] = new Array(timeSlots.length).fill(null);
+      }
+      
+      // 해당 시간에 이미 수업이 있는지 확인
+      if (newSchedule[targetDay][targetPeriod]) {
+        alert(`${targetDay}요일 ${periodNames[targetPeriod]}에 이미 수업이 있습니다.`);
+        return;
+      }
+      
+      // 강의 추가
+      newSchedule[targetDay][targetPeriod] = {
+        subject: course.name,
+        room: 'TBA',
+        professor: course.professor,
+        credits: course.credits,
+        description: `${course.department} 소속 강의입니다.`,
+        color: '#4facfe'
+      };
+    });
+    
+    setSchedule(newSchedule);
+    alert(`${course.name} 강의가 시간표에 추가되었습니다!`);
+    setShowSearch(false);
+    setSelectedCourse(null);
+  };
+
   const handleEmptyCellClick = (day, period) => {
     const cellKey = `${day}-${period}`;
     // 수업 추가 모달을 표시하거나 편집 모드로 전환
@@ -338,7 +397,7 @@ const Timetable = () => {
   };
 
   const getCellContent = (day, period) => {
-    const scheduleItem = schedule[day][period];
+    const scheduleItem = schedule[day] ? schedule[day][period] : null;
     const cellKey = `${day}-${period}`;
     const customItem = customClasses[cellKey];
     
@@ -353,7 +412,9 @@ const Timetable = () => {
   const getTotalClasses = () => {
     let total = 0;
     days.forEach(day => {
-      total += schedule[day].filter(item => item !== null).length;
+      if (schedule[day]) {
+        total += schedule[day].filter(item => item !== null).length;
+      }
     });
     return total;
   };
@@ -361,9 +422,11 @@ const Timetable = () => {
   const getTotalCredits = () => {
     let total = 0;
     days.forEach(day => {
-      schedule[day].forEach(item => {
-        if (item) total += item.credits;
-      });
+      if (schedule[day]) {
+        schedule[day].forEach(item => {
+          if (item) total += item.credits;
+        });
+      }
     });
     return total;
   };
@@ -375,11 +438,13 @@ const Timetable = () => {
   const getAllSubjects = () => {
     const subjects = [];
     days.forEach(day => {
-      schedule[day].forEach(item => {
-        if (item && !subjects.find(s => s.subject === item.subject)) {
-          subjects.push(item);
-        }
-      });
+      if (schedule[day]) {
+        schedule[day].forEach(item => {
+          if (item && !subjects.find(s => s.subject === item.subject)) {
+            subjects.push(item);
+          }
+        });
+      }
     });
     return subjects;
   };
@@ -882,6 +947,15 @@ const Timetable = () => {
                     <p className="review-text">{review.content}</p>
                   </div>
                 ))}
+              </div>
+              
+              <div className="add-course-section">
+                <button 
+                  className="add-course-button"
+                  onClick={() => addCourseToSchedule(selectedCourse)}
+                >
+                  시간표에 추가
+                </button>
               </div>
             </div>
           </div>
