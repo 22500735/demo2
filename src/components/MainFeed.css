@@ -105,7 +105,7 @@
 /* 스크롤 가능한 컨텐츠 영역 */
 .scrollable-content {
   margin-top: 250px; /* 탭바 높이 추가 */
-  padding-top: 16px; /* 첫 게시물과 네비게이션 바 사이 여백 */
+  padding-top: 4px; /* 첫 게시물과 네비게이션 바 사이 여백 더 줄임 */
   padding-bottom: 300px;
   min-height: calc(100vh - 250px);
   position: relative;
@@ -1054,6 +1054,10 @@
   cursor: pointer;
   transition: all 0.2s ease;
   position: relative;
+  min-width: 0;
+  white-space: nowrap;
+  text-align: center;
+  z-index: 10;
 }
 
 .tab-button:hover {
@@ -1213,7 +1217,7 @@
 @media (max-width: 768px) {
   .scrollable-content {
     margin-top: 210px; /* 탭바 높이 조정 */
-    padding-top: 16px; /* 첫 게시물과 네비게이션 바 사이 여백 */
+    padding-top: 4px; /* 첫 게시물과 네비게이션 바 사이 여백 더 줄임 */
   }
   
 .sidebar {
@@ -1252,7 +1256,7 @@
 @media (max-width: 480px) {
   .scrollable-content {
     margin-top: 200px; /* 탭바 높이 조정 */
-    padding-top: 12px; /* 첫 게시물과 네비게이션 바 사이 여백 */
+    padding-top: 2px; /* 첫 게시물과 네비게이션 바 사이 여백 더 줄임 */
   }
   
   .sidebar {

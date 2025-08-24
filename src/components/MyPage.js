@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Heart, Bookmark, MessageSquare, MessageCircle, User, Settings, Bell, HelpCircle, LogOut, Trophy, Star, Calendar, BookOpen, Users, ShoppingBag, MapPin, Phone, Mail, Edit, Camera, Upload, ArrowLeft } from 'lucide-react';
 import PostDetail from './PostDetail';
+import ClubDetail from './ClubDetail';
 import './MyPage.css';
 
 const MyPage = () => {
@@ -8,8 +9,9 @@ const MyPage = () => {
   const [showSettings, setShowSettings] = useState(false);
   const [showProfileEdit, setShowProfileEdit] = useState(false);
   const [profileImage, setProfileImage] = useState('https://via.placeholder.com/80x80?text=김민수');
-  const [currentView, setCurrentView] = useState('main'); // main, postDetail, settings, accountSettings, notificationSettings, helpCenter
+  const [currentView, setCurrentView] = useState('main'); // main, postDetail, settings, accountSettings, notificationSettings, helpCenter, clubDetail
   const [selectedPost, setSelectedPost] = useState(null);
+  const [selectedClub, setSelectedClub] = useState(null);
   const [notificationSettings, setNotificationSettings] = useState({
     pushNotifications: true,
     emailNotifications: false,
@@ -149,6 +151,24 @@ const MyPage = () => {
   const handleBackToMain = () => {
     setCurrentView('main');
     setSelectedPost(null);
+    setSelectedClub(null);
+  };
+
+  const handleClubClick = (circleName) => {
+    // 동아리 데이터를 ClubDetail 형식으로 변환
+    const clubData = {
+      id: Math.random(),
+      name: circleName,
+      description: `${circleName}에서 다양한 활동을 진행하고 있습니다.`,
+      category: '동아리',
+      members: Math.floor(Math.random() * 200) + 50,
+      posts: Math.floor(Math.random() * 100) + 20,
+      image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=100&h=100&fit=crop&crop=center',
+      isFollowed: true,
+      tags: ['활동', '모임', '친목']
+    };
+    setSelectedClub(clubData);
+    setCurrentView('clubDetail');
   };
 
   const handleSettingsClick = (settingType) => {
@@ -239,6 +259,16 @@ const MyPage = () => {
         post={selectedPost}
         onBack={handleBackToMain}
         onUpdatePost={handleUpdatePost}
+      />
+    );
+  }
+
+  // 동아리 상세보기 뷰
+  if (currentView === 'clubDetail' && selectedClub) {
+    return (
+      <ClubDetail 
+        club={selectedClub}
+        onBack={handleBackToMain}
       />
     );
   }
@@ -763,7 +793,12 @@ const MyPage = () => {
                   <div className="circle-header">
                     <div className="circle-icon">🔵</div>
                     <div className="circle-info">
-                      <div className="circle-name">{circle.name}</div>
+                      <div 
+                        className="circle-name clickable" 
+                        onClick={() => handleClubClick(circle.name)}
+                      >
+                        {circle.name}
+                      </div>
                       <div className="circle-role">{circle.role}</div>
                     </div>
                     <div className="circle-status">
@@ -853,12 +888,28 @@ const MyPage = () => {
               
               <div className="form-section">
                 <label>전공</label>
-                <input 
-                  type="text" 
+                <select 
                   value={accountSettings.major}
                   onChange={(e) => setAccountSettings(prev => ({...prev, major: e.target.value}))}
-                  className="profile-input"
-                />
+                  className="profile-select"
+                >
+                  <option value="컴퓨터공학과">컴퓨터공학과</option>
+                  <option value="소프트웨어학과">소프트웨어학과</option>
+                  <option value="정보통신학과">정보통신학과</option>
+                  <option value="전자공학과">전자공학과</option>
+                  <option value="기계공학과">기계공학과</option>
+                  <option value="건축학과">건축학과</option>
+                  <option value="경영학과">경영학과</option>
+                  <option value="경제학과">경제학과</option>
+                  <option value="심리학과">심리학과</option>
+                  <option value="영어영문학과">영어영문학과</option>
+                  <option value="국어국문학과">국어국문학과</option>
+                  <option value="수학과">수학과</option>
+                  <option value="물리학과">물리학과</option>
+                  <option value="화학과">화학과</option>
+                  <option value="생물학과">생물학과</option>
+                  <option value="기타">기타</option>
+                </select>
               </div>
               
               <div className="form-section">

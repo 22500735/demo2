@@ -65,6 +65,40 @@ const Marketplace = () => {
       department: '경영학과',
       description: '이번 학기 사용한 교재입니다. 필기 조금 있어요.',
       status: 'available'
+    },
+    {
+      id: 4,
+      title: '미적분학 교재 (새책)',
+      price: 25000,
+      image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=300&h=300&fit=crop',
+      category: 'books',
+      location: '대학로',
+      time: '5시간 전',
+      likes: 8,
+      comments: 1,
+      views: 89,
+      condition: '새상품',
+      seller: '수학과20',
+      department: '수학과',
+      description: '이번 학기 수업용으로 샀는데 온라인 수업으로 바뀌어서 판매합니다.',
+      status: 'available'
+    },
+    {
+      id: 5,
+      title: '나이키 운동화 250mm',
+      price: 45000,
+      image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&h=300&fit=crop',
+      category: 'clothing',
+      location: '홍대',
+      time: '1일 전',
+      likes: 12,
+      comments: 4,
+      views: 156,
+      condition: '상급',
+      seller: '체육과21',
+      department: '체육교육과',
+      description: '사이즈가 안 맞아서 판매해요. 거의 안 신었습니다.',
+      status: 'available'
     }
   ]);
 
@@ -221,6 +255,16 @@ const Marketplace = () => {
       }
       return newLiked;
     });
+    
+    // 상품의 좋아요 수도 업데이트
+    setItems(prev => prev.map(item => 
+      item.id === itemId 
+        ? { 
+            ...item, 
+            likes: likedItems.has(itemId) ? item.likes - 1 : item.likes + 1 
+          }
+        : item
+    ));
   };
 
   const handleProductClick = (product) => {
@@ -593,14 +637,17 @@ const Marketplace = () => {
                 </div>
                 
                 <div className="product-stats-detail">
-                  <div className="stat-item-detail">
-                    <Heart size={16} />
+                  <button 
+                    className={`stat-item-detail ${likedItems.has(selectedProduct.id) ? 'liked' : ''}`}
+                    onClick={() => toggleLike(selectedProduct.id)}
+                  >
+                    <Heart size={16} fill={likedItems.has(selectedProduct.id) ? '#ff6b6b' : 'none'} />
                     <span>좋아요 {selectedProduct.likes}개</span>
-                  </div>
-                  <div className="stat-item-detail">
+                  </button>
+                  <button className="stat-item-detail">
                     <MessageCircle size={16} />
                     <span>댓글 {selectedProduct.comments}개</span>
-                  </div>
+                  </button>
                   <div className="stat-item-detail">
                     <Eye size={16} />
                     <span>조회 {selectedProduct.views}회</span>

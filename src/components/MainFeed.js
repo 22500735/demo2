@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Heart, MessageCircle, Share, Bookmark, EyeOff, User, X, Plus, Search, UserPlus, UserCheck, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Heart, MessageCircle, Share, Bookmark, EyeOff, User, X, Plus, Search, UserPlus, UserCheck, ChevronLeft, ChevronRight, Menu } from 'lucide-react';
 import PostDetail from './PostDetail';
 import CreatePost from './CreatePost';
 import './MainFeed.css';
@@ -397,7 +397,7 @@ const MainFeed = () => {
             className="profile-button"
             onClick={toggleSidebar}
           >
-            <User size={20} />
+            <Menu size={20} />
           </button>
           <div className="header-content">
             <h1>홈</h1>

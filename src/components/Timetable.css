@@ -1146,9 +1146,11 @@
   border-radius: 16px;
   max-width: 500px;
   width: 90%;
-  max-height: 80vh;
+  max-height: 85vh;
   overflow: hidden;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
 }
 
 .search-toggle {
@@ -1396,6 +1398,12 @@
   padding: 20px;
   border-top: 1px solid #e1e8ed;
   text-align: center;
+  background: white;
+  position: sticky;
+  bottom: 0;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+  border-radius: 0 0 16px 16px;
+  flex-shrink: 0;
 }
 
 .add-course-button {

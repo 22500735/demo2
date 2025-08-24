@@ -378,14 +378,19 @@ const Board = () => {
       <div className="board-container">
         <div className="board-header">
           <div className="header-content">
-            <button className="back-button" onClick={() => setCurrentView('main')}>
-              <ArrowLeft size={20} />
-            </button>
-            <h1>{selectedBoard.name}</h1>
-            <button className="write-button" onClick={() => setCurrentView('createPost')}>
-              <Plus size={16} />
-              글쓰기
-            </button>
+            <div className="header-top-row">
+              <button className="back-button" onClick={() => setCurrentView('main')}>
+                <ArrowLeft size={20} />
+              </button>
+              <h1>{selectedBoard.name}</h1>
+              <div className="header-spacer"></div>
+            </div>
+            <div className="header-actions">
+              <button className="write-button" onClick={() => setCurrentView('createPost')}>
+                <Plus size={16} />
+                글쓰기
+              </button>
+            </div>
           </div>
         </div>
 

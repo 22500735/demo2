@@ -20,12 +20,26 @@ const CreateBoardPost = ({ onBack, onCreatePost }) => {
 
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
+    const remainingSlots = 5 - images.length;
+    
+    if (files.length > remainingSlots) {
+      alert(`이미지는 최대 5개까지만 추가할 수 있습니다. (현재 ${images.length}개, 추가 가능한 개수: ${remainingSlots}개)`);
+      return;
+    }
+    
     files.forEach(file => {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        setImages(prev => [...prev, event.target.result]);
-      };
-      reader.readAsDataURL(file);
+      if (images.length < 5) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          setImages(prev => {
+            if (prev.length < 5) {
+              return [...prev, event.target.result];
+            }
+            return prev;
+          });
+        };
+        reader.readAsDataURL(file);
+      }
     });
   };
 
@@ -132,10 +146,21 @@ const CreateBoardPost = ({ onBack, onCreatePost }) => {
               className="image-input"
               id="image-upload"
             />
-            <label htmlFor="image-upload" className="image-upload-button">
+            <label 
+              htmlFor="image-upload" 
+              className={`image-upload-button ${images.length >= 5 ? 'disabled' : ''}`}
+            >
               <Image size={20} />
               <span>이미지 추가 ({images.length}/5)</span>
             </label>
+            {images.length >= 5 && (
+              <input 
+                type="file" 
+                style={{ display: 'none' }} 
+                disabled 
+                id="image-upload-disabled"
+              />
+            )}
           </div>
           
           {images.length > 0 && (
