@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { Heart, MessageCircle, Share, Bookmark, EyeOff, Filter, X, Plus, Search, UserPlus, UserCheck, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Heart, MessageCircle, Share, Bookmark, EyeOff, User, X, Plus, Search, UserPlus, UserCheck, ChevronLeft, ChevronRight } from 'lucide-react';
 import PostDetail from './PostDetail';
 import CreatePost from './CreatePost';
 import './MainFeed.css';
 
 const MainFeed = () => {
 
-  const [showFilterMenu, setShowFilterMenu] = useState(false);
-  const [filterType, setFilterType] = useState('all');
+
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeSlide, setActiveSlide] = useState(0);
@@ -15,6 +14,8 @@ const MainFeed = () => {
   const [currentView, setCurrentView] = useState('main');
   const [selectedPost, setSelectedPost] = useState(null);
   const [imageIndices, setImageIndices] = useState({});
+  const [activeTab, setActiveTab] = useState('recommended'); // 'recommended' or 'following'
+  const [showSidebar, setShowSidebar] = useState(false);
 
   // 모든 게시물을 합친 데이터
   const [posts, setPosts] = useState([
@@ -193,6 +194,75 @@ const MainFeed = () => {
     );
   };
 
+  // 탭에 따른 게시물 필터링
+  const getFilteredPosts = () => {
+    let filtered = posts;
+    
+    // 탭에 따른 필터링
+    if (activeTab === 'following') {
+      filtered = filtered.filter(post => followedUsers.includes(post.author));
+    }
+    
+    // 검색어 필터링
+    if (searchQuery) {
+      filtered = filtered.filter(post => 
+        post.content.toLowerCase().includes(searchQuery.toLowerCase()) || 
+        post.author.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+    
+    return filtered;
+  };
+
+  // 사이드바 토글
+  const toggleSidebar = () => {
+    setShowSidebar(!showSidebar);
+  };
+
+  // 스와이프 이벤트 처리
+  const handleTouchStart = (e) => {
+    const touchStartX = e.touches[0].clientX;
+    
+    // 화면 왼쪽 끝에서 스와이프 시작
+    if (touchStartX < 50) {
+      let touchEndX = 0;
+      
+      const handleTouchEnd = (endEvent) => {
+        touchEndX = endEvent.changedTouches[0].clientX;
+        if (touchEndX - touchStartX > 50) { // 오른쪽으로 스와이프
+          setShowSidebar(true);
+        }
+        document.removeEventListener('touchend', handleTouchEnd);
+      };
+      
+      document.addEventListener('touchend', handleTouchEnd);
+    }
+  };
+
+  // 탭 스와이프 이벤트 처리
+  const handleTabTouchStart = (e) => {
+    const touchStartX = e.touches[0].clientX;
+    let touchEndX = 0;
+    
+    const handleTouchEnd = (endEvent) => {
+      touchEndX = endEvent.changedTouches[0].clientX;
+      const swipeDistance = touchStartX - touchEndX;
+      
+      if (Math.abs(swipeDistance) > 50) {
+        if (swipeDistance > 0) {
+          // 왼쪽으로 스와이프 -> 팔로우 중 탭으로
+          setActiveTab('following');
+        } else {
+          // 오른쪽으로 스와이프 -> 추천 탭으로
+          setActiveTab('recommended');
+        }
+      }
+      document.removeEventListener('touchend', handleTouchEnd);
+    };
+    
+    document.addEventListener('touchend', handleTouchEnd);
+  };
+
   const handleLike = (postId) => {
     setPosts(posts.map(post => 
       post.id === postId 
@@ -278,19 +348,7 @@ const MainFeed = () => {
     }
   };
 
-  const filteredPosts = posts.filter(post => {
-    if (searchQuery && !post.content.toLowerCase().includes(searchQuery.toLowerCase()) && 
-        !post.author.toLowerCase().includes(searchQuery.toLowerCase())) {
-      return false;
-    }
-    
 
-    
-    if (filterType === 'liked') return post.liked;
-    if (filterType === 'saved') return post.saved;
-    if (filterType === 'following') return followedUsers.includes(post.author);
-    return true;
-  });
 
   if (currentView === 'postDetail' && selectedPost) {
     return (
@@ -312,15 +370,15 @@ const MainFeed = () => {
   }
 
   return (
-    <div className="main-feed">
+    <div className="main-feed" onTouchStart={handleTouchStart}>
       {/* 고정된 헤더 */}
       <div className="fixed-header">
         <div className="header">
           <button 
-            className="filter-menu-button"
-            onClick={() => setShowFilterMenu(true)}
+            className="profile-button"
+            onClick={toggleSidebar}
           >
-            <Filter size={20} />
+            <User size={20} />
           </button>
           <div className="header-content">
             <h1>홈</h1>
@@ -353,6 +411,23 @@ const MainFeed = () => {
           </div>
         )}
 
+        {/* 탭 바 */}
+        <div className="tab-bar" onTouchStart={handleTabTouchStart}>
+          <button 
+            className={`tab-button ${activeTab === 'recommended' ? 'active' : ''}`}
+            onClick={() => setActiveTab('recommended')}
+          >
+            추천
+          </button>
+          <button 
+            className={`tab-button ${activeTab === 'following' ? 'active' : ''}`}
+            onClick={() => setActiveTab('following')}
+          >
+            팔로우 중
+          </button>
+          <div className="tab-indicator" style={{ transform: `translateX(${activeTab === 'following' ? '100%' : '0%'})` }}></div>
+        </div>
+
 
       </div>
 
@@ -360,7 +435,7 @@ const MainFeed = () => {
       <div className="scrollable-content">
         {/* 게시물 목록 */}
         <div className="posts-container">
-          {filteredPosts.map((post, index) => (
+          {getFilteredPosts().map((post, index) => (
             <React.Fragment key={post.id}>
               <div className="post-card" onClick={() => handlePostClick(post.id)}>
                 <div className="post-header">
@@ -566,75 +641,66 @@ const MainFeed = () => {
         </div>
       </div>
 
-      {/* 필터 메뉴 */}
-      {showFilterMenu && (
-        <div className="filter-menu-overlay" onClick={() => setShowFilterMenu(false)}>
-          <div className="filter-menu" onClick={(e) => e.stopPropagation()}>
-            <div className="filter-menu-header">
-              <h3>필터</h3>
-              <button 
-                className="close-button"
-                onClick={() => setShowFilterMenu(false)}
-              >
-                <X size={20} />
+
+
+      {/* 사이드바 */}
+      <div className={`sidebar ${showSidebar ? 'open' : ''}`}>
+        <div className="sidebar-header">
+          <h3>메뉴</h3>
+          <button className="close-sidebar" onClick={toggleSidebar}>
+            <X size={20} />
+          </button>
+        </div>
+        <div className="sidebar-content">
+          <div className="sidebar-section">
+            <h4>서클 & 동아리</h4>
+            <div className="sidebar-items">
+              <button className="sidebar-item">
+                <div className="sidebar-icon">🎭</div>
+                <span>연극동아리</span>
+              </button>
+              <button className="sidebar-item">
+                <div className="sidebar-icon">💻</div>
+                <span>프로그래밍동아리</span>
+              </button>
+              <button className="sidebar-item">
+                <div className="sidebar-icon">🎵</div>
+                <span>밴드동아리</span>
+              </button>
+              <button className="sidebar-item">
+                <div className="sidebar-icon">📚</div>
+                <span>독서동아리</span>
               </button>
             </div>
-            <div className="filter-options">
-              <button 
-                className={`filter-option ${filterType === 'all' ? 'active' : ''}`}
-                onClick={() => {
-                  setFilterType('all');
-                  setShowFilterMenu(false);
-                }}
-              >
-                <div className="filter-icon">📋</div>
-                <div className="filter-info">
-                  <div className="filter-title">전체 게시물</div>
-                  <div className="filter-subtitle">모든 게시물 보기</div>
-                </div>
+          </div>
+          
+          <div className="sidebar-section">
+            <h4>기능</h4>
+            <div className="sidebar-items">
+              <button className="sidebar-item">
+                <div className="sidebar-icon">📊</div>
+                <span>통계</span>
               </button>
-              <button 
-                className={`filter-option ${filterType === 'liked' ? 'active' : ''}`}
-                onClick={() => {
-                  setFilterType('liked');
-                  setShowFilterMenu(false);
-                }}
-              >
-                <div className="filter-icon">❤️</div>
-                <div className="filter-info">
-                  <div className="filter-title">좋아요한 게시물</div>
-                  <div className="filter-subtitle">내가 좋아요한 글들</div>
-                </div>
+              <button className="sidebar-item">
+                <div className="sidebar-icon">⚙️</div>
+                <span>설정</span>
               </button>
-              <button 
-                className={`filter-option ${filterType === 'saved' ? 'active' : ''}`}
-                onClick={() => {
-                  setFilterType('saved');
-                  setShowFilterMenu(false);
-                }}
-              >
-                <div className="filter-icon">🔖</div>
-                <div className="filter-info">
-                  <div className="filter-title">저장한 게시물</div>
-                  <div className="filter-subtitle">나중에 볼 글들</div>
-                </div>
+              <button className="sidebar-item">
+                <div className="sidebar-icon">🔔</div>
+                <span>알림 설정</span>
               </button>
-              <button 
-                className={`filter-option ${filterType === 'following' ? 'active' : ''}`}
-                onClick={() => {
-                  setFilterType('following');
-                  setShowFilterMenu(false);
-                }}
-              >
-                <div className="filter-icon">👥</div>
-                <div className="filter-info">
-                  <div className="filter-title">팔로잉 게시물</div>
-                  <div className="filter-subtitle">팔로우한 사용자 글들</div>
-                </div>
+              <button className="sidebar-item">
+                <div className="sidebar-icon">❓</div>
+                <span>도움말</span>
               </button>
             </div>
           </div>
         </div>
+      </div>
+
+      {/* 사이드바 오버레이 */}
+      {showSidebar && (
+        <div className="sidebar-overlay" onClick={toggleSidebar}></div>
       )}
 
       {/* 플로팅 추가 버튼 */}

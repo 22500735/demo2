@@ -102,9 +102,9 @@
 
 /* 스크롤 가능한 컨텐츠 영역 */
 .scrollable-content {
-  margin-top: 200px;
+  margin-top: 250px; /* 탭바 높이 추가 */
   padding-bottom: 300px;
-  min-height: calc(100vh - 200px);
+  min-height: calc(100vh - 250px);
   position: relative;
 }
 
@@ -934,5 +934,235 @@
   /* 작성자 상세정보 간격 조정 */
   .author-details {
     min-width: 0;
+  }
+}
+
+/* 프로필 버튼 */
+.profile-button {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.profile-button:hover {
+  background: rgba(139, 92, 246, 0.3);
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+}
+
+/* 탭 바 */
+.tab-bar {
+  background: white;
+  padding: 0;
+  display: flex;
+  position: relative;
+  border-bottom: 1px solid #e1e8ed;
+}
+
+.tab-button {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #657786;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.tab-button:hover {
+  background-color: #f7f9fa;
+  color: #14171a;
+}
+
+.tab-button.active {
+  color: #1da1f2;
+}
+
+.tab-indicator {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 50%;
+  height: 3px;
+  background: linear-gradient(135deg, #6adca4 0%, #8b5cf6 100%);
+  transition: transform 0.3s ease;
+}
+
+/* 사이드바 */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -350px;
+  width: 350px;
+  height: 100vh;
+  background: white;
+  z-index: 2000;
+  transition: left 0.3s ease;
+  box-shadow: 2px 0 20px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar.open {
+  left: 0;
+}
+
+.sidebar-header {
+  padding: 20px;
+  border-bottom: 1px solid #e1e8ed;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, #6adca4 0%, #8b5cf6 100%);
+  color: white;
+}
+
+.sidebar-header h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.close-sidebar {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.close-sidebar:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.sidebar-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.sidebar-section {
+  margin-bottom: 32px;
+}
+
+.sidebar-section h4 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #14171a;
+  margin: 0 0 16px 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #e1e8ed;
+}
+
+.sidebar-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: none;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  font-size: 16px;
+  color: #14171a;
+}
+
+.sidebar-item:hover {
+  background: linear-gradient(135deg, rgba(106, 220, 164, 0.1), rgba(139, 92, 246, 0.1));
+  transform: translateX(8px);
+}
+
+.sidebar-icon {
+  font-size: 20px;
+  width: 24px;
+  text-align: center;
+}
+
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1500;
+}
+
+/* 모바일에서 탭바와 사이드바 조정 */
+@media (max-width: 768px) {
+  .scrollable-content {
+    margin-top: 210px; /* 탭바 높이 조정 */
+  }
+  
+  .sidebar {
+    width: 300px;
+    left: -300px;
+  }
+  
+  .tab-button {
+    padding: 14px;
+    font-size: 15px;
+  }
+  
+  .profile-button {
+    width: 36px;
+    height: 36px;
+    padding: 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .scrollable-content {
+    margin-top: 200px; /* 탭바 높이 조정 */
+  }
+  
+  .sidebar {
+    width: 280px;
+    left: -280px;
+  }
+  
+  .tab-button {
+    padding: 12px;
+    font-size: 14px;
+  }
+  
+  .sidebar-header {
+    padding: 16px;
+  }
+  
+  .sidebar-content {
+    padding: 16px;
+  }
+  
+  .sidebar-item {
+    padding: 10px 12px;
+    font-size: 15px;
+  }
+  
+  .profile-button {
+    width: 36px;
+    height: 36px;
+    padding: 6px;
   }
 }
