@@ -5,7 +5,7 @@ import CreatePost from './CreatePost';
 import './MainFeed.css';
 
 const MainFeed = () => {
-  const [selectedCategory, setSelectedCategory] = useState('전체');
+
   const [showFilterMenu, setShowFilterMenu] = useState(false);
   const [filterType, setFilterType] = useState('all');
   const [showSearch, setShowSearch] = useState(false);
@@ -143,7 +143,7 @@ const MainFeed = () => {
     }
   ]);
 
-  const categories = ['전체', '학업', '일상', '동아리', '취업', '연애', '마켓플레이스', '장소추천'];
+
 
   // 슬라이드 컨텐츠 (게시물 중간에 배치)
   const slideContent = [
@@ -284,16 +284,7 @@ const MainFeed = () => {
       return false;
     }
     
-    if (selectedCategory !== '전체') {
-      if (selectedCategory === '학업') {
-        const academicCategories = ['학업', '공부', '과제', '시험', '수업', '강의'];
-        if (!academicCategories.some(cat => post.category.includes(cat))) {
-          return false;
-        }
-      } else if (post.category !== selectedCategory) {
-        return false;
-      }
-    }
+
     
     if (filterType === 'liked') return post.liked;
     if (filterType === 'saved') return post.saved;
@@ -362,20 +353,7 @@ const MainFeed = () => {
           </div>
         )}
 
-        <div className="categories">
-          {categories.map((category) => {
-            const isActive = category === selectedCategory;
-            return (
-              <button
-                key={category}
-                className={`category-button ${isActive ? 'active' : ''}`}
-                onClick={() => setSelectedCategory(category)}
-              >
-                {category}
-              </button>
-            );
-          })}
-        </div>
+
       </div>
 
       {/* 스크롤 가능한 컨텐츠 영역 */}
