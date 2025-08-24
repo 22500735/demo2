@@ -1,17 +1,17 @@
 .grade-calculator {
-  background-color: #f8f9fa;
+  background: white;
   min-height: 100vh;
   padding: 0 0 80px 0;
 }
 
 .calculator-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #6adca4 0%, #8b5cf6 100%);
   color: white;
   padding: 20px 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 20px rgba(139, 92, 246, 0.3);
 }
 
 .header-content {

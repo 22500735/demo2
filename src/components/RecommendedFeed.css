@@ -1,5 +1,5 @@
 .recommended-feed {
-  background-color: #e8f5e8;
+  background: white;
   min-height: 100vh;
   position: relative;
 }
@@ -16,7 +16,7 @@
 }
 
 .header {
-  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+  background: linear-gradient(135deg, #6adca4 0%, #8b5cf6 100%);
   color: white;
   padding: 16px;
   display: flex;
@@ -43,7 +43,7 @@
 .scrollable-content {
   margin-top: 80px;
   padding: 16px;
-  padding-bottom: 100px;
+  padding-bottom: 300px;
 }
 
 .section-title {
@@ -214,7 +214,7 @@
 .new-badge {
   position: absolute;
   top: 8px;
-  right: 8px;
+  left: 8px;
   background: #ff6b6b;
   color: white;
   font-size: 10px;
@@ -229,6 +229,24 @@
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 12px;
+}
+
+.more-button {
+  background: none;
+  border: none;
+  color: #657786;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.more-button:hover {
+  background-color: #f7f9fa;
+  color: #14171a;
 }
 
 .author-info {
@@ -503,6 +521,10 @@
     padding: 12px;
   }
   
+  .post-card:last-child {
+    margin-bottom: 150px;
+  }
+  
   .post-images .post-image {
     height: 150px;
   }
@@ -512,6 +534,7 @@
   .scrollable-content {
     margin-top: 60px;
     padding: 8px;
+    padding-bottom: 350px;
   }
   
   .user-actions {
@@ -529,4 +552,15 @@
     flex-direction: column;
     gap: 4px;
   }
+  
+  .post-card:last-child {
+    margin-bottom: 180px;
+  }
+}
+
+/* 확실한 하단 여백 확보 */
+.recommended-feed::after {
+  content: '';
+  display: block;
+  height: 120px;
 }

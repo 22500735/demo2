@@ -1,15 +1,15 @@
 .timetable {
-  background-color: #f8f9fa;
+  background: white;
   min-height: 100vh;
   padding-bottom: 120px; /* 네비게이션 바와 버튼을 위한 여유 공간 */
 }
 
 .timetable-header {
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  background: linear-gradient(135deg, #6adca4 0%, #8b5cf6 100%);
   color: white;
   padding: 20px 16px;
   text-align: center;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 20px rgba(139, 92, 246, 0.3);
 }
 
 .timetable-header h1 {
@@ -25,10 +25,12 @@
 
 .timetable-grid {
   margin: 16px;
-  background: white;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 20px rgba(139, 92, 246, 0.2);
+  border: 1px solid rgba(139, 92, 246, 0.1);
   border: 1px solid #e1e8ed;
   width: calc(100% - 32px);
 }
@@ -521,10 +523,13 @@
 }
 
 .modal-content {
-  background: white;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
   border-radius: 16px;
   max-width: 400px;
   width: 100%;
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  box-shadow: 0 10px 40px rgba(139, 92, 246, 0.3);
   max-height: 80vh;
   overflow-y: auto;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
@@ -1370,7 +1375,7 @@
 }
 
 .add-course-button {
-  background: #4facfe;
+  background: linear-gradient(135deg, #6adca4 0%, #8b5cf6 100%);
   color: white;
   border: none;
   border-radius: 8px;
@@ -1380,12 +1385,13 @@
   cursor: pointer;
   transition: all 0.2s ease;
   min-width: 150px;
+  box-shadow: 0 2px 10px rgba(139, 92, 246, 0.3);
 }
 
 .add-course-button:hover {
-  background: #3d8bfe;
+  background: linear-gradient(135deg, #8b5cf6 0%, #6adca4 100%);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(79, 172, 254, 0.3);
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
 }
 
 /* 모바일 반응형 */

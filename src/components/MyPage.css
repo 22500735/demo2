@@ -1,18 +1,19 @@
 .mypage {
-  background: #f5f8fa;
+  background: white;
   min-height: 100vh;
   padding-bottom: 80px;
 }
 
 .mypage-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #6adca4 0%, #8b5cf6 100%);
   color: white;
   padding: 16px;
   position: relative;
+  box-shadow: 0 2px 20px rgba(139, 92, 246, 0.3);
 }
 
 .profile-section {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #6adca4 0%, #8b5cf6 100%);
   color: white;
   padding: 20px 16px;
   margin: 0;

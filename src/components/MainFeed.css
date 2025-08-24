@@ -1,5 +1,5 @@
 .main-feed {
-  background-color: #e8f5e8;
+  background: white;
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
@@ -17,13 +17,13 @@
 }
 
 .header {
-  background: linear-gradient(135deg, rgb(106, 220, 164) 0%, rgb(90, 200, 150) 100%);
+  background: linear-gradient(135deg, #6adca4 0%, #8b5cf6 100%);
   color: white;
   padding: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 10px rgba(139, 92, 246, 0.3);
   position: relative;
 }
 
@@ -57,14 +57,16 @@
 }
 
 .filter-menu-button:hover, .search-button:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(139, 92, 246, 0.3);
   transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
 }
 
 .search-bar {
-  background: white;
+  background: linear-gradient(135deg, rgba(106, 220, 164, 0.1), rgba(139, 92, 246, 0.1));
+  backdrop-filter: blur(10px);
   padding: 12px 16px;
-  border-bottom: 1px solid #e1e8ed;
+  border-bottom: 1px solid rgba(139, 92, 246, 0.2);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -115,11 +117,13 @@
 
 /* 게시물 카드 */
 .post-card {
-  background: white;
-  border-bottom: 1px solid #e1e8ed;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(139, 92, 246, 0.2);
   padding: 16px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 10px rgba(139, 92, 246, 0.1);
 }
 
 .post-card:last-child {
@@ -127,7 +131,9 @@
 }
 
 .post-card:hover {
-  background-color: #f8f9fa;
+  background: rgba(255, 255, 255, 0.95);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(139, 92, 246, 0.2);
 }
 
 .post-header {
@@ -373,7 +379,8 @@
 }
 
 .action-button:hover {
-  background-color: #f7f9fa;
+  background: linear-gradient(135deg, rgba(106, 220, 164, 0.1), rgba(139, 92, 246, 0.1));
+  border-radius: 12px;
 }
 
 .action-button.liked {
@@ -381,16 +388,19 @@
 }
 
 .action-button.liked:hover {
-  background-color: #fce4ec;
+  background: linear-gradient(135deg, rgba(233, 30, 99, 0.1), rgba(139, 92, 246, 0.1));
+  border-radius: 12px;
 }
 
 /* 슬라이드 컨텐츠 */
 .slide-container {
-  background: white;
-  border-bottom: 1px solid #e1e8ed;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(139, 92, 246, 0.2);
   margin: 0;
   border-radius: 0;
   overflow: hidden;
+  box-shadow: 0 2px 10px rgba(139, 92, 246, 0.1);
   border-top: 1px solid #e1e8ed;
 }
 
