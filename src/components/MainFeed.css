@@ -301,6 +301,7 @@
   display: flex;
   width: 100%;
   aspect-ratio: 1;
+  min-height: 350px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
@@ -816,7 +817,11 @@
   }
   
   .post-images-slider {
-    height: 150px;
+    min-height: 280px;
+  }
+  
+  .images-container {
+    min-height: 280px;
   }
 }
 
@@ -913,6 +918,11 @@
   /* 이미지 슬라이더 높이 조정 */
   .post-images-slider {
     margin-bottom: 10px;
+    min-height: 250px;
+  }
+  
+  .images-container {
+    min-height: 250px;
   }
   
   /* 게시물 헤더 간격 조정 */
