@@ -6,6 +6,7 @@ const ClubDetail = ({ club, onBack }) => {
   const [isSubscribed, setIsSubscribed] = useState(club?.isFollowed || false);
   const [notifications, setNotifications] = useState(false);
   const [activeTab, setActiveTab] = useState('posts');
+  const [expandedComments, setExpandedComments] = useState(new Set());
   const [posts, setPosts] = useState([
     {
       id: 1,
@@ -17,7 +18,11 @@ const ClubDetail = ({ club, onBack }) => {
       comments: 8,
       views: 156,
       isOfficial: true,
-      images: 1
+      images: 1,
+      commentList: [
+        { id: 1, author: '김신입', content: '참석하겠습니다!', time: '1시간 전' },
+        { id: 2, author: '이신입', content: '저도 참석할게요', time: '30분 전' }
+      ]
     },
     {
       id: 2,
@@ -29,7 +34,11 @@ const ClubDetail = ({ club, onBack }) => {
       comments: 12,
       views: 89,
       isOfficial: false,
-      images: 0
+      images: 0,
+      commentList: [
+        { id: 1, author: '박개발', content: 'React 경험 있으면 괜찮을까요?', time: '2시간 전' },
+        { id: 2, author: '김개발', content: '네! 충분합니다', time: '1시간 전' }
+      ]
     },
     {
       id: 3,
@@ -41,7 +50,11 @@ const ClubDetail = ({ club, onBack }) => {
       comments: 18,
       views: 234,
       isOfficial: false,
-      images: 0
+      images: 0,
+      commentList: [
+        { id: 1, author: '최알고', content: '초급자도 괜찮을까요?', time: '1일 전' },
+        { id: 2, author: '박알고', content: '네! 초급자도 환영합니다', time: '1일 전' }
+      ]
     }
   ]);
 
@@ -113,11 +126,19 @@ const ClubDetail = ({ club, onBack }) => {
   };
 
   const handleNotificationToggle = () => {
-    if (!isSubscribed) {
-      alert('구독 후 알림을 설정할 수 있습니다.');
-      return;
+    if (isSubscribed) {
+      setNotifications(!notifications);
     }
-    setNotifications(!notifications);
+  };
+
+  const toggleComments = (postId) => {
+    const newExpanded = new Set(expandedComments);
+    if (newExpanded.has(postId)) {
+      newExpanded.delete(postId);
+    } else {
+      newExpanded.add(postId);
+    }
+    setExpandedComments(newExpanded);
   };
 
   const handleLike = (postId) => {
@@ -143,7 +164,6 @@ const ClubDetail = ({ club, onBack }) => {
         <div className="club-detail-header">
           <button className="back-button" onClick={onBack}>
             <ArrowLeft size={20} />
-            <span>뒤로가기</span>
           </button>
         </div>
         <div className="error-message">
@@ -159,7 +179,6 @@ const ClubDetail = ({ club, onBack }) => {
       <div className="club-detail-header">
         <button className="back-button" onClick={onBack}>
           <ArrowLeft size={20} />
-          <span>뒤로가기</span>
         </button>
       </div>
 
@@ -306,7 +325,10 @@ const ClubDetail = ({ club, onBack }) => {
                       <ThumbsUp size={16} />
                       <span>{post.likes}</span>
                     </button>
-                    <button className="action-btn comment-btn">
+                    <button 
+                      className="action-btn comment-btn"
+                      onClick={() => toggleComments(post.id)}
+                    >
                       <MessageCircle size={16} />
                       <span>{post.comments}</span>
                     </button>
@@ -318,6 +340,24 @@ const ClubDetail = ({ club, onBack }) => {
                       <span>{post.views}</span>
                     </div>
                   </div>
+                  
+                  {/* 댓글 목록 */}
+                  {expandedComments.has(post.id) && post.commentList && (
+                    <div className="comments-section">
+                      <div className="comments-header">
+                        <h4>댓글 ({post.commentList.length}개)</h4>
+                      </div>
+                      <div className="comments-list">
+                        {post.commentList.map(comment => (
+                          <div key={comment.id} className="comment-item">
+                            <div className="comment-author">{comment.author}</div>
+                            <div className="comment-content">{comment.content}</div>
+                            <div className="comment-time">{comment.time}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>

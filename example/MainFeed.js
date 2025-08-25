@@ -179,9 +179,26 @@ const MainFeed = () => {
   ];
 
   const formatContent = (content) => {
+    if (!searchQuery) {
+      return content.split('\n').map((line, index) => (
+        <React.Fragment key={index}>
+          {line}
+          {index < content.split('\n').length - 1 && <br />}
+        </React.Fragment>
+      ));
+    }
+    
+    // 검색어 하이라이트
+    const regex = new RegExp(`(${searchQuery})`, 'gi');
     return content.split('\n').map((line, index) => (
       <React.Fragment key={index}>
-        {line}
+        {line.split(regex).map((part, partIndex) => 
+          regex.test(part) ? (
+            <mark key={partIndex} className="search-highlight">{part}</mark>
+          ) : (
+            part
+          )
+        )}
         {index < content.split('\n').length - 1 && <br />}
       </React.Fragment>
     ));
@@ -204,13 +221,15 @@ const MainFeed = () => {
       filtered = filtered.filter(post => followedUsers.includes(post.author));
     }
     
-    // 검색어 필터링
-    if (searchQuery) {
-      filtered = filtered.filter(post => 
-        post.content.toLowerCase().includes(searchQuery.toLowerCase()) || 
-        post.author.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
+      // 검색어 필터링
+  if (searchQuery) {
+    filtered = filtered.filter(post => 
+      post.content.toLowerCase().includes(searchQuery.toLowerCase()) || 
+      post.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      post.board.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      post.category.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }
     
     return filtered;
   };
@@ -404,7 +423,13 @@ const MainFeed = () => {
           </div>
           <button 
             className="search-button"
-            onClick={() => setShowSearch(!showSearch)}
+            onClick={() => {
+              setShowSearch(!showSearch);
+              if (!showSearch) {
+                // 검색이 열릴 때 검색어 초기화
+                setSearchQuery('');
+              }
+            }}
           >
             <Search size={20} />
           </button>
@@ -414,10 +439,16 @@ const MainFeed = () => {
           <div className="search-bar">
             <input
               type="text"
-              placeholder="게시물, 사용자 검색..."
+              placeholder="게시물, 사용자, 게시판 검색..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                  e.target.blur();
+                }
+              }}
               className="search-input"
+              autoFocus
             />
             {searchQuery && (
               <button 
@@ -454,7 +485,17 @@ const MainFeed = () => {
       <div className="scrollable-content">
         {/* 게시물 목록 */}
         <div className="posts-container">
-          {getFilteredPosts().map((post, index) => (
+          {getFilteredPosts().length === 0 && searchQuery ? (
+            <div className="no-search-results">
+              <div className="no-results-icon">🔍</div>
+              <div className="no-results-text">
+                <h3>검색 결과가 없습니다</h3>
+                <p>"{searchQuery}"에 대한 검색 결과를 찾을 수 없습니다.</p>
+                <p>다른 키워드로 검색해보세요.</p>
+              </div>
+            </div>
+          ) : (
+            getFilteredPosts().map((post, index) => (
             <React.Fragment key={post.id}>
               <div className="post-card" onClick={() => handlePostClick(post.id)}>
                 <div className="post-header">
@@ -631,7 +672,7 @@ const MainFeed = () => {
                               <div className="hashtag-main">
                                 <span className="hashtag">{item.text}</span>
                               </div>
-                              <div className="hashtag-info">
+                              <div className="circle-info">
                                 <span className="hashtag-count">{item.count}개 게시물</span>
                               </div>
                             </div>
@@ -656,7 +697,8 @@ const MainFeed = () => {
                 </div>
               )}
             </React.Fragment>
-          ))}
+          ))
+        )}
         </div>
       </div>
 

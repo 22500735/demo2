@@ -17,6 +17,20 @@
   z-index: 100;
 }
 
+/* 중고거래 상품 전용 헤더 */
+.marketplace-item-header {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+  color: white;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 20px rgba(255, 107, 107, 0.3);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
 .back-button, .more-button {
   background: none;
   border: none;
@@ -31,7 +45,7 @@
   background: rgba(255, 255, 255, 0.1);
 }
 
-.post-detail-header h1 {
+.post-detail-header h1, .marketplace-item-header h1 {
   font-size: 18px;
   font-weight: 600;
   margin: 0;
@@ -368,6 +382,49 @@
   margin-left: 40px;
 }
 
+/* 중고거래 상품 전용 스타일 */
+.marketplace-price {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 12px;
+  background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
+  border-radius: 8px;
+  border: 1px solid #fed7d7;
+}
+
+.price-amount {
+  font-size: 24px;
+  font-weight: 700;
+  color: #e53e3e;
+}
+
+.item-condition {
+  background: #38a169;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.marketplace-location {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 16px;
+  padding: 8px 12px;
+  background: #f7fafc;
+  border-radius: 6px;
+  color: #4a5568;
+  font-size: 14px;
+}
+
+.marketplace-location svg {
+  color: #718096;
+}
+
 /* Mobile responsive */
 @media (max-width: 768px) {
   .post-detail-content {
@@ -418,14 +475,22 @@
     width: 40px;
     height: 40px;
   }
+
+  .marketplace-price {
+    padding: 10px;
+  }
+
+  .price-amount {
+    font-size: 20px;
+  }
 }
 
 @media (max-width: 480px) {
-  .post-detail-header {
+  .post-detail-header, .marketplace-item-header {
     padding: 12px;
   }
   
-  .post-detail-header h1 {
+  .post-detail-header h1, .marketplace-item-header h1 {
     font-size: 16px;
   }
   
@@ -444,5 +509,15 @@
     flex: 1;
     min-width: calc(50% - 4px);
     justify-content: center;
+  }
+
+  .marketplace-price {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .price-amount {
+    font-size: 18px;
   }
 }

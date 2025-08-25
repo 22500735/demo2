@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Heart, MessageCircle, Share, Bookmark, Send, MoreHorizontal } from 'lucide-react';
+import { ArrowLeft, Heart, MessageCircle, Share, Bookmark, Send, MoreHorizontal, MapPin, Eye } from 'lucide-react';
 import './PostDetail.css';
 
 const PostDetail = ({ post, onBack, onUpdatePost }) => {
@@ -30,6 +30,9 @@ const PostDetail = ({ post, onBack, onUpdatePost }) => {
       liked: false
     }
   ]);
+
+  // 중고거래 상품인지 확인
+  const isMarketplaceItem = post.category === '중고거래' || post.board === '중고거래';
 
   const handleLike = () => {
     onUpdatePost(post.id, {
@@ -136,15 +139,29 @@ const PostDetail = ({ post, onBack, onUpdatePost }) => {
 
   return (
     <div className="post-detail">
-      <div className="post-detail-header">
-        <button className="back-button" onClick={onBack}>
-          <ArrowLeft size={24} />
-        </button>
-        <h1>게시물</h1>
-        <button className="more-button">
-          <MoreHorizontal size={24} />
-        </button>
-      </div>
+      {isMarketplaceItem ? (
+        // 중고거래 상품 헤더
+        <div className="marketplace-item-header">
+          <button className="back-button" onClick={onBack}>
+            <ArrowLeft size={24} />
+          </button>
+          <h1>상품 상세</h1>
+          <button className="more-button">
+            <MoreHorizontal size={24} />
+          </button>
+        </div>
+      ) : (
+        // 일반 게시물 헤더
+        <div className="post-detail-header">
+          <button className="back-button" onClick={onBack}>
+            <ArrowLeft size={24} />
+          </button>
+          <h1>게시물</h1>
+          <button className="more-button">
+            <MoreHorizontal size={24} />
+          </button>
+        </div>
+      )}
 
       <div className="post-detail-content">
         <div className="post-detail-card">
@@ -166,6 +183,20 @@ const PostDetail = ({ post, onBack, onUpdatePost }) => {
             <div className="post-category">{post.category}</div>
           </div>
 
+          {isMarketplaceItem && post.price && (
+            <div className="marketplace-price">
+              <span className="price-amount">
+                {typeof post.price === 'number' 
+                  ? post.price.toLocaleString() 
+                  : post.price
+                }원
+              </span>
+              {post.condition && (
+                <span className="item-condition">{post.condition}</span>
+              )}
+            </div>
+          )}
+
           <div className="post-content">
             {formatContent(post.content)}
           </div>
@@ -184,6 +215,13 @@ const PostDetail = ({ post, onBack, onUpdatePost }) => {
                   }}
                 />
               ))}
+            </div>
+          )}
+
+          {isMarketplaceItem && post.location && (
+            <div className="marketplace-location">
+              <MapPin size={16} />
+              <span>{post.location}</span>
             </div>
           )}
 
@@ -212,6 +250,13 @@ const PostDetail = ({ post, onBack, onUpdatePost }) => {
               <Share size={20} />
               <span>{post.shares}</span>
             </button>
+
+            {isMarketplaceItem && post.views && (
+              <button className="action-button">
+                <Eye size={20} />
+                <span>{post.views}</span>
+              </button>
+            )}
           </div>
         </div>
 

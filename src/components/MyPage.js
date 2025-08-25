@@ -283,7 +283,6 @@ const MyPage = () => {
         <div className="settings-header">
           <button className="back-button" onClick={handleBackToMain}>
             <ArrowLeft size={20} />
-            <span>뒤로가기</span>
           </button>
           <h1>계정 설정</h1>
         </div>
@@ -422,7 +421,6 @@ const MyPage = () => {
         <div className="settings-header">
           <button className="back-button" onClick={handleBackToMain}>
             <ArrowLeft size={20} />
-            <span>뒤로가기</span>
           </button>
           <h1>알림 설정</h1>
         </div>
@@ -535,7 +533,6 @@ const MyPage = () => {
         <div className="settings-header">
           <button className="back-button" onClick={handleBackToMain}>
             <ArrowLeft size={20} />
-            <span>뒤로가기</span>
           </button>
           <h1>고객센터</h1>
         </div>

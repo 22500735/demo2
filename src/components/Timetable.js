@@ -307,27 +307,13 @@ const Timetable = () => {
     course.department.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const addCourseToSchedule = (course) => {
-    // 강의 시간 파싱 (예: "월,수 15:05-16:35")
-    const timeInfo = course.time;
-    const [daysStr, timeRange] = timeInfo.split(' ');
-    const courseDays = daysStr.split(',');
+  const handleAddCourse = (course) => {
+    const targetPeriod = course.period - 1; // 0-based index
+    const courseDays = course.days.split(',');
     
-    // 시간대 찾기
-    let targetPeriod = -1;
-    timeSlots.forEach((slot, index) => {
-      if (timeRange.includes(slot.split('-')[0])) {
-        targetPeriod = index;
-      }
-    });
-    
-    if (targetPeriod === -1) {
-      alert('해당 시간대를 찾을 수 없습니다.');
-      return;
-    }
-    
-    // 시간표에 추가
     const newSchedule = { ...schedule };
+    let hasConflict = false;
+    
     courseDays.forEach(day => {
       // 한국어 요일을 일본어로 변환
       let targetDay = day;
@@ -344,8 +330,24 @@ const Timetable = () => {
       // 해당 시간에 이미 수업이 있는지 확인
       if (newSchedule[targetDay][targetPeriod]) {
         alert(`${targetDay}요일 ${periodNames[targetPeriod]}에 이미 수업이 있습니다.`);
+        hasConflict = true;
         return;
       }
+    });
+    
+    // 충돌이 있으면 함수 종료
+    if (hasConflict) {
+      return;
+    }
+    
+    // 충돌이 없으면 수업 추가
+    courseDays.forEach(day => {
+      let targetDay = day;
+      if (day === '월') targetDay = '月';
+      else if (day === '화') targetDay = '火';
+      else if (day === '수') targetDay = '水';
+      else if (day === '목') targetDay = '木';
+      else if (day === '금') targetDay = '金';
       
       // 강의 추가
       newSchedule[targetDay][targetPeriod] = {
@@ -943,7 +945,7 @@ const Timetable = () => {
               <div className="add-course-section">
                 <button 
                   className="add-course-button"
-                  onClick={() => addCourseToSchedule(selectedCourse)}
+                  onClick={() => handleAddCourse(selectedCourse)}
                 >
                   시간표에 추가
                 </button>
